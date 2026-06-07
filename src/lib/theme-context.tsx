@@ -53,8 +53,13 @@ export function ThemeProvider({
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mounted, attribute]);
+
+  useEffect(() => {
+    if (!mounted) return;
     localStorage.setItem("theme", theme);
-  }, [theme, mounted, attribute]);
+  }, [theme, mounted]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);

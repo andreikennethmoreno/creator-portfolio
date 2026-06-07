@@ -2,15 +2,17 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
 import { DATA } from "@/data/resume";
 
 export default function HeroSection() {
   return (
     <section id="hero">
-      <div className="mx-auto w-full max-w-2xl space-y-8">
-        <div className="flex items-center gap-5">
+      <Card className="mx-auto w-full max-w-2xl">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-5">
             <BlurFade delay={0.04} className="shrink-0">
-              <Avatar className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">
+              <Avatar className="size-24 md:size-32 border rounded-xl shadow-lg ring-4 ring-muted">
                 <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                 <AvatarFallback>{DATA.initials}</AvatarFallback>
               </Avatar>
@@ -28,8 +30,9 @@ export default function HeroSection() {
                 text={DATA.description}
               />
             </div>
-        </div>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </section>
   );
 }

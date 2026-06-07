@@ -4,20 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["400", "500", "600", "700"],
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-mono",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -64,9 +51,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased relative",
-          geist.variable,
-          geistMono.variable
+          "min-h-screen bg-background font-sans antialiased relative"
         )}
       >
         <div
@@ -78,6 +63,17 @@ export default function RootLayout({
         />
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
+            <div
+              aria-hidden="true"
+              className="fixed inset-0 z-0 bg-background"
+              style={{
+                backgroundImage: `
+                  linear-gradient(rgba(128,128,128,0.1) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(128,128,128,0.1) 1px, transparent 1px)
+                `,
+                backgroundSize: "48px 48px",
+              }}
+            />
             <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
               {children}
             </div>

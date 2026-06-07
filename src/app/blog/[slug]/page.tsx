@@ -147,7 +147,7 @@ export default async function Blog({
           }}
         />
       </div>
-      <article className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
+      <article className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground">
         <MDXContent code={post.mdx} components={mdxComponents} />
       </article>
 
