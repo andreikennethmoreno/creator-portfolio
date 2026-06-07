@@ -70,6 +70,13 @@ export default function RootLayout({
           geistMono.variable
         )}
       >
+        <div
+          aria-hidden="true"
+          className="hidden"
+          dangerouslySetInnerHTML={{
+            __html: `<script>(function(){try{var e=localStorage.getItem("theme")||(window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.classList.add(e)}catch(e){}})()<\/script>`,
+          }}
+        />
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
             <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0">

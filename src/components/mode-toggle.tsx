@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/lib/theme-context";
 import { cn } from "@/lib/utils";
 
 export function ModeToggle({ className }: { className?: string }) {
