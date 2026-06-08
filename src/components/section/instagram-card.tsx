@@ -28,7 +28,7 @@ export default async function InstagramCard() {
                     <img
                       src={post.sizes?.medium?.mediaUrl ?? post.mediaUrl}
                       alt={post.caption?.slice(0, 60) ?? ""}
-                      className="w-full aspect-[4/5] object-cover"
+                      className="w-full aspect-4/5 object-cover"
                       loading="lazy"
                     />
                     {post.caption && (

@@ -4,6 +4,7 @@ import ThreadsSection from "@/components/section/threads-section";
 import YoutubeSection from "@/components/section/youtube-section";
 import HardcoverCard from "@/components/section/hardcover-card";
 import KofiCard from "@/components/KofiCard"
+import LastFmCard from "@/components/section/lastfm-card"
 
 export default function Page() {
   return (
@@ -14,6 +15,7 @@ export default function Page() {
       </section>
       <YoutubeSection />
       <HardcoverCard />
+      <LastFmCard />
       <ThreadsSection />
       <KofiCard />
     </main>

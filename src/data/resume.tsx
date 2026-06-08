@@ -44,7 +44,7 @@ export const DATA = {
     social: {
       YouTube: {
         name: "YouTube",
-        url: "#",
+        url: "https://www.youtube.com/@kenroms",
         icon: Icons.youtube,
         navbar: true,
       },
@@ -80,7 +80,7 @@ export const DATA = {
       },
       email: {
         name: "Send Email",
-        url: "mailto:kennonirom@gmail.com",
+        url: "https://mail.google.com/mail/?view=cm&fs=1&to=kennonirom@gmail.com",
         icon: Icons.email,
         navbar: true,
       },
