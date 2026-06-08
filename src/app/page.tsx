@@ -3,6 +3,7 @@ import AboutSection from "@/components/section/about-section";
 import WorkSection from "@/components/section/work-section";
 import InstagramCard from "@/components/section/instagram-card";
 import ThreadsSection from "@/components/section/threads-section";
+import YoutubeSection from "@/components/section/youtube-section";
 
 export default function Page() {
   return (
@@ -14,6 +15,7 @@ export default function Page() {
         <InstagramCard />
       </section>
       <ThreadsSection />
+      <YoutubeSection />
     </main>
   );
 }
