@@ -2,6 +2,7 @@ import HeroSection from "@/components/section/hero-section";
 import AboutSection from "@/components/section/about-section";
 import WorkSection from "@/components/section/work-section";
 import InstagramCard from "@/components/section/instagram-card";
+import ThreadsSection from "@/components/section/threads-section";
 
 export default function Page() {
   return (
@@ -12,6 +13,7 @@ export default function Page() {
       <section id="instagram">
         <InstagramCard />
       </section>
+      <ThreadsSection />
     </main>
   );
 }
