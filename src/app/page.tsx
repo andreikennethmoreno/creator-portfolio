@@ -1,6 +1,7 @@
 import HeroSection from "@/components/section/hero-section";
 import AboutSection from "@/components/section/about-section";
 import WorkSection from "@/components/section/work-section";
+import InstagramCard from "@/components/section/instagram-card";
 
 export default function Page() {
   return (
@@ -8,6 +9,9 @@ export default function Page() {
       <HeroSection />
       <AboutSection />
       <WorkSection />
+      <section id="instagram">
+        <InstagramCard />
+      </section>
     </main>
   );
 }
