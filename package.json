@@ -24,6 +24,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "content-collections": "^0.2.1",
+    "embla-carousel-react": "^8.6.0",
+    "kofi-react-widget": "^2.1.0",
     "lucide-react": "^0.562.0",
     "motion": "^12.23.27",
     "next": "16.2.7",

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ArrowUpRight } from "lucide-react"
+
 import BlurFade from "@/components/magicui/blur-fade"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -102,37 +102,34 @@ export default function YoutubeSection() {
         </CardHeader>
         <CardContent className="p-0">
           <BlurFade delay={0.48}>
-            {videos.map((video, i) => (
-              <div key={video.id}>
+            <div className="grid grid-cols-2 gap-4 p-5">
+              {videos.map((video) => (
                 <a
+                  key={video.id}
                   href={video.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block p-5 hover:bg-accent/30 transition-colors"
+                  className="group block"
                 >
-                  <div className="flex gap-4">
-                    <div className="relative shrink-0">
-                      <img
-                        src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
-                        alt={video.title}
-                        className="w-40 h-[90px] object-cover rounded-md"
-                        loading="lazy"
-                      />
-                      <span className="absolute bottom-1 right-1 text-[11px] font-mono bg-black/80 text-white px-1.5 py-0.5 rounded leading-none">
-                        {video.duration}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-foreground mb-1 leading-snug group-hover:text-foreground/80 transition-colors line-clamp-2">
+                  <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted">
+                    <img
+                      src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-card/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {video.title}
                       </p>
                     </div>
-                    <ArrowUpRight className="size-3.5 text-muted-foreground group-hover:text-foreground group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all shrink-0 mt-1" />
+                    <span className="absolute bottom-1 right-1 text-xs font-semibold bg-black/80 text-white px-1.5 py-0.5 rounded leading-none">
+                      {video.duration}
+                    </span>
                   </div>
                 </a>
-                {i < videos.length - 1 && <div className="border-t border-border/20" />}
-              </div>
-            ))}
+              ))}
+            </div>
             <div className="p-5 pt-3 border-t border-border/20">
               <a
                 href="https://www.youtube.com/@kenroms"
