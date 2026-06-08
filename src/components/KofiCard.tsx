@@ -37,6 +37,15 @@ export default function KofiCard() {
             >
               &gt; support on ko-fi &rarr;
             </a>
+            <p className="text-sm text-muted-foreground mt-6">
+              want to collab or just say hi? &rarr;{" "}
+              <a
+                href="mailto:kennonirom@gmail.com"
+                className="hover:text-foreground transition-colors"
+              >
+                kennonirom@gmail.com
+              </a>
+            </p>
           </BlurFade>
         </CardContent>
       </Card>

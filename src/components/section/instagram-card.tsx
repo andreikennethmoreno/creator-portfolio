@@ -1,9 +1,9 @@
-import { getInstagramPosts } from '@/lib/instagram'
-import BlurFade from "@/components/magicui/blur-fade"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getInstagramPosts } from "@/lib/instagram";
+import BlurFade from "@/components/magicui/blur-fade";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function InstagramCard() {
-  const posts = await getInstagramPosts(6)
+  const posts = await getInstagramPosts(6);
 
   return (
     <section id="instagram">
@@ -27,12 +27,12 @@ export default async function InstagramCard() {
                   >
                     <img
                       src={post.sizes?.medium?.mediaUrl ?? post.mediaUrl}
-                      alt={post.caption?.slice(0, 60) ?? ''}
+                      alt={post.caption?.slice(0, 60) ?? ""}
                       className="w-full aspect-[4/5] object-cover"
                       loading="lazy"
                     />
                     {post.caption && (
-                      <div className="absolute inset-0 bg-card/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                      <div className="absolute inset-0 bg-card/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
                         <p className="text-xs text-muted-foreground line-clamp-2">
                           {post.caption}
                         </p>
@@ -57,5 +57,5 @@ export default async function InstagramCard() {
         </CardContent>
       </Card>
     </section>
-  )
+  );
 }

@@ -42,7 +42,7 @@ function BookCover({ book }: { book: HardcoverBook }) {
           <span className="text-[10px] text-muted-foreground">?</span>
         </div>
       )}
-      <div className="absolute inset-0 bg-card/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-start justify-end p-1.5 rounded">
+      <div className="absolute inset-0 bg-card/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-start justify-end p-1.5 rounded">
         <p className="text-[10px] leading-tight text-card-foreground line-clamp-2">
           {book.book.title}
         </p>
