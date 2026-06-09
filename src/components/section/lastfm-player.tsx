@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import BlurFade from '@/components/magicui/blur-fade'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import type { LastFmTrack } from '@/lib/lastfm'
 
 function timeAgo(dateStr: string): string {
@@ -163,14 +163,28 @@ export default function LastFmPlayer({ track, videoId }: Props) {
 
   return (
     <section id="lastfm">
-      <Card>
-        <CardHeader>
-          <BlurFade delay={0.48}>
-            <CardTitle className="text-xl font-bold">Listening</CardTitle>
-          </BlurFade>
-        </CardHeader>
+      <Card className="overflow-hidden">
+        <div className="flex items-center justify-between px-3 py-2 border-b bg-muted/40">
+          <div className="flex items-center gap-2">
+            <span className="size-2.5 rounded-full bg-destructive/60" />
+            <span className="size-2.5 rounded-full bg-primary/40" />
+            <span className="size-2.5 rounded-full bg-primary/70" />
+          </div>
+          <span className="text-xs text-muted-foreground tracking-wide">
+            lastfm.feed
+          </span>
+          <a
+            href={`https://last.fm/user/${process.env.NEXT_PUBLIC_LASTFM_USERNAME}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-primary transition-colors leading-none"
+            aria-label="Open Last.fm"
+          >
+            ↗
+          </a>
+        </div>
         <CardContent>
-          <BlurFade delay={0.52}>
+          <BlurFade delay={0.48}>
             {track ? (
               <div className="flex flex-col gap-3">
                 <div ref={containerRef} className="absolute -left-[9999px] top-0" aria-hidden="true" />
@@ -265,15 +279,6 @@ export default function LastFmPlayer({ track, videoId }: Props) {
                     </span>
                   </div>
                 )}
-
-                <a
-                  href={`https://last.fm/user/${process.env.NEXT_PUBLIC_LASTFM_USERNAME}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  &gt; open last.fm →
-                </a>
               </div>
             ) : (
               <p className="text-xs text-muted-foreground">nothing scrobbled yet</p>
