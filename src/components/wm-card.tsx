@@ -25,8 +25,8 @@ export function WMCard({ title, count, href, hrefLabel, children }: WMCardProps)
       !isGlossy && "bg-card border-border",
       // linux WM glossy — barely there
       isGlossy && [
-        "bg-card/70",
-        "backdrop-blur-[6px]",
+        "bg-card/80",
+        "backdrop-blur-[4px]",
         "border-white/12",
         // the actual gloss: just a 1px top line
         "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]",

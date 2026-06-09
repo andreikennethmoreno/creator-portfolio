@@ -207,12 +207,7 @@ export default function LastFmPlayer({ track, videoId }: Props) {
                   </div>
 
                   <div className="flex flex-col justify-center gap-1 min-w-0 flex-1">
-                    {track.isNowPlaying ? (
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />
-                        <span className="text-[10px] font-mono text-green-500">now playing</span>
-                      </div>
-                    ) : track.playedAt ? (
+                    {track.playedAt ? (
                       <span className="text-[10px] font-mono text-muted-foreground">
                         last played · {timeAgo(track.playedAt)}
                       </span>

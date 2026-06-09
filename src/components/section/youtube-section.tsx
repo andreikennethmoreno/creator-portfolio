@@ -109,7 +109,7 @@ export default function YoutubeSection() {
           hrefLabel="Open YouTube"
         >
           <BlurFade delay={0.44}>
-            <div className="grid grid-cols-2 gap-4 p-5">
+            <div className="grid grid-cols-2 gap-4">
               {videos.map((video) => (
                 <a
                   key={video.id}

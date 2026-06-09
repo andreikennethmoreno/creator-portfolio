@@ -2,15 +2,14 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
+import { WMCard } from "@/components/wm-card";
 import { DATA } from "@/data/resume";
 
 export default function HeroSection() {
   return (
     <section id="hero">
-      <Card className="mx-auto w-full max-w-2xl">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-5">
+      <WMCard title="~/hello">
+        <div className="flex items-center gap-5">
             <BlurFade delay={0.04} className="shrink-0">
               <Avatar className="size-24 md:size-32 border rounded-xl shadow-lg ring-4 ring-muted">
                 <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
@@ -31,8 +30,7 @@ export default function HeroSection() {
               />
             </div>
           </div>
-        </CardContent>
-      </Card>
+      </WMCard>
     </section>
   );
 }
