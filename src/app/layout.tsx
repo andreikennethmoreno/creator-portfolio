@@ -4,6 +4,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { WallpaperProvider } from "@/lib/wallpaper-context";
 import { CardStyleProvider } from "@/lib/card-style-context";
+import { DesktopModeProvider } from "@/lib/desktop-mode-context";
+import { DesktopModeToggle } from "@/components/desktop-mode-toggle";
+import { LayoutShell } from "@/components/layout-shell";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -11,7 +14,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const DEFAULT_WALLPAPER =
-  "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/tile/a_blue_and_black_pattern.png";
+  "https://raw.githubusercontent.com/dharmx/walls/main/nord/a_group_of_people_walking_on_a_hill.png";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -86,13 +89,16 @@ export default function RootLayout({
           <TooltipProvider delayDuration={0}>
             <WallpaperProvider defaultUrl={DEFAULT_WALLPAPER}>
               <WallpaperBackground />
+              <DesktopModeProvider>
               <CardStyleProvider>
+                <DesktopModeToggle />
                 <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0"></div>
-                <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+                <LayoutShell>
                   {children}
-                </div>
+                </LayoutShell>
                 <Navbar />
               </CardStyleProvider>
+              </DesktopModeProvider>
             </WallpaperProvider>
           </TooltipProvider>
         </ThemeProvider>

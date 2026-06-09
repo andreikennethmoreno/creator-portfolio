@@ -32,8 +32,8 @@ export default function KofiCard() {
             </p>
             <div className="flex flex-col gap-1 mb-4">
               {[
-                { label: 'coffee', amount: '₱150', note: 'one-time tip' },
-                { label: 'large coffee', amount: '₱300', note: 'you\'re a legend' },
+                { label: 'coffee', amount: '$5 USD', note: 'one-time tip' },
+                { label: 'large coffee', amount: '$10 USD', note: 'you\'re a legend' },
               ].map((tier) => (
                 <a
                   key={tier.label}
