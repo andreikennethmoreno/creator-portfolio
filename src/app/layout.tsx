@@ -1,10 +1,28 @@
 import Navbar from "@/components/navbar";
+import { WallpaperBackground } from "@/components/wallpaper-background";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { WallpaperProvider } from "@/lib/wallpaper-context";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const DEFAULT_WALLPAPER =
+  "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/solarized/a_red_sun_over_mountains.jpg";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -51,7 +69,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased relative"
+          "min-h-screen bg-background font-sans antialiased relative",
+          geist.variable,
+          geistMono.variable,
         )}
       >
         <div
@@ -63,21 +83,14 @@ export default function RootLayout({
         />
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
-            <div
-              aria-hidden="true"
-              className="fixed inset-0 z-0 bg-background"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(128,128,128,0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(128,128,128,0.1) 1px, transparent 1px)
-                `,
-                backgroundSize: "48px 48px",
-              }}
-            />
-            <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
-              {children}
-            </div>
-            <Navbar />
+            <WallpaperProvider defaultWallpaper={DEFAULT_WALLPAPER}>
+              <WallpaperBackground />
+              <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0"></div>
+              <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+                {children}
+              </div>
+              <Navbar />
+            </WallpaperProvider>
           </TooltipProvider>
         </ThemeProvider>
       </body>
