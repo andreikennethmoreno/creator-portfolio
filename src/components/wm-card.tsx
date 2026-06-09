@@ -10,10 +10,11 @@ type WMCardProps = {
   count?: number | string;
   href?: string;
   hrefLabel?: string;
+  rightSlot?: ReactNode;
   children: ReactNode;
 };
 
-export function WMCard({ title, count, href, hrefLabel, children }: WMCardProps) {
+export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: WMCardProps) {
   const { style } = useCardStyle();
   const isGlossy = style === "glossy";
 
@@ -51,6 +52,7 @@ export function WMCard({ title, count, href, hrefLabel, children }: WMCardProps)
         </span>
 
         <div className="flex items-center gap-2">
+          {rightSlot}
           {count !== undefined && (
             <span className="font-mono text-[10px] text-foreground/30">
               [{count}]

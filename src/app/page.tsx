@@ -5,6 +5,7 @@ import YoutubeSection from "@/components/section/youtube-section";
 import HardcoverCard from "@/components/section/hardcover-card";
 import KofiCard from "@/components/KofiCard"
 import LastFmCard from "@/components/section/lastfm-card"
+import VercelProjects from "@/components/vercel-projects"
 
 export default function Page() {
   return (
@@ -16,6 +17,7 @@ export default function Page() {
       <YoutubeSection />
       <HardcoverCard />
       <LastFmCard />
+      <VercelProjects />
       <ThreadsSection />
       <KofiCard />
     </main>
