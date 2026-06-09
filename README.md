@@ -105,7 +105,7 @@ The portfolio is a **single-scroll landing page** (`/`) with a separate **blog s
 ### Navigation (Dock Bar)
 - macOS-style **magnification dock** (Magic UI `Dock` component) fixed to the bottom of the viewport
 - Spring-physics icon scaling: each icon expands proportionally based on cursor proximity (40px base, 60px at closest, spring `{ mass: 0.1, stiffness: 150, damping: 12 }`)
-- Home link + social links with `navbar: true` (YouTube, Threads, GitHub, Email) + animated theme toggle
+- Home link + social links with `navbar: true` (YouTube, Threads, GitHub, Email) + animated theme toggle + wallpaper toggle
 - All items wrapped in Radix Tooltips with arrows
 - Backdrop blur, primary-tinted shadow, responsive positioning
 
@@ -169,6 +169,13 @@ All server-side fetches use Next.js `fetch` with `next: { revalidate }` for Incr
 - Uses `flushSync` from `react-dom` for synchronous class application within the transition callback
 - Mobile-optimized with `fromCenter` to avoid off-screen clip origins
 
+### Wallpaper System
+- **React Context** in `src/lib/wallpaper-context.tsx` providing `{ wallpaper, palette, setWallpaper, cycleWallpaper }`
+- **3 wallpapers** cycle on click: Blue and Black, Hillside Walk, Watercolor Town
+- **Dynamic palette extraction**: Wallpaper colors sampled via k-means clustering → OKLCH CSS custom properties applied to DOM in real time
+- **Wallpaper toggle** in the navbar dock with a circle clip-path View Transition (no CSS crossfade, pure drop-reveal)
+- Powered by `WallpaperBackground` component (`bg-cover bg-center`, no CSS transitions) on a fixed `-z-10` layer
+
 ---
 
 ## Animations & Visual Aesthetics
@@ -205,7 +212,8 @@ All server-side fetches use Next.js `fetch` with `next: { revalidate }` for Incr
 - OG images use separate custom fonts: `Cabinet Grotesk` (medium) + `Clash Display` (semibold), self-hosted in `public/fonts/`
 
 ### Page Transitions
-- View Transitions API default root animation disabled (`animation: none`) to let the custom clip-path theme transition take full control
+- View Transitions API default root animation disabled (`animation: none`) to let custom clip-path transitions take full control
+- Wallpaper changes use the same VT mechanism with a circle crop reveal from the toggle button origin
 
 ---
 
@@ -265,13 +273,14 @@ All server-side fetches use Next.js `fetch` with `next: { revalidate }` for Incr
 
 ### Hybrid Rendering
 - **Server Components** (async, fetch data, pass to children): `InstagramCard`, `HardcoverCard`, `LastFmCard`, `ThreadsSection`, `KofiCard`
-- **Client Components** (interactivity only): `YoutubeSection`, `LastFmPlayer`, `HardcoverBooksCarousel`, `Navbar`, `ModeToggle`, `AnimatedThemeToggler`, `CodeBlock`
+- **Client Components** (interactivity only): `YoutubeSection`, `LastFmPlayer`, `HardcoverBooksCarousel`, `Navbar`, `ModeToggle`, `AnimatedThemeToggler`, `ThemeToggle`, `CodeBlock`
 - **Static:** HeroSection, KofiCard, blog pages with `generateStaticParams`
 
 ### Data Flow
 - All personal data driven by a single config file: `src/data/resume.tsx` (`DATA` object)
 - External API calls → Next.js `fetch` with `revalidate` → ISR cache → rendered in section components
 - Theme state → React Context → consumed via `useTheme()` hook
+- Wallpaper state → React Context → consumed via `useWallpaper()` hook; palette extracted from image pixels via k-means clustering
 
 ### Performance Optimizations
 - `loading="lazy"` on all `<img>` tags

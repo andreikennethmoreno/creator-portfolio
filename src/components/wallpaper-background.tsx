@@ -7,7 +7,7 @@ export function WallpaperBackground() {
 
   return (
     <div
-      className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat transition-all duration-700"
+      className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${wallpaper})` }}
     />
   );

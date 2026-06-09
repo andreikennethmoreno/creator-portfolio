@@ -1,7 +1,7 @@
 "use client";
 
 type RGB = [number, number, number];
-type Palette = {
+export type Palette = {
   bg: string;
   bgAlt: string;
   card: string;
