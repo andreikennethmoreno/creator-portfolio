@@ -2,6 +2,7 @@
 
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/mode-toggle";
+import { CardStyleToggle } from "@/components/card-style-toggle";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -74,6 +75,25 @@ export default function Navbar() {
               </Tooltip>
             );
           })}
+        <Separator
+          orientation="vertical"
+          className="h-2/3 m-auto w-px bg-border"
+        />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+              <CardStyleToggle />
+            </DockIcon>
+          </TooltipTrigger>
+          <TooltipContent
+            side="top"
+            sideOffset={8}
+            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+          >
+            <p>Card Style</p>
+            <TooltipArrow className="fill-primary" />
+          </TooltipContent>
+        </Tooltip>
         <Separator
           orientation="vertical"
           className="h-2/3 m-auto w-px bg-border"

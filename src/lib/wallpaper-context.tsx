@@ -1,37 +1,55 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
-import { applyWallpaperTheme } from "./use-wallpaper-theme";
+import {
+  createContext, useContext, useState,
+  useCallback, useEffect, ReactNode
+} from "react";
+import { extractAndApply, type Palette } from "./wallpaper-theme";
 
-type WallpaperContextType = {
+export const WALLPAPERS = [
+  {
+    name: "red_sun_mountains",
+    label: "Red Sun",
+    url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/solarized/a_red_sun_over_mountains.jpg",
+  },
+];
+
+type WallpaperCtx = {
   wallpaper: string;
+  palette: Palette | null;
   setWallpaper: (url: string) => void;
 };
 
-const WallpaperContext = createContext<WallpaperContextType | null>(null);
+const Ctx = createContext<WallpaperCtx | null>(null);
 
-export function WallpaperProvider({ children, defaultWallpaper }: { children: ReactNode; defaultWallpaper: string }) {
-  const [wallpaper, setWallpaperState] = useState(defaultWallpaper);
+export function WallpaperProvider({
+  children,
+  defaultUrl = WALLPAPERS[0].url,
+}: {
+  children: ReactNode;
+  defaultUrl?: string;
+}) {
+  const [wallpaper, setWallpaperUrl] = useState(defaultUrl);
+  const [palette, setPalette] = useState<Palette | null>(null);
 
   const setWallpaper = useCallback((url: string) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = url;
-    img.onload = () => {
-      applyWallpaperTheme(img);
-      setWallpaperState(url);
-    };
+    setWallpaperUrl(url);
+    extractAndApply(url).then(setPalette).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    extractAndApply(defaultUrl).then(setPalette).catch(console.error);
   }, []);
 
   return (
-    <WallpaperContext.Provider value={{ wallpaper, setWallpaper }}>
+    <Ctx.Provider value={{ wallpaper, palette, setWallpaper }}>
       {children}
-    </WallpaperContext.Provider>
+    </Ctx.Provider>
   );
 }
 
 export const useWallpaper = () => {
-  const ctx = useContext(WallpaperContext);
-  if (!ctx) throw new Error("useWallpaper must be used inside WallpaperProvider");
+  const ctx = useContext(Ctx);
+  if (!ctx) throw new Error("useWallpaper outside WallpaperProvider");
   return ctx;
 };

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import BlurFade from "@/components/magicui/blur-fade";
-import { Card, CardContent } from "@/components/ui/card";
+import { WMCard } from "@/components/wm-card";
 
 function formatDuration(iso: string): string {
   const match = iso.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -102,27 +102,12 @@ export default function YoutubeSection() {
 
   return (
     <section id="youtube">
-      <Card className="overflow-hidden">
-        <div className="flex items-center justify-between px-3 py-2 border-b bg-muted/40">
-          <div className="flex items-center gap-2">
-            <span className="size-2.5 rounded-full bg-destructive/60" />
-            <span className="size-2.5 rounded-full bg-primary/40" />
-            <span className="size-2.5 rounded-full bg-primary/70" />
-          </div>
-          <span className="text-xs text-muted-foreground tracking-wide">
-            youtube.feed
-          </span>
-          <a
-            href="https://www.youtube.com/@kenroms"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-primary transition-colors leading-none"
-            aria-label="Open YouTube"
-          >
-            ↗
-          </a>
-        </div>
-        <CardContent className="p-0">
+      <WMCard
+          title="youtube.feed"
+          count={videos.length}
+          href="https://www.youtube.com/@kenroms"
+          hrefLabel="Open YouTube"
+        >
           <BlurFade delay={0.44}>
             <div className="grid grid-cols-2 gap-4 p-5">
               {videos.map((video) => (
@@ -153,8 +138,7 @@ export default function YoutubeSection() {
               ))}
             </div>
           </BlurFade>
-        </CardContent>
-      </Card>
+      </WMCard>
     </section>
   );
 }
