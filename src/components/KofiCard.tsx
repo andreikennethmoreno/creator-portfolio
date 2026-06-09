@@ -35,9 +35,12 @@ export default function KofiCard() {
                 { label: 'coffee', amount: '₱150', note: 'one-time tip' },
                 { label: 'large coffee', amount: '₱300', note: 'you\'re a legend' },
               ].map((tier) => (
-                <div
+                <a
                   key={tier.label}
-                  className="flex items-center justify-between border px-2 py-1 text-sm"
+                  href="https://ko-fi.com/kenroms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between border px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
                 >
                   <span className="font-mono text-foreground">
                     &gt; {tier.label}
@@ -45,7 +48,7 @@ export default function KofiCard() {
                   <span className="text-muted-foreground">
                     {tier.amount} &middot; {tier.note}
                   </span>
-                </div>
+                </a>
               ))}
             </div>
             <p className="text-sm text-muted-foreground mt-6">
