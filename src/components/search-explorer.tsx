@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Search, X, Clock, Folder, Hash, ArrowUpRight } from "lucide-react";
+import { Search, X, Clock, Folder, Music, BookOpen, Code, Heart, ArrowUpRight, Camera, MessageCircle, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SearchExplorerProps {
@@ -10,19 +10,20 @@ interface SearchExplorerProps {
 }
 
 const RECENTS = [
-  { icon: Clock, label: "projects", sub: "/projects" },
-  { icon: Clock, label: "listening", sub: "/listening" },
-  { icon: Clock, label: "reading", sub: "/reading" },
+  { icon: Clock, label: "hero", sub: "section" },
+  { icon: Clock, label: "instagram", sub: "social" },
+  { icon: Clock, label: "youtube", sub: "social" },
 ];
 
-const SUGGESTIONS = [
+const SECTIONS = [
   { icon: Folder, label: "hero", sub: "section" },
-  { icon: Folder, label: "projects", sub: "section" },
-  { icon: Folder, label: "listening", sub: "section" },
-  { icon: Folder, label: "reading", sub: "section" },
-  { icon: Hash,   label: "instagram", sub: "social" },
-  { icon: Hash,   label: "threads",   sub: "social" },
-  { icon: Hash,   label: "youtube",   sub: "social" },
+  { icon: Camera, label: "instagram", sub: "social" },
+  { icon: Play, label: "youtube", sub: "social" },
+  { icon: BookOpen, label: "reading", sub: "section" },
+  { icon: Music, label: "listening", sub: "section" },
+  { icon: Code, label: "projects", sub: "section" },
+  { icon: MessageCircle, label: "threads", sub: "social" },
+  { icon: Heart, label: "support", sub: "section" },
 ];
 
 export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
@@ -46,7 +47,7 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
   }, [open, onClose]);
 
   const filtered = query.trim()
-    ? SUGGESTIONS.filter((s) =>
+    ? SECTIONS.filter((s) =>
         s.label.toLowerCase().includes(query.toLowerCase())
       )
     : null;
@@ -68,8 +69,8 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
       >
         <div
           className={cn(
-            "overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-            open ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
+            "overflow-y-auto transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full",
+            open ? "max-h-[40vh] opacity-100" : "max-h-0 opacity-0"
           )}
         >
           <div className="p-2 flex flex-col gap-0.5">
@@ -84,7 +85,7 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
                 <p className="text-[10px] font-mono text-muted-foreground/50 px-2 pt-2 pb-0.5 uppercase tracking-widest">
                   sections
                 </p>
-                {SUGGESTIONS.map((item) => (
+                {SECTIONS.map((item) => (
                   <ResultRow key={item.label} {...item} />
                 ))}
               </>

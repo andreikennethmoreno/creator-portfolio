@@ -90,10 +90,10 @@ export const ThemeToggle = ({
       type="button"
       ref={buttonRef}
       onClick={toggleWallpaper}
-      className={cn(className)}
+      className={cn(className, "flex items-center justify-center")}
       {...props}
     >
-      <Image />
+      <Image className="size-full text-muted-foreground hover:text-foreground transition-colors" />
       <span className="sr-only">Toggle wallpaper</span>
     </button>
   )
