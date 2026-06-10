@@ -16,6 +16,11 @@ interface DockIconProps {
   children?: ReactNode;
 }
 
+interface DockItemProps {
+  className?: string;
+  children?: ReactNode;
+}
+
 const DEFAULT_MAGNIFICATION = 60;
 const DEFAULT_DISTANCE = 100;
 const BASE_SIZE = 40;
@@ -87,5 +92,36 @@ const DockIcon = ({ className, children }: DockIconProps) => {
   );
 };
 
-export { Dock, DockIcon };
-export type { DockProps, DockIconProps };
+const DockItem = ({ className, children }: DockItemProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const context = useContext(DockContext);
+
+  if (!context) {
+    return <div className={cn("relative flex items-center justify-center shrink-0", className)}>{children}</div>;
+  }
+
+  const { mouseX, magnification, distance } = context;
+
+  const distanceCalc = useTransform(mouseX, (val: number) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  const scale = useSpring(
+    useTransform(distanceCalc, [-distance, 0, distance], [1, magnification / BASE_SIZE, 1]),
+    SPRING
+  );
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ scale }}
+      className={cn("relative flex items-center justify-center shrink-0", className)}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export { Dock, DockIcon, DockItem };
+export type { DockProps, DockIconProps, DockItemProps };

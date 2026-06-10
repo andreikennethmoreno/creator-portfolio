@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useDesktopMode } from "@/lib/desktop-mode-context";
 import { DATA } from "@/data/resume";
+import MiniPlayer from "@/components/mini-player";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -35,6 +36,18 @@ export default function Navbar() {
             : "opacity-100"
         )}
       >
+        {isDesktop && (
+          <Dock className="absolute left-4 z-50 pointer-events-auto h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+            <DockIcon className="rounded-xl size-full bg-background p-0 text-muted-foreground flex items-center justify-center backdrop-blur-3xl border border-border transition-colors">
+              <span className="text-[10px] font-medium px-1">EXPLORER</span>
+            </DockIcon>
+          </Dock>
+        )}
+        {isDesktop && (
+          <Dock className="absolute right-4 z-50 pointer-events-auto h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+            <MiniPlayer />
+          </Dock>
+        )}
         <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
           {DATA.navbar.map((item) => {
             const isExternal = item.href.startsWith("http");
