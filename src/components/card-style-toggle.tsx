@@ -1,24 +1,37 @@
 "use client";
 
 import { useCardStyle } from "@/lib/card-style-context";
-import { cn } from "@/lib/utils";
+import { PanelTop, Sparkles } from "lucide-react";
+import {
+  Tooltip,
+  TooltipArrow,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function CardStyleToggle() {
   const { style, toggle } = useCardStyle();
   const isGlossy = style === "glossy";
 
   return (
-    <button
-      onClick={toggle}
-      className={cn(
-        "font-mono text-[11px] px-2 py-1 rounded-[var(--radius-sm)] border transition-all duration-200",
-        "text-foreground/50 hover:text-foreground/80",
-        isGlossy
-          ? "bg-white/5 border-white/10"
-          : "bg-muted/40 border-border"
-      )}
-    >
-      {isGlossy ? "⬡ glass" : "⬡ flat"}
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button onClick={toggle} className="size-full flex items-center justify-center">
+          {isGlossy ? (
+            <Sparkles className="size-full text-foreground/50 hover:text-foreground/80 transition-colors" />
+          ) : (
+            <PanelTop className="size-full text-foreground/50 hover:text-foreground/80 transition-colors" />
+          )}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent
+        side="top"
+        sideOffset={8}
+        className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+      >
+        <p>{isGlossy ? "glass" : "flat"}</p>
+        <TooltipArrow className="fill-primary" />
+      </TooltipContent>
+    </Tooltip>
   );
 }

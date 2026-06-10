@@ -14,12 +14,12 @@ import {
 import { useDesktopMode } from "@/lib/desktop-mode-context";
 import { DATA } from "@/data/resume";
 import MiniPlayer from "@/components/mini-player";
-import { Search } from "lucide-react";
+import { Search, Monitor, LayoutGrid } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export default function Navbar() {
-  const { isDesktop } = useDesktopMode();
+  const { isDesktop, toggleDesktop } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
@@ -36,13 +36,25 @@ export default function Navbar() {
             : "opacity-100"
         )}
       >
-        {isDesktop && (
-          <Dock className="absolute left-4 z-50 pointer-events-auto h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
-            <DockIcon className="rounded-xl size-full bg-background p-0 text-muted-foreground flex items-center justify-center backdrop-blur-3xl border border-border transition-colors">
-              <span className="text-[10px] font-medium px-1">EXPLORER</span>
-            </DockIcon>
-          </Dock>
-        )}
+        <Dock className="hidden lg:flex absolute left-4 z-50 pointer-events-auto h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button onClick={toggleDesktop}>
+                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  {isDesktop ? <Monitor size={14} /> : <LayoutGrid size={14} />}
+                </DockIcon>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              sideOffset={8}
+              className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+            >
+              <p>{isDesktop ? "exit desktop mode" : "desktop mode"}</p>
+              <TooltipArrow className="fill-primary" />
+            </TooltipContent>
+          </Tooltip>
+        </Dock>
         {isDesktop && (
           <Dock className="absolute right-4 z-50 pointer-events-auto h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
             <MiniPlayer />
@@ -136,21 +148,9 @@ export default function Navbar() {
           orientation="vertical"
           className="h-2/3 m-auto w-px bg-border"
         />
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-              <CardStyleToggle />
-            </DockIcon>
-          </TooltipTrigger>
-          <TooltipContent
-            side="top"
-            sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-          >
-            <p>Card Style</p>
-            <TooltipArrow className="fill-primary" />
-          </TooltipContent>
-        </Tooltip>
+        <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+          <CardStyleToggle />
+        </DockIcon>
         <Separator
           orientation="vertical"
           className="h-2/3 m-auto w-px bg-border"

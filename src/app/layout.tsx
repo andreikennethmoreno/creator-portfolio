@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { WallpaperProvider } from "@/lib/wallpaper-context";
 import { CardStyleProvider } from "@/lib/card-style-context";
 import { DesktopModeProvider } from "@/lib/desktop-mode-context";
-import { DesktopModeToggle } from "@/components/desktop-mode-toggle";
 import { LayoutShell } from "@/components/layout-shell";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
@@ -91,7 +90,6 @@ export default function RootLayout({
               <WallpaperBackground />
               <DesktopModeProvider>
               <CardStyleProvider>
-                <DesktopModeToggle />
                 <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0"></div>
                 <LayoutShell>
                   {children}
