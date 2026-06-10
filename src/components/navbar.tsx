@@ -14,18 +14,42 @@ import {
 import { useDesktopMode } from "@/lib/desktop-mode-context";
 import { DATA } from "@/data/resume";
 import MiniPlayer from "@/components/mini-player";
-import { Search, Monitor, LayoutGrid } from "lucide-react";
+import { Search, Monitor, LayoutGrid, Folder, Camera, Play, BookOpen, Music, Code, MessageCircle, Heart } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useWindowManager, APPS } from "@/lib/window-manager-context";
 
 export default function Navbar() {
-  const { isDesktop, toggleDesktop } = useDesktopMode();
+  const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
+  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen } = useWindowManager();
+
+  const handleAppClick = (app: typeof APPS[number]) => {
+    const win = windows.find(w => w.appId === app.id);
+    if (!win) {
+      openWindow(app);
+    } else if (win.minimized) {
+      restoreWindow(win.id);
+    } else {
+      minimizeWindow(win.id);
+    }
+  };
+
+  const APP_ICONS: Record<string, React.ElementType> = {
+    hero: Folder,
+    instagram: Camera,
+    youtube: Play,
+    reading: BookOpen,
+    listening: Music,
+    projects: Code,
+    threads: MessageCircle,
+    support: Heart,
+  };
 
   return (
     <>
       {isDesktop && (
-        <SearchExplorer open={searchOpen} onClose={() => setSearchOpen(false)} />
+        <SearchExplorer open={searchOpen} onClose={() => setSearchOpen(false)} onReveal={(section) => { revealSection(section); const app = APPS.find(a => a.id === section); if (app) openWindow(app); setSearchOpen(false); }} />
       )}
 
       <div
@@ -111,6 +135,45 @@ export default function Navbar() {
               </Tooltip>
             );
           })}
+          {isDesktop && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-2/3 m-auto w-px bg-border"
+              />
+              {APPS.map((app) => {
+                const IconComp = APP_ICONS[app.id];
+                const win = windows.find(w => w.appId === app.id);
+                const isOpen = !!win;
+                const isMinimized = win?.minimized;
+                return (
+                  <Tooltip key={app.id}>
+                    <TooltipTrigger asChild>
+                      <button onClick={() => handleAppClick(app)} className="relative">
+                        <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                          {IconComp && <IconComp className="size-full rounded-sm overflow-hidden object-contain" />}
+                        </DockIcon>
+                        {(isOpen) && (
+                          <span className={cn(
+                            "absolute -top-0.5 -right-0.5 size-2 rounded-full border border-background transition-colors",
+                            isMinimized ? "bg-muted-foreground/40" : "bg-primary"
+                          )} />
+                        )}
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      sideOffset={8}
+                      className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                    >
+                      <p>{app.title}{isMinimized ? " (minimized)" : ""}</p>
+                      <TooltipArrow className="fill-primary" />
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </>
+          )}
         <Separator
           orientation="vertical"
           className="h-2/3 m-auto w-px bg-border"

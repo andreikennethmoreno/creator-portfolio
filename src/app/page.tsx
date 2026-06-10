@@ -17,30 +17,30 @@ export default async function Page() {
   return (
     <DesktopLayout>
       <main className="min-h-dvh flex flex-col gap-14 relative contents">
-        <DesktopPanel>
+        <DesktopPanel sectionId="hero">
           <HeroSection />
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="instagram">
           <section id="instagram">
             <InstagramCard />
           </section>
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="youtube">
           <YoutubeSection />
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="reading">
           <HardcoverCard />
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="listening">
           <LastFmCard />
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="projects">
           <VercelProjects projects={projects} />
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="threads">
           <ThreadsSection />
         </DesktopPanel>
-        <DesktopPanel>
+        <DesktopPanel sectionId="support">
           <KofiCard />
         </DesktopPanel>
       </main>

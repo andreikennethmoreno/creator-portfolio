@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, startTransition } from "react";
 import { Search, X, Clock, Folder, Music, BookOpen, Code, Heart, ArrowUpRight, Camera, MessageCircle, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SearchExplorerProps {
   open: boolean;
   onClose: () => void;
+  onReveal: (section: string) => void;
 }
 
 const RECENTS = [
@@ -26,7 +27,7 @@ const SECTIONS = [
   { icon: Heart, label: "support", sub: "section" },
 ];
 
-export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
+export function SearchExplorer({ open, onClose, onReveal }: SearchExplorerProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -34,7 +35,7 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
     if (open) {
       inputRef.current?.focus();
     } else {
-      setQuery("");
+      startTransition(() => setQuery(""));
     }
   }, [open]);
 
@@ -51,6 +52,17 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
         s.label.toLowerCase().includes(query.toLowerCase())
       )
     : null;
+
+  const handleReveal = (label: string) => {
+    onReveal(label);
+    onClose();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && filtered !== null && filtered.length > 0) {
+      handleReveal(filtered[0].label);
+    }
+  };
 
   return (
     <div
@@ -80,13 +92,13 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
                   recent
                 </p>
                 {RECENTS.map((item) => (
-                  <ResultRow key={item.label} {...item} />
+                  <ResultRow key={item.label} {...item} onSelect={() => handleReveal(item.label)} />
                 ))}
                 <p className="text-[10px] font-mono text-muted-foreground/50 px-2 pt-2 pb-0.5 uppercase tracking-widest">
                   sections
                 </p>
                 {SECTIONS.map((item) => (
-                  <ResultRow key={item.label} {...item} />
+                  <ResultRow key={item.label} {...item} onSelect={() => handleReveal(item.label)} />
                 ))}
               </>
             )}
@@ -97,7 +109,7 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
                   results
                 </p>
                 {filtered.map((item) => (
-                  <ResultRow key={item.label} {...item} />
+                  <ResultRow key={item.label} {...item} onSelect={() => handleReveal(item.label)} />
                 ))}
               </>
             )}
@@ -127,6 +139,7 @@ export function SearchExplorer({ open, onClose }: SearchExplorerProps) {
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="search sections, links, cards..."
             className={cn(
               "flex-1 bg-transparent text-sm font-mono text-foreground placeholder:text-muted-foreground/60",
@@ -151,13 +164,18 @@ function ResultRow({
   icon: Icon,
   label,
   sub,
+  onSelect,
 }: {
   icon: React.ElementType;
   label: string;
   sub: string;
+  onSelect?: () => void;
 }) {
   return (
-    <button className="group flex items-center gap-3 w-full rounded-xl px-2 py-1.5 text-left hover:bg-muted transition-colors">
+    <button
+      onClick={onSelect}
+      className="group flex items-center gap-3 w-full rounded-xl px-2 py-1.5 text-left hover:bg-muted transition-colors"
+    >
       <span className="flex items-center justify-center size-7 shrink-0 rounded-lg bg-background border border-border text-muted-foreground group-hover:text-foreground transition-colors">
         <Icon size={12} />
       </span>

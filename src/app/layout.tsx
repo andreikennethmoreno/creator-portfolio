@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { WallpaperProvider } from "@/lib/wallpaper-context";
 import { CardStyleProvider } from "@/lib/card-style-context";
 import { DesktopModeProvider } from "@/lib/desktop-mode-context";
+import { WindowManagerProvider } from "@/lib/window-manager-context";
 import { LayoutShell } from "@/components/layout-shell";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
@@ -89,6 +90,7 @@ export default function RootLayout({
             <WallpaperProvider defaultUrl={DEFAULT_WALLPAPER}>
               <WallpaperBackground />
               <DesktopModeProvider>
+              <WindowManagerProvider>
               <CardStyleProvider>
                 <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0"></div>
                 <LayoutShell>
@@ -96,6 +98,7 @@ export default function RootLayout({
                 </LayoutShell>
                 <Navbar />
               </CardStyleProvider>
+              </WindowManagerProvider>
               </DesktopModeProvider>
             </WallpaperProvider>
           </TooltipProvider>
