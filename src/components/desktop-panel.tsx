@@ -2,8 +2,7 @@
 
 import { useWindowManager } from "@/lib/window-manager-context"
 import { useDesktopMode } from "@/lib/desktop-mode-context"
-import { DesktopWindow } from "@/components/desktop-window"
-import { cn } from "@/lib/utils"
+import { CardWindowContext } from "@/lib/card-window-context"
 
 interface DesktopPanelProps {
   children: React.ReactNode
@@ -11,9 +10,9 @@ interface DesktopPanelProps {
   sectionId?: string
 }
 
-export function DesktopPanel({ children, className, sectionId }: DesktopPanelProps) {
+export function DesktopPanel({ children, sectionId }: DesktopPanelProps) {
   const { isDesktop } = useDesktopMode()
-  const { getWindow } = useWindowManager()
+  const { getWindow, focusWindow, closeWindow, minimizeWindow, moveWindow, resizeWindow } = useWindowManager()
 
   if (!isDesktop) return <>{children}</>
   if (!sectionId) return null
@@ -22,10 +21,19 @@ export function DesktopPanel({ children, className, sectionId }: DesktopPanelPro
   if (!win) return null
 
   return (
-    <DesktopWindow window={win} className={cn("flex flex-col", className)}>
-      <div className="flex-1 p-0">
+    <CardWindowContext.Provider
+      value={{
+        isWindow: true,
+        win,
+        onClose: () => closeWindow(win.id),
+        onMinimize: () => minimizeWindow(win.id),
+        onMove: (x: number, y: number) => moveWindow(win.id, x, y),
+        onResize: (w: number, h: number) => resizeWindow(win.id, w, h),
+      }}
+    >
+      <div onClick={() => focusWindow(win.id)}>
         {children}
       </div>
-    </DesktopWindow>
+    </CardWindowContext.Provider>
   )
 }
