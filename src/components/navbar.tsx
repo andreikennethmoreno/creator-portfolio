@@ -180,6 +180,7 @@ export default function Navbar() {
         />
         {Object.entries(DATA.contact.social)
           .filter(([_, social]) => social.navbar)
+          .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
           .map(([name, social], index) => {
             const isExternal = social.url.startsWith("http");
             const IconComponent = social.icon;

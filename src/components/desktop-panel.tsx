@@ -28,7 +28,8 @@ export function DesktopPanel({ children, sectionId }: DesktopPanelProps) {
         onClose: () => closeWindow(win.id),
         onMinimize: () => minimizeWindow(win.id),
         onMove: (x: number, y: number) => moveWindow(win.id, x, y),
-        onResize: (w: number, h: number) => resizeWindow(win.id, w, h),
+        onResizeRect: (x: number, y: number, w: number, h: number) => resizeWindow(win.id, x, y, w, h),
+        onFocus: () => focusWindow(win.id),
       }}
     >
       <div onClick={() => focusWindow(win.id)}>

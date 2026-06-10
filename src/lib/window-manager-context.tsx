@@ -14,7 +14,7 @@ export const APPS: AppDef[] = [
   { id: "reading", title: "Reading" },
   { id: "listening", title: "Listening" },
   { id: "projects", title: "Projects" },
-  { id: "threads", title: "Threads" },
+  { id: "threads", title: "Feed" },
   { id: "support", title: "Support" },
 ];
 
@@ -43,7 +43,7 @@ type WMAction =
   | { type: "RESTORE"; id: string }
   | { type: "FOCUS"; id: string }
   | { type: "MOVE"; id: string; x: number; y: number }
-  | { type: "RESIZE"; id: string; width: number; height: number };
+  | { type: "RESIZE"; id: string; x: number; y: number; width: number; height: number };
 
 function wmReducer(state: WMState, action: WMAction): WMState {
   switch (action.type) {
@@ -128,7 +128,7 @@ function wmReducer(state: WMState, action: WMAction): WMState {
         ...state,
         windows: state.windows.map((w) =>
           w.id === action.id
-            ? { ...w, width: action.width, height: action.height }
+            ? { ...w, x: action.x, y: action.y, width: action.width, height: action.height }
             : w
         ),
       };
@@ -143,7 +143,7 @@ interface WMContextType {
   restoreWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   moveWindow: (id: string, x: number, y: number) => void;
-  resizeWindow: (id: string, w: number, h: number) => void;
+  resizeWindow: (id: string, x: number, y: number, w: number, h: number) => void;
   isAppOpen: (appId: string) => boolean;
   isAppMinimized: (appId: string) => boolean;
   getWindow: (appId: string) => AppWindow | undefined;
@@ -184,8 +184,8 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
     []
   );
   const resizeWindow = useCallback(
-    (id: string, width: number, height: number) =>
-      dispatch({ type: "RESIZE", id, width, height }),
+    (id: string, x: number, y: number, width: number, height: number) =>
+      dispatch({ type: "RESIZE", id, x, y, width, height }),
     []
   );
   const isAppOpen = useCallback(

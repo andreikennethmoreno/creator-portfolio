@@ -7,13 +7,13 @@ export default async function InstagramCard() {
 
   return (
     <section id="instagram">
-      <BlurFade delay={0.28}>
-        <WMCard
-          title="instagram.feed"
-          count={posts.length}
-          href="https://instagram.com/ken.roms"
-          hrefLabel="Open Instagram"
-        >
+      <WMCard
+        title="instagram.feed"
+        count={posts.length}
+        href="https://instagram.com/ken.roms"
+        hrefLabel="Open Instagram"
+      >
+        <BlurFade delay={0.28}>
           {posts.length > 0 ? (
             <div className="grid grid-cols-3 gap-1">
               {posts.map((post) => (
@@ -45,8 +45,8 @@ export default async function InstagramCard() {
               ~ no posts found
             </p>
           )}
-        </WMCard>
-      </BlurFade>
+        </BlurFade>
+      </WMCard>
     </section>
   );
 }

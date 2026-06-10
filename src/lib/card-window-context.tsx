@@ -9,7 +9,8 @@ export type CardWindowCtx = {
   onClose?: () => void;
   onMinimize?: () => void;
   onMove?: (x: number, y: number) => void;
-  onResize?: (w: number, h: number) => void;
+  onResizeRect?: (x: number, y: number, w: number, h: number) => void;
+  onFocus?: () => void;
 };
 
 export const CardWindowContext = createContext<CardWindowCtx>({
