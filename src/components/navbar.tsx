@@ -15,14 +15,44 @@ import { useDesktopMode } from "@/lib/desktop-mode-context";
 import { DATA } from "@/data/resume";
 import MiniPlayer from "@/components/mini-player";
 import { Search, Monitor, LayoutGrid, Folder, Camera, Play, BookOpen, Music, Code, MessageCircle, Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useWindowManager, APPS } from "@/lib/window-manager-context";
 
 export default function Navbar() {
   const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
-  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen } = useWindowManager();
+  const [hoverZone, setHoverZone] = useState<'left' | 'center' | 'right' | null>(null);
+  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, hasMaximizedWindow } = useWindowManager();
+
+  const hasVisibleWindows = windows.some(w => !w.minimized);
+  const dockersHidden = isDesktop && (hasMaximizedWindow || hasVisibleWindows);
+  const isLeftVisible = !dockersHidden || hoverZone === 'left';
+  const isCenterVisible = !dockersHidden || hoverZone === 'center';
+  const isRightVisible = !dockersHidden || hoverZone === 'right';
+
+  useEffect(() => {
+    if (!dockersHidden) {
+      setHoverZone(null);
+      return;
+    }
+
+    const THRESHOLD = 100;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (e.clientY >= window.innerHeight - THRESHOLD) {
+        const w = window.innerWidth;
+        if (e.clientX < w * 0.25) setHoverZone('left');
+        else if (e.clientX > w * 0.75) setHoverZone('right');
+        else setHoverZone('center');
+      } else {
+        setHoverZone(null);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [dockersHidden]);
 
   const handleAppClick = (app: typeof APPS[number]) => {
     const win = windows.find(w => w.appId === app.id);
@@ -60,7 +90,13 @@ export default function Navbar() {
             : "opacity-100"
         )}
       >
-        <Dock className="hidden lg:flex absolute left-4 z-50 pointer-events-auto h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+        <Dock className={cn(
+          "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
+          !dockersHidden || isLeftVisible ? "pointer-events-auto" : "pointer-events-none",
+          dockersHidden && "transition-all duration-300",
+          dockersHidden && !isLeftVisible && "translate-y-[100px] opacity-0",
+          dockersHidden && isLeftVisible && "translate-y-0 opacity-100",
+        )}>
           <Tooltip>
             <TooltipTrigger asChild>
               <button onClick={toggleDesktop}>
@@ -80,11 +116,23 @@ export default function Navbar() {
           </Tooltip>
         </Dock>
         {isDesktop && (
-          <Dock className="absolute right-4 z-50 pointer-events-auto h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+          <Dock className={cn(
+            "absolute right-4 z-50 h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
+            !dockersHidden || isRightVisible ? "pointer-events-auto" : "pointer-events-none",
+            dockersHidden && "transition-all duration-300",
+            dockersHidden && !isRightVisible && "translate-y-[100px] opacity-0",
+            dockersHidden && isRightVisible && "translate-y-0 opacity-100",
+          )}>
             <MiniPlayer />
           </Dock>
         )}
-        <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+        <Dock className={cn(
+          "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
+          !dockersHidden || isCenterVisible ? "pointer-events-auto" : "pointer-events-none",
+          dockersHidden && "transition-all duration-300",
+          dockersHidden && !isCenterVisible && "translate-y-[100px] opacity-0",
+          dockersHidden && isCenterVisible && "translate-y-0 opacity-100",
+        )}>
           {DATA.navbar.map((item) => {
             const isExternal = item.href.startsWith("http");
             const isHome = item.href === "/" || item.label?.toLowerCase() === "home";
