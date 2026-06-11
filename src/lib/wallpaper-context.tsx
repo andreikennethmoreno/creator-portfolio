@@ -14,7 +14,7 @@ export const WALLPAPERS = [
   },
   {
     name: "sunset_boulevard",
-    label: "B-004",
+    label: "Sunset Boulevard",
     url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-004.jpg",
   },
   {
@@ -35,7 +35,7 @@ export const WALLPAPERS = [
   },
   {
     name: "ghibli_plains",
-    label: "B-003",
+    label: "Ghibli Plains",
     url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-003.jpg",
   },
 

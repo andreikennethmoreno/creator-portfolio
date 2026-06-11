@@ -28,6 +28,7 @@
     "lucide-react": "^0.562.0",
     "motion": "^12.23.27",
     "next": "16.2.7",
+    "opencode-ai": "^1.17.3",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "tailwind-merge": "^3.4.0",
@@ -48,7 +49,9 @@
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.17",
-      "@types/react-dom": "19.2.3"
+      "@types/react-dom": "19.2.3", 
+        "onlyBuiltDependencies": ["opencode-ai"]
+
     }
   }
 }
