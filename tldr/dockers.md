@@ -14,7 +14,8 @@ Three dock bars rendered inside `src/components/navbar.tsx`.
 
 ## Right Docker
 - `absolute right-4`, visible only in desktop mode
-- Contains: MiniPlayer (YouTube mini-player for current Last.fm track)
+- Plain `<div>` (not `<Dock>` — no magnification effect)
+- Contains: MiniPlayer (full mini player with album art, track info, progress bar/sound wave, play/pause)
 
 ## Auto-Hide Behavior
 When `isDesktop && hasFullscreenWindow` (any non-minimized window covering viewport):

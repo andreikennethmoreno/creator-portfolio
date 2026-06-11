@@ -1,42 +1,45 @@
 # Project TL;DR
 
-Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui portfolio for Kenroms.
+Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion portfolio for **Kenroms** — Software Engineer & Content Creator.
 
 ## Routes
-- `/` — single-scroll landing: Hero, Instagram, YouTube, Books, Last.fm, Threads, Support
-- `/blog` — paginated blog listing (5/page)
-- `/blog/[slug]` — MDX blog posts with Shiki highlighting
-- `/api/refresh-threads-token` — GET endpoint
+- `/` — single-scroll landing: Hero, Instagram, YouTube, Books, Last.fm, Vercel Projects, Ko-fi
+- `/api/lastfm` — GET last scrobble
 
 ## Key Files
-- `src/data/resume.tsx` — all personal data (name, links, social, projects, navbar items)
-- `src/app/page.tsx` — home page layout
-- `src/app/layout.tsx` — root layout with providers + LayoutShell + Navbar
+- `src/app/globals.css` — global styles, Tailwind v4 `@theme inline`, OKLCH color vars
+- `src/data/resume.tsx` — all personal data (name, links, social, navbar items)
+- `src/app/page.tsx` — home page layout with DesktopPanel wrappers
 
 ## Styling
-- Tailwind v4 with CSS custom properties (OKLCH color space)
-- `src/app/globals.css` — global styles, theme variables
-- shadcn/ui components in `src/components/ui/`
+- Tailwind v4 via `@tailwindcss/postcss`, CSS custom properties in OKLCH
+- Green primary accent: `oklch(0.6333 0.0309 154.9039)` (same in light & dark)
+- `--color-card`, `--color-muted-foreground` used for hover overlays
+- Radius: `0.35rem`, spacing: `0.23rem`
+- Fonts: Antic (sans), Signifier (serif), JetBrains Mono (mono)
+
+## Sections & Hover Styles
+- **YouTube**: `bg-card/60` overlay, `text-muted-foreground` title, `group-hover:opacity-100`
+- **Instagram**: same as YouTube (`bg-card/60`, `text-muted-foreground`)
+- **Hardcover**: `bg-card` overlay, title/author text
+
+- **All image overlays**: `opacity-0 group-hover:opacity-100 transition-opacity`
 
 ## Theme
-- Custom context (`src/lib/theme-context.tsx`), not next-themes
-- View Transitions API for animated theme toggle (`AnimatedThemeToggler`)
-- Wallpaper system with k-means palette extraction (`src/lib/wallpaper-context.tsx`)
-- `ThemeToggle` = wallpaper cycler (confusing name)
-- `ModeToggle` wraps `AnimatedThemeToggler` (light/dark) — NOT currently used in navbar
-- In navbar center dock: theme toggle (wallpaper cycler) hidden on desktop via `!isDesktop`
+- Custom context (`src/lib/theme-context.tsx`), persists to `localStorage.theme`
+- View Transitions API for animated toggle (`AnimatedThemeToggler`)
+- Wallpaper system with k-means palette extraction (`wallpaper-context.tsx`)
+- `ThemeToggle` = wallpaper cycler; `ModeToggle` = light/dark toggle
 
 ## Desktop Mode
-- Toggle in navbar left dock → sets `isDesktop` in `DesktopModeProvider`
-- Full-screen windowed overlay, sections become draggable/resizable windows
-- Window manager with tiling layout (useReducer-based)
-- Dock auto-hides when fullscreen window is visible (covers viewport)
-- Screen transitions: macOS Spaces-style — forward pushes left, backward pushes right
-- Empty screens: no overlay, container transparent — only window content visible during slide
-- Uses `isTransitioning` to skip initial mount animation
-- See `tldr/desktop-mode.md` for details
+- Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`
+- 3 virtual screens (macOS Spaces-style), draggable/resizable windows
+- Window manager with tiling layout (useReducer)
+- Dock auto-hides when fullscreen window is visible
+- See `tldr/desktop-mode.md`, `tldr/screens.md`, `tldr/navbar.md`, `tldr/dockers.md`
 
 ## Navbar (Dock System)
-- 3 dockers: left (desktop toggle), center (nav links, apps, card style, wallpaper toggle), right (mini player)
-- `ThemeToggle` (wallpaper cycler) hidden on desktop — visible on mobile/tablet only
-- GitHub and email social links hidden on desktop (filtered out when `isDesktop`)
+- 3 dockers: left (desktop toggle + screen switcher), center (links + app launchers + card style + wallpaper), right (mini player)
+- Left & center use MagicUI Dock (spring physics magnification); right is plain div (no magnification)
+- Mini player shows album art, track info, progress bar/CSS sound wave, play/pause
+- See `tldr/mini-player.md`

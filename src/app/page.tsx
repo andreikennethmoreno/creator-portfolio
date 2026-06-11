@@ -2,7 +2,6 @@ import { DesktopLayout } from "@/components/desktop-layout"
 import { DesktopPanel } from "@/components/desktop-panel"
 import HeroSection from "@/components/section/hero-section";
 import InstagramCard from "@/components/section/instagram-card";
-import ThreadsSection from "@/components/section/threads-section";
 import YoutubeSection from "@/components/section/youtube-section";
 import HardcoverCard from "@/components/section/hardcover-card";
 import KofiCard from "@/components/KofiCard"
@@ -36,9 +35,6 @@ export default async function Page() {
         </DesktopPanel>
         <DesktopPanel sectionId="vercel">
           <VercelProjects projects={projects} />
-        </DesktopPanel>
-        <DesktopPanel sectionId="threads">
-          <ThreadsSection />
         </DesktopPanel>
         <DesktopPanel sectionId="support">
           <KofiCard />

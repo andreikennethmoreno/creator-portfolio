@@ -19,7 +19,7 @@ export const DATA = {
   location: "Philippines",
   locationLink: "https://www.google.com/maps/place/philippines",
   description:
-    "Software Engineer, Content Creator. Love building things and learning shit. Very active on YouTube and Threads.",
+    "Software Engineer, Content Creator. Love building things and learning shit. Very active on YouTube and Twitter.",
 
   avatarUrl: "https://storage.ko-fi.com/cdn/useruploads/27d854e4-a478-41ec-acbe-f79865f858be_149867fb-a92d-4a0f-a16d-5e06c123c8c5.png",
   skills: [
@@ -54,10 +54,10 @@ export const DATA = {
         icon: Icons.instagram,
         navbar: false,
       },
-      Threads: {
-        name: "Threads",
-        url: "https://www.threads.com/@ken.roms",
-        icon: Icons.threads,
+      Twitter: {
+        name: "Twitter",
+        url: "https://twitter.com/Kenroms",
+        icon: Icons.twitter,
         navbar: true,
       },
       GitHub: {

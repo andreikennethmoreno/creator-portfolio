@@ -31,8 +31,8 @@ export default async function InstagramCard() {
                     loading="lazy"
                   />
                   {post.caption && (
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
-                      <p className="font-mono text-xs text-white/90 line-clamp-2">
+                    <div className="absolute inset-0 bg-card/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {post.caption}
                       </p>
                     </div>

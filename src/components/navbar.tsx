@@ -70,7 +70,7 @@ export default function Navbar() {
     reading: BookOpen,
     listening: Music,
     vercel: Code,
-    threads: MessageCircle,
+    twitter: MessageCircle,
     support: Heart,
   };
 
@@ -149,14 +149,14 @@ export default function Navbar() {
           )}
         </Dock>
         {isDesktop && (
-          <Dock className={cn(
-            "absolute right-4 z-50 h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+          <div className={cn(
+            "absolute right-4 z-50 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300",
             dockersHidden && !isRightVisible
               ? "translate-y-[100px] opacity-0 pointer-events-none"
               : "translate-y-0 opacity-100 pointer-events-auto",
           )}>
             <MiniPlayer />
-          </Dock>
+          </div>
         )}
         <Dock className={cn(
           "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",

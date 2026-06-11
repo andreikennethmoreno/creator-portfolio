@@ -23,7 +23,7 @@ const SECTIONS = [
   { icon: BookOpen, label: "reading", sub: "section" },
   { icon: Music, label: "listening", sub: "section" },
   { icon: Code, label: "vercel", sub: "section" },
-  { icon: MessageCircle, label: "threads", sub: "social" },
+  { icon: MessageCircle, label: "twitter", sub: "social" },
   { icon: Heart, label: "support", sub: "section" },
 ];
 

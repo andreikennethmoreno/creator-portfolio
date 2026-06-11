@@ -16,7 +16,7 @@ export const APPS: AppDef[] = [
   { id: "reading", title: "Reading" },
   { id: "listening", title: "Listening" },
   { id: "vercel", title: "Projects" },
-  { id: "threads", title: "Feed" },
+
   { id: "support", title: "Support" },
 ];
 

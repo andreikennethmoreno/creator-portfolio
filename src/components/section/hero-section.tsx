@@ -17,7 +17,7 @@ const BOOT_LINES = [
   "> location",
   "Philippines 🇵🇭",
   "> status",
-  "very active on YouTube and Threads",
+  "very active on YouTube and Twitter",
   "",
   "type 'help' for available commands.",
 ];
@@ -27,9 +27,9 @@ const PROMPT = "visitor@kenroms.dev:~$ ";
 const COMMANDS: Record<string, string> = {
   whoami: "kenroms — software engineer, content creator",
   location: "Philippines 🇵🇭",
-  status: "very active on YouTube and Threads",
+  status: "very active on YouTube and Twitter",
   contact: "kennonirom@gmail.com",
-  links: "youtube: @kenroms  |  threads: @ken.roms  |  github: kenroms",
+  links: "youtube: @kenroms  |  twitter: @Kenroms  |  github: kenroms",
   help: "available commands: whoami, location, status, contact, links, clear, exit",
   clear: "__CLEAR__",
   exit: "__EXIT__",

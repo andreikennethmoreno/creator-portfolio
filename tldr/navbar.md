@@ -19,7 +19,9 @@ File: `src/components/navbar.tsx` — 3 dockers rendered with MagicUI Dock compo
 
 ## Right Docker
 - Visible only in desktop mode (`isDesktop &&`)
-- Contains: MiniPlayer
+- Contains: MiniPlayer (now a full mini player, not a dock icon)
+- **NO magnification effect** — plain `<div>`, not wrapped in `<Dock>` component
+- See `tldr/mini-player.md` for full details
 
 ## Dock Auto-Hide
 - `hasFullscreenWindow = windows.some(w => !w.minimized && w.width >= vw-18 && w.height >= vh-18)`
