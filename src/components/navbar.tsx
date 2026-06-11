@@ -217,57 +217,60 @@ export default function Navbar() {
               : "translate-y-0 opacity-100 pointer-events-auto",
           )}
         >
-          {DATA.navbar.map((item) => {
-            const isExternal = item.href.startsWith("http");
-            const isHome =
-              item.href === "/" || item.label?.toLowerCase() === "home";
+          {/* Renders Search Icon only in desktop mode */}
+          {isDesktop && (
+            <Tooltip key="search-trigger">
+              <TooltipTrigger asChild>
+                <button onClick={() => setSearchOpen(true)}>
+                  <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                    <Search className="size-full rounded-sm overflow-hidden object-contain" />
+                  </DockIcon>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                sideOffset={8}
+                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              >
+                <p>Search</p>
+                <TooltipArrow className="fill-primary" />
+              </TooltipContent>
+            </Tooltip>
+          )}
 
-            if (isDesktop && isHome) {
+          {/* Renders other navbar items (skips anything labeled "home" or with "/" href completely) */}
+          {DATA.navbar
+            .filter(
+              (item) =>
+                item.href !== "/" && item.label?.toLowerCase() !== "home",
+            )
+            .map((item) => {
+              const isExternal = item.href.startsWith("http");
+
               return (
-                <Tooltip key="search-trigger">
+                <Tooltip key={item.href}>
                   <TooltipTrigger asChild>
-                    <button onClick={() => setSearchOpen(true)}>
+                    <a
+                      href={item.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                    >
                       <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                        <Search className="size-full rounded-sm overflow-hidden object-contain" />
+                        <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
                       </DockIcon>
-                    </button>
+                    </a>
                   </TooltipTrigger>
                   <TooltipContent
                     side="top"
                     sideOffset={8}
                     className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
                   >
-                    <p>Search</p>
+                    <p>{item.label}</p>
                     <TooltipArrow className="fill-primary" />
                   </TooltipContent>
                 </Tooltip>
               );
-            }
-
-            return (
-              <Tooltip key={item.href}>
-                <TooltipTrigger asChild>
-                  <a
-                    href={item.href}
-                    target={isExternal ? "_blank" : undefined}
-                    rel={isExternal ? "noopener noreferrer" : undefined}
-                  >
-                    <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                      <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
-                    </DockIcon>
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="top"
-                  sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-                >
-                  <p>{item.label}</p>
-                  <TooltipArrow className="fill-primary" />
-                </TooltipContent>
-              </Tooltip>
-            );
-          })}
+            })}
           {isDesktop && (
             <>
               <Separator
