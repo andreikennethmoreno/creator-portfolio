@@ -229,22 +229,49 @@ function wmReducer(state: WMState, action: WMAction): WMState {
         }
       }
 
-      return withActiveScreen(state, screen => {
-        const newZ = screen.zTop + 1;
+      const result = withActiveScreen(state, s => {
+        const newZ = s.zTop + 1;
         const newWin: AppWindow = {
-          id: `win-${screen.idCounter}`,
+          id: `win-${s.idCounter}`,
           appId,
           title,
           x: 0, y: 0, width: 520, height: 400,
           minimized: false, maximized: false, prevRect: null, zIndex: newZ,
         };
+        const hasMaximized = s.windows.some(w => w.maximized && !w.minimized);
+        let updatedWindows = [...s.windows, newWin];
+        if (hasMaximized) {
+          updatedWindows = updatedWindows.map(w =>
+            w.maximized ? { ...w, maximized: false, prevRect: null } : w
+          );
+        }
         return {
-          ...screen,
-          windows: retileWindows([...screen.windows, newWin], vw, vh),
+          ...s,
+          windows: retileWindows(updatedWindows, vw, vh),
           zTop: newZ,
-          idCounter: screen.idCounter + 1,
+          idCounter: s.idCounter + 1,
         };
       });
+      const active = result.screens[result.activeScreen];
+      const visibleCount = active.windows.filter(w => !w.minimized).length;
+      const created = active.windows.find(w => w.appId === appId && w.zIndex === active.zTop);
+      if (!created || visibleCount > 1) return result;
+      return withActiveScreen(result, s => ({
+        ...s,
+        windows: s.windows.map(w =>
+          w.id === created.id
+            ? {
+                ...w,
+                maximized: true,
+                prevRect: { x: w.x, y: w.y, width: w.width, height: w.height },
+                x: MAX_MARGIN,
+                y: MAX_MARGIN,
+                width: vw - MAX_MARGIN * 2,
+                height: vh - MAX_MARGIN * 2,
+              }
+            : w
+        ),
+      }));
     }
 
     case "CLOSE": {
@@ -334,10 +361,10 @@ function wmReducer(state: WMState, action: WMAction): WMState {
                   ...w,
                   maximized: false,
                   prevRect: null,
-                  x: w.prevRect?.x ?? MAX_MARGIN,
-                  y: w.prevRect?.y ?? MAX_MARGIN,
-                  width: w.prevRect?.width ?? 520,
-                  height: w.prevRect?.height ?? 400,
+                  x: Math.max(MAX_MARGIN, (action.vw - 640) / 2),
+                  y: Math.max(MAX_MARGIN, (action.vh - 480) / 2),
+                  width: 640,
+                  height: 480,
                 }
               : w
           ),
@@ -350,16 +377,7 @@ function wmReducer(state: WMState, action: WMAction): WMState {
             ? {
                 ...w,
                 maximized: true,
-                prevRect:
-                  w.width >= action.vw - MAX_MARGIN * 2 - 2 &&
-                  w.height >= action.vh - MAX_MARGIN * 2 - 2
-                    ? {
-                        x: Math.max(MAX_MARGIN, (action.vw - 640) / 2),
-                        y: Math.max(MAX_MARGIN, (action.vh - 480) / 2),
-                        width: 640,
-                        height: 480,
-                      }
-                    : { x: w.x, y: w.y, width: w.width, height: w.height },
+                prevRect: { x: w.x, y: w.y, width: w.width, height: w.height },
                 x: MAX_MARGIN,
                 y: MAX_MARGIN,
                 width: action.vw - MAX_MARGIN * 2,

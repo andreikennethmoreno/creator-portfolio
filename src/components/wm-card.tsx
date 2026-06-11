@@ -120,7 +120,11 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
           isGlossy && "bg-black/8 border-white/8",
           isWindow && "cursor-grab active:cursor-grabbing",
         )}
-        onMouseDown={isWindow ? (e) => { onFocus?.(); onTitlebarMouseDown(e); } : undefined}
+        onMouseDown={isWindow ? (e) => {
+          if ((e.target as HTMLElement).closest('button')) return;
+          onFocus?.();
+          onTitlebarMouseDown(e);
+        } : undefined}
       >
         {!isWindow && (
           <div className="flex items-center gap-1.5">
