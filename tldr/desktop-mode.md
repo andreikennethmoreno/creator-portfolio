@@ -26,6 +26,8 @@ Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`.
 ## Window Manager (Tiling)
 - `useReducer`-based, `MAX_MARGIN=8`
 - **1w**: fills viewport | **2w**: 50/50 side-by-side | **3w**: 55% master + 2 stacked | **4+**: adaptive grid (snake pattern)
+- New windows open **maximized** by default (`maximized: true`), fills viewport
+- Maximized windows excluded from tiling (`retileWindows` filters them out)
 
 ### Re-tiling triggers
 OPEN / CLOSE / MINIMIZE / RESTORE / MAXIMIZE(unmax) / window resize

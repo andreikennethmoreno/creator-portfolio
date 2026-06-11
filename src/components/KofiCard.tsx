@@ -21,6 +21,7 @@ export default function KofiCard() {
                 src="/holdingsign.gif"
                 alt="Ko-fi"
                 className="h-52 w-full object-cover"
+                style={{ imageRendering: 'auto', filter: 'brightness(1.02) contrast(1.02) blur(0.4px)' }}
               />
               <span className="absolute inset-0 flex items-center justify-center pt-18 text-[11px] font-mono font-bold text-black/90 leading-tight text-center pointer-events-none">
                 good<br />karma

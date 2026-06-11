@@ -24,10 +24,10 @@ export default function Navbar() {
   const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
   const [hoverZone, setHoverZone] = useState<'left' | 'center' | 'right' | null>(null);
-  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, activeScreen, setActiveScreen, screenWindows } = useWindowManager();
+  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, activeScreen, setActiveScreen, screenWindows, hasMaximizedWindow } = useWindowManager();
 
-  const hasVisibleWindows = windows.some(w => !w.minimized);
-  const dockersHidden = isDesktop && hasVisibleWindows;
+  const visibleWindowCount = windows.filter(w => !w.minimized).length;
+  const dockersHidden = isDesktop && (hasMaximizedWindow || visibleWindowCount >= 2);
   const isLeftVisible = !dockersHidden || hoverZone === 'left';
   const isCenterVisible = !dockersHidden || hoverZone === 'center';
   const isRightVisible = !dockersHidden || hoverZone === 'right';

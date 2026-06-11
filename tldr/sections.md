@@ -44,9 +44,11 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 
 ## Ko-fi (`KofiCard.tsx` + `KofiButton.tsx`)
 - **Type**: Client component + client widget
-- **Layout**: 2-column grid (always side-by-side, never stacks)
-- **Left**: `holdingsign.gif` from `/public/` — animated holding sign visual
-- **Right**: Clickable tip tiers ($5 coffee, $10 large coffee) as rounded links
+- **Layout**: 2-column grid (always side-by-side, never stacks), `-m-3` cancels card padding
+- **Left**: `holdingsign.gif` (720x1280, 31 frames, palette mode) from `/public/`, `h-52 w-full object-cover` in `140px` column
+- **GIF smoothing**: CSS `filter: brightness(1.02) contrast(1.02) blur(0.4px)` + `image-rendering: auto` to fix GIF color banding
+- **Overlay**: "good/karma" text centered with `pt-16`, bold black `text-[11px]` font-mono
+- **Right**: Clickable tip tiers ($5 coffee, $10 large coffee) as rounded links, `pr-3` padding
 - **Button**: `kofi-react-widget` floating button
 
 ## Hover Overlay Pattern (Instagram / YouTube / Hardcover)
