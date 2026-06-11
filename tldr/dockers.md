@@ -18,13 +18,13 @@ Three dock bars rendered inside `src/components/navbar.tsx`.
 - Contains: MiniPlayer (full mini player with album art, track info, progress bar/sound wave, play/pause)
 
 ## Auto-Hide Behavior
-When `isDesktop && hasFullscreenWindow` (any non-minimized window covering viewport):
+When `isDesktop && hasVisibleWindows` (any non-minimized window exists):
 - All dockers hidden below viewport (`translate-y-[100px] opacity-0`)
-- `hasFullscreenWindow` checks: `window.innerWidth - 16` x `window.innerHeight - 16` with 2px tolerance
+- `hasVisibleWindows` checks: `windows.some(w => !w.minimized)` — triggers for ALL tiled layouts (1, 2, 3, 4+ windows), maximized windows, and regular windows
 - `mousemove` listener tracks bottom 100px of screen:
   - Left 25% → reveals left docker
   - Middle 50% → reveals center docker
   - Right 25% → reveals right docker
 - Mouse above threshold → hides again
 - Uses `transition-all duration-300` CSS transitions (always applied, not conditional)
-- Docks show when window is: restored to smaller size, minimized, or no windows open
+- Docks show when: no windows open, or all windows are minimized

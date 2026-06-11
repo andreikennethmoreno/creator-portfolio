@@ -35,7 +35,7 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion
 - Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`
 - 3 virtual screens (macOS Spaces-style), draggable/resizable windows
 - Window manager with tiling layout (useReducer)
-- Dock auto-hides when fullscreen window is visible
+- Dock auto-hides when any visible window exists (tiling state)
 - See `tldr/desktop-mode.md`, `tldr/screens.md`, `tldr/navbar.md`, `tldr/dockers.md`
 
 ## Navbar (Dock System)

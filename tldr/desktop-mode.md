@@ -36,6 +36,6 @@ OPEN / CLOSE / MINIMIZE / RESTORE / MAXIMIZE(unmax) / window resize
 - Backward: new from LEFT (-100%), old exits RIGHT (+100%)
 - Spring: stiffness 220, damping 28, mass 0.55
 
-## Dock Auto-Hide
-- Hidden when fullscreen window covers viewport (width/height within 18px of vw/vh)
+ ## Dock Auto-Hide
+- Hidden when any non-minimized window exists (tiling state)
 - Bottom 100px hover reveals in 3 zones (left 25%, center 50%, right 25%)

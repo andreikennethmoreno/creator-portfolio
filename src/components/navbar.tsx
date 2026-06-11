@@ -25,13 +25,8 @@ export default function Navbar() {
   const [hoverZone, setHoverZone] = useState<'left' | 'center' | 'right' | null>(null);
   const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, activeScreen, setActiveScreen, screenWindows } = useWindowManager();
 
-  const hasFullscreenWindow = typeof window !== 'undefined' && windows.some(w => {
-    if (w.minimized) return false;
-    const fw = window.innerWidth - 16;
-    const fh = window.innerHeight - 16;
-    return w.width >= fw - 2 && w.height >= fh - 2;
-  });
-  const dockersHidden = isDesktop && hasFullscreenWindow;
+  const hasVisibleWindows = windows.some(w => !w.minimized);
+  const dockersHidden = isDesktop && hasVisibleWindows;
   const isLeftVisible = !dockersHidden || hoverZone === 'left';
   const isCenterVisible = !dockersHidden || hoverZone === 'center';
   const isRightVisible = !dockersHidden || hoverZone === 'right';
@@ -150,7 +145,7 @@ export default function Navbar() {
         </Dock>
         {isDesktop && (
           <div className={cn(
-            "absolute right-4 z-50 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300",
+            "absolute right-4 z-50 border bg-background/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300",
             dockersHidden && !isRightVisible
               ? "translate-y-[100px] opacity-0 pointer-events-none"
               : "translate-y-0 opacity-100 pointer-events-auto",
@@ -295,29 +290,25 @@ export default function Navbar() {
         <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
           <CardStyleToggle />
         </DockIcon>
-        {!isDesktop && (
-          <>
-            <Separator
-              orientation="vertical"
-              className="h-2/3 m-auto w-px bg-border"
-            />
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                  <ThemeToggle className="size-full cursor-pointer" />
-                </DockIcon>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-              >
-                <p>change theme</p>
-                <TooltipArrow className="fill-primary" />
-              </TooltipContent>
-            </Tooltip>
-          </>
-        )}
+        <Separator
+          orientation="vertical"
+          className="h-2/3 m-auto w-px bg-border"
+        />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+              <ThemeToggle className="size-full cursor-pointer" />
+            </DockIcon>
+          </TooltipTrigger>
+          <TooltipContent
+            side="top"
+            sideOffset={8}
+            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+          >
+            <p>change theme</p>
+            <TooltipArrow className="fill-primary" />
+          </TooltipContent>
+        </Tooltip>
       </Dock>
     </div>
     </>
