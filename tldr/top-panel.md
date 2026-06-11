@@ -8,25 +8,27 @@ File: `src/components/top-panel.tsx` — desktop-only hover-triggered panel. Ren
 - **Auto-hide**: mouse leaves panel → closes after 400ms delay
 - **Escape / X button**: closes immediately
 
-## Design (identical container to SearchExplorer)
+## Design
 - `pointer-events-auto relative border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-2xl overflow-hidden w-[420px] max-w-[calc(100vw-2rem)]`
-- Floating at `fixed inset-x-0 top-4 z-40` (same as search at `bottom-4`)
-- `font-mono` throughout, `text-[10px]` labels, `text-xs`/`text-sm` content
-- Springy easing: `cubic-bezier(0.34,1.56,0.64,1)`
+- Floating at `fixed inset-x-0 top-4 z-40`
+- `font-mono` throughout, `text-[10px]` labels
+- Supports card style toggle (glossy/default) via `useCardStyle()`
 
-## Tabs (3) — single source of truth (no HUD panel)
-1. **Website** — imports `hud/website-tab.tsx` (stack badges + integrations)
-2. **Music** — imports `hud/player-tab.tsx` (reads from shared MusicPlayerContext)
-3. **About** — inline minimal content (name, description, location)
+## Tabs (4)
+1. **Website** — `hud/website-tab.tsx`: real Vercel stats + API health check + Last.fm current track + live telemetry (connection quality bars, RTT rolling chart, live clock)
+2. **Tech Stack** — `hud/tech-stack-tab.tsx`: stack chips + integrations
+3. **Music** — `hud/player-tab.tsx`: reads from shared MusicPlayerContext
+4. **About** — `hud/about-tab.tsx`: bio, contact, links, skills, education
+
+## Live Telemetry (website tab right column)
+- Multi-color signal bars (primary/accent/chart-2/chart-3/secondary)
+- Live clock (HH:MM:SS) + session elapsed counter
+- Connection info: effectiveType, RTT (ms), downlink (Mbps)
+- Rolling 40-point RTT canvas line chart cycling through 5 theme colors
+- Always has data (uses navigator.connection or seeded fallback)
 
 ## State
-- `openRef` (ref, not state) for mousemove handler to read without re-renders
+- `openRef` (ref, not state) for mousemove handler
 - `hoverTimeout` ref for 400ms close delay
-- `isHoveringPanel` ref to prevent close while mouse is on panel
+- `isHoveringPanel` ref
 - `activeTab` state for tab switching
-
-## Deleted: HUD panel dropdown
-- Removed `hud-panel.tsx` (floating dropdown + context provider)
-- Removed `HUDPanelProvider` from layout.tsx
-- Removed orphaned tab files: `system-tab.tsx`, `about-tab.tsx`, `sparkline.tsx`, `music-pill.tsx`
-- MiniPlayer click no longer opens anything

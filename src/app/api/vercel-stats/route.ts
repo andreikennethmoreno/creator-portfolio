@@ -28,18 +28,20 @@ export async function GET() {
 
     let totalDeploys = 0
     let lastDeployAt: string | null = null
+    let deployTimestamps: number[] = []
 
     if (deploysRes.ok) {
       const deploysData = await deploysRes.json()
       const deployments = deploysData.deployments ?? []
       totalDeploys = deployments.length
+      deployTimestamps = deployments.map((d: any) => d.createdAt).filter(Boolean)
       if (deployments.length > 0) {
         const latest = deployments.reduce((a: any, b: any) => (a.createdAt > b.createdAt ? a : b))
         lastDeployAt = new Date(latest.createdAt).toISOString()
       }
     }
 
-    return NextResponse.json({ totalDeploys, activeProjects: projects.length, lastDeployAt })
+    return NextResponse.json({ totalDeploys, activeProjects: projects.length, lastDeployAt, deployTimestamps })
   } catch {
     return NextResponse.json({ totalDeploys: 0, activeProjects: 0, lastDeployAt: null, error: 'fetch failed' })
   }

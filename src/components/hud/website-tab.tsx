@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 type ApiStatus = 'checking' | 'ok' | 'error' | 'degraded'
 
@@ -22,6 +22,8 @@ interface LastFmStats {
   artist: string | null
   albumArt: string | null
 }
+
+type ConnType = '4g' | '3g' | '2g' | 'slow-2g' | 'unknown'
 
 function StatusDot({ status }: { status: ApiStatus }) {
   const colors: Record<ApiStatus, string> = {
@@ -55,6 +57,145 @@ async function checkEndpoint(name: string, url: string): Promise<ApiHealth> {
   } catch {
     return { name, status: 'error', latencyMs: null, detail: 'unreachable' }
   }
+}
+
+function TelemetryChart() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const historyRef = useRef<number[]>([])
+  const [conn, setConn] = useState<{ type: ConnType; rtt: number; downlink: number } | null>(null)
+  const [liveTime, setLiveTime] = useState('')
+  const [sessionStart] = useState(Date.now())
+  const [sessionElapsed, setSessionElapsed] = useState('0s')
+
+  const COLORS = [
+    'hsl(var(--primary))',
+    'hsl(var(--accent))',
+    'hsl(var(--chart-2))',
+    'hsl(var(--chart-3))',
+    'hsl(var(--secondary))',
+  ]
+
+  useEffect(() => {
+    const nav = navigator as any
+    if (nav.connection) {
+      const update = () => {
+        const rtt = Math.max(nav.connection.rtt || 40, 1)
+        setConn({
+          type: nav.connection.effectiveType || 'unknown',
+          rtt,
+          downlink: nav.connection.downlink || 1,
+        })
+        historyRef.current = [...historyRef.current.slice(-39), rtt]
+      }
+      update()
+      nav.connection.addEventListener('change', update)
+      return () => nav.connection.removeEventListener('change', update)
+    } else {
+      const seed = () => {
+        const rtt = Math.floor(Math.random() * 120 + 20)
+        historyRef.current = [...historyRef.current.slice(-39), rtt]
+        setConn({ type: 'unknown', rtt, downlink: Math.random() * 5 + 1 })
+      }
+      seed()
+      const id = setInterval(seed, 3000)
+      return () => clearInterval(id)
+    }
+  }, [])
+
+  useEffect(() => {
+    const tick = () => {
+      setLiveTime(new Date().toLocaleTimeString('en-US', { hour12: false }))
+      const secs = Math.floor((Date.now() - sessionStart) / 1000)
+      const m = Math.floor(secs / 60)
+      const s = secs % 60
+      setSessionElapsed(m > 0 ? `${m}m ${s}s` : `${s}s`)
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [sessionStart])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas || historyRef.current.length < 2) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const dpr = window.devicePixelRatio || 1
+    const w = canvas.offsetWidth
+    const h = 48
+    canvas.width = w * dpr
+    canvas.height = h * dpr
+    ctx.scale(dpr, dpr)
+    ctx.clearRect(0, 0, w, h)
+
+    const data = historyRef.current
+    const min = Math.min(...data) * 0.8
+    const max = Math.max(...data) * 1.2
+    const range = max - min || 1
+    const pointW = w / (data.length - 1)
+
+    for (let i = 1; i < data.length; i++) {
+      const x1 = (i - 1) * pointW
+      const y1 = h - 6 - ((data[i - 1] - min) / range) * (h - 12)
+      const x2 = i * pointW
+      const y2 = h - 6 - ((data[i] - min) / range) * (h - 12)
+
+      const ci = (i - 1) % COLORS.length
+      ctx.strokeStyle = COLORS[ci]
+      ctx.lineWidth = 1.5
+      ctx.beginPath()
+      ctx.moveTo(x1, y1)
+      ctx.lineTo(x2, y2)
+      ctx.stroke()
+    }
+  }, [liveTime, conn])
+
+  const quality = conn ? Math.min(100, Math.round((conn.downlink / 10) * 50 + (1 - conn.rtt / 500) * 50)) : 0
+  const bars = [1, 2, 3, 4, 5]
+  const activeBars = Math.ceil(quality / 20)
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-muted-foreground text-[11px]">LIVE</span>
+
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-1">
+          {bars.map((b) => (
+            <div
+              key={b}
+              className="w-1.5 rounded-full transition-all"
+              style={{
+                height: `${b * 4 + 4}px`,
+                background: b <= activeBars ? COLORS[b % COLORS.length] : 'hsl(var(--border))',
+                opacity: b <= activeBars ? 1 : 0.3,
+              }}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-2 text-[10px]">
+          <span className="text-muted-foreground">{liveTime}</span>
+          <span className="text-muted-foreground/50">+{sessionElapsed}</span>
+        </div>
+      </div>
+
+      {conn && (
+        <div className="flex justify-between text-[10px]">
+          <span className="text-muted-foreground">
+            <span style={{ color: COLORS[0] }}>{conn.type}</span>
+            <span className="text-muted-foreground/50"> / </span>
+            <span style={{ color: COLORS[2] }}>{conn.rtt}ms</span>
+          </span>
+          <span className="text-muted-foreground">
+            <span style={{ color: COLORS[3] }}>{conn.downlink.toFixed(1)}</span>
+            <span className="text-muted-foreground/50"> Mbps</span>
+          </span>
+        </div>
+      )}
+
+      <canvas ref={canvasRef} style={{ width: '100%', height: '48px' }} className="mt-0.5" />
+    </div>
+  )
 }
 
 export default function WebsiteTab() {
@@ -154,7 +295,7 @@ export default function WebsiteTab() {
         <div className="flex flex-col gap-1">
           <span className="text-muted-foreground">VERCEL</span>
           {vercel ? (
-            <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">projects</span>
                 <span className="text-foreground">{vercel.activeProjects}</span>
@@ -172,6 +313,8 @@ export default function WebsiteTab() {
             <span className="text-muted-foreground animate-pulse">fetching…</span>
           )}
         </div>
+
+        <TelemetryChart />
 
         <div className="flex flex-col gap-0.5 mt-auto pt-2 border-t border-border/40">
           <span className="text-muted-foreground/50 text-[10px]">next.js 16 · react 19 · tailwind v4</span>

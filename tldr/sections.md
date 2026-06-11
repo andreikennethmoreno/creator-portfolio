@@ -43,8 +43,10 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 - **Display**: Project cards with framework badges, deployment counts, favicons
 
 ## Ko-fi (`KofiCard.tsx` + `KofiButton.tsx`)
-- **Type**: Static server component + client widget
-- **Display**: Two tiers (PHP 150 / PHP 300), terminal-style styling
+- **Type**: Client component + client widget
+- **Layout**: 2-column grid (always side-by-side, never stacks)
+- **Left**: `holdingsign.gif` from `/public/` — animated holding sign visual
+- **Right**: Clickable tip tiers ($5 coffee, $10 large coffee) as rounded links
 - **Button**: `kofi-react-widget` floating button
 
 ## Hover Overlay Pattern (Instagram / YouTube / Hardcover)
