@@ -89,6 +89,22 @@ export function TopPanel() {
         "pointer-events-none fixed inset-x-0 top-4 z-40 flex justify-center"
       )}
     >
+      {!open && (
+        <div className="pointer-events-none absolute -top-1 flex flex-col items-center gap-1 animate-pulse">
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-background/60 backdrop-blur-sm shadow-sm">
+            <span className="relative flex size-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
+            </span>
+            <span className="text-[9px] font-mono text-primary/70 tracking-widest uppercase">HUD</span>
+          </div>
+          <div className="flex gap-0.5">
+            <span className="size-0.5 rounded-full bg-primary/20" />
+            <span className="size-0.5 rounded-full bg-primary/40" />
+            <span className="size-0.5 rounded-full bg-primary/20" />
+          </div>
+        </div>
+      )}
       <div
         className={cn(
           "pointer-events-auto relative border rounded-2xl overflow-hidden w-[480px] max-w-[calc(100vw-2rem)]",

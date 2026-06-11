@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, startTransition } from "react";
-import { Search, X, Clock, Folder, Music, BookOpen, Code, Heart, ArrowUpRight, Camera, MessageCircle, Play } from "lucide-react";
+import { Search, X, Clock, Folder, Music, BookOpen, Code, Heart, ArrowUpRight, Camera, MessageCircle, Play, Palette, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { WALLPAPERS, useWallpaper } from "@/lib/wallpaper-context";
 
 interface SearchExplorerProps {
   open: boolean;
@@ -25,27 +26,39 @@ const SECTIONS = [
   { icon: Code, label: "vercel", sub: "section" },
   { icon: MessageCircle, label: "twitter", sub: "social" },
   { icon: Heart, label: "support", sub: "section" },
+  { icon: Palette, label: "themes", sub: "wallpapers" },
 ];
 
 export function SearchExplorer({ open, onClose, onReveal }: SearchExplorerProps) {
   const [query, setQuery] = useState("");
+  const [themeMode, setThemeMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const { wallpaper, setWallpaper } = useWallpaper();
+  const [thumbnailsLoaded, setThumbnailsLoaded] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (open) {
       inputRef.current?.focus();
     } else {
-      startTransition(() => setQuery(""));
+      startTransition(() => { setQuery(""); setThemeMode(false); });
     }
   }, [open]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && open) onClose();
+      if (e.key === "Escape" && open) {
+        if (themeMode) {
+          setThemeMode(false);
+          inputRef.current?.focus();
+        } else {
+          onClose();
+        }
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [open, onClose]);
+  }, [open, onClose, themeMode]);
 
   const filtered = query.trim()
     ? SECTIONS.filter((s) =>
@@ -54,6 +67,11 @@ export function SearchExplorer({ open, onClose, onReveal }: SearchExplorerProps)
     : null;
 
   const handleReveal = (label: string) => {
+    if (label === "themes") {
+      setThemeMode(true);
+      setQuery("");
+      return;
+    }
     onReveal(label);
     onClose();
   };
@@ -64,6 +82,14 @@ export function SearchExplorer({ open, onClose, onReveal }: SearchExplorerProps)
     }
   };
 
+  const scrollCarousel = (dir: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const amount = 220;
+    scrollRef.current.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+  };
+
+  const activeThemeIndex = WALLPAPERS.findIndex((w) => w.url === wallpaper);
+
   return (
     <div
       className={cn(
@@ -72,20 +98,73 @@ export function SearchExplorer({ open, onClose, onReveal }: SearchExplorerProps)
       )}
     >
       <div
-        className={cn(
+      className={cn(
           "pointer-events-auto relative border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
           "rounded-2xl overflow-hidden",
           "transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-          open ? "w-[420px] max-w-[calc(100vw-2rem)]" : "w-14"
+          open ? (themeMode ? "w-[580px] max-w-[calc(100vw-2rem)]" : "w-[420px] max-w-[calc(100vw-2rem)]") : "w-14"
         )}
-      >
-        <div
-          className={cn(
-            "overflow-y-auto transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full",
-            open ? "max-h-[40vh] opacity-100" : "max-h-0 opacity-0"
-          )}
         >
-          <div className="p-2 flex flex-col gap-0.5">
+          <div
+            className={cn(
+              "overflow-y-auto transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full",
+              open ? "max-h-[40vh] opacity-100" : "max-h-0 opacity-0"
+            )}
+          >
+            <div className="p-2 flex flex-col gap-0.5">
+
+            {themeMode ? (
+              <div className="px-1 py-2">
+                <div className="flex items-center justify-between mb-3 px-1">
+                  <span className="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest">themes</span>
+                  <span className="text-[10px] font-mono text-muted-foreground/30">{activeThemeIndex + 1} / {WALLPAPERS.length}</span>
+                </div>
+                <div className="relative">
+                  <button
+                    onClick={() => scrollCarousel("left")}
+                    className="absolute -left-1 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center size-6 rounded-full bg-background/80 border border-border text-muted-foreground hover:text-foreground backdrop-blur-sm transition-colors"
+                  >
+                    <ChevronLeft size={12} />
+                  </button>
+                  <div
+                    ref={scrollRef}
+                    className="flex gap-2 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+                  >
+                    {WALLPAPERS.map((wp) => (
+                      <button
+                        key={wp.name}
+                        onClick={() => { setWallpaper(wp.url); onClose(); }}
+                        className="snap-start shrink-0 w-[140px] group"
+                      >
+                        <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted border border-border/50 group-hover:border-primary/40 transition-colors">
+                          <img
+                            src={wp.url}
+                            alt={wp.label}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-card/0 group-hover:bg-card/60 transition-colors flex items-end p-1.5">
+                            <span className="text-[10px] font-mono text-foreground/0 group-hover:text-foreground transition-colors truncate">
+                              {wp.label}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="mt-1 text-[10px] font-mono text-muted-foreground/60 truncate text-left px-0.5">
+                          {wp.label}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => scrollCarousel("right")}
+                    className="absolute -right-1 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center size-6 rounded-full bg-background/80 border border-border text-muted-foreground hover:text-foreground backdrop-blur-sm transition-colors"
+                  >
+                    <ChevronRight size={12} />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
             {!query.trim() && (
               <>
                 <p className="text-[10px] font-mono text-muted-foreground/50 px-2 pt-1 pb-0.5 uppercase tracking-widest">
@@ -120,6 +199,8 @@ export function SearchExplorer({ open, onClose, onReveal }: SearchExplorerProps)
                   no results for &ldquo;{query}&rdquo;
                 </p>
               </div>
+            )}
+              </>
             )}
           </div>
         </div>

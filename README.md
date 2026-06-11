@@ -180,6 +180,14 @@ A full desktop-like window manager that transforms the single-scroll layout into
   - **3 windows**: master (55%) + stacked (45% / 2)
   - **4+ windows**: grid layout (auto-calculated columns/rows)
 
+### Desktop Mode Onboarding Notification
+- A **floating notification card** (`DesktopModeNotification`) appears above the left dock on `lg+` screens when desktop mode is **inactive** and has never been dismissed
+- Designed to onboard desktop/laptop users into the desktop mode feature
+- Styled as a shadcn-style card with: Monitor icon, title ("Desktop Mode"), description of features, and two buttons — **"Try it"** (enters desktop mode + dismisses) and **"Later"** (dismisses only)
+- Dismissed state persists in `localStorage` (`desktop-mode-notification-dismissed`)
+- Fades in with `animate-in fade-in slide-in-from-bottom-4 duration-500`
+- Automatically hidden when desktop mode is active
+
 ---
 
 ## External Integrations

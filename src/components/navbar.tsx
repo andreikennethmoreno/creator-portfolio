@@ -12,6 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { DesktopModeNotification } from "@/components/desktop-mode-notification";
 import { useDesktopMode } from "@/lib/desktop-mode-context";
 import { DATA } from "@/data/resume";
 import MiniPlayer from "@/components/mini-player";
@@ -76,6 +77,8 @@ export default function Navbar() {
         <SearchExplorer open={searchOpen} onClose={() => setSearchOpen(false)} onReveal={(section) => { revealSection(section); const app = APPS.find(a => a.id === section); if (app) openWindow(app); setSearchOpen(false); }} />
       )}
       {isDesktop && <TopPanel />}
+
+      <DesktopModeNotification />
 
       <div
         className={cn(

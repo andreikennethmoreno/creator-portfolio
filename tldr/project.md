@@ -28,11 +28,12 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion
 ## Theme
 - Custom context (`src/lib/theme-context.tsx`), persists to `localStorage.theme`
 - View Transitions API for animated toggle (`AnimatedThemeToggler`)
-- Wallpaper system with k-means palette extraction (`wallpaper-context.tsx`)
+- Wallpaper system with k-means palette extraction (`wallpaper-context.tsx`) — 9 wallpapers in rotation
 - `ThemeToggle` = wallpaper cycler; `ModeToggle` = light/dark toggle
 
 ## Desktop Mode
 - Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`
+- **DesktopModeNotification** — floating card above left dock on lg+ when desktop OFF, "Try it"/"Later" buttons, localStorage dismiss
 - 3 virtual screens (macOS Spaces-style), draggable/resizable windows
 - Window manager with tiling layout (useReducer)
 - Dock auto-hides only when a window is **maximized** (`hasMaximizedWindow` from WM context)

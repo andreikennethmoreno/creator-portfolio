@@ -13,6 +13,11 @@ export const WALLPAPERS = [
     url: "https://raw.githubusercontent.com/dharmx/walls/main/nord/a_group_of_people_walking_on_a_hill.png",
   },
   {
+    name: "sunset_boulevard",
+    label: "B-004",
+    url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-004.jpg",
+  },
+  {
     name: "blue_black_pattern",
     label: "Blue and Black",
     url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/tile/a_blue_and_black_pattern.png",
@@ -22,6 +27,22 @@ export const WALLPAPERS = [
     name: "watercolor_town",
     label: "Watercolor Town",
     url: "https://raw.githubusercontent.com/dharmx/walls/main/unsorted/a_watercolor_of_a_town.jpg",
+  },
+  {
+    name: "dessert_scenery",
+    label: "Sunset Scenery",
+    url: "https://raw.githubusercontent.com/mylinuxforwork/wallpaper/refs/heads/main/sunset-scenery-minimalist.jpg",
+  },
+  {
+    name: "ghibli_plains",
+    label: "B-003",
+    url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-003.jpg",
+  },
+
+  {
+    name: "red_sun_mountains",
+    label: "Red Sun Over Mountains",
+    url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/solarized/a_red_sun_over_mountains.jpg",
   },
 ];
 

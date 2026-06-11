@@ -1,6 +1,7 @@
 # Desktop Mode TL;DR
 
 Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`.
+**DesktopModeNotification** — floating card above left dock on lg+ screens when desktop OFF & not dismissed. Has "Try it" (enters desktop mode) and "Later" buttons. Dismissed state in localStorage. Fade-in animation.
 
 ## Screens (Virtual Desktops)
 - 3 screens in `window-manager-context.tsx` reducer
@@ -21,7 +22,7 @@ Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`.
 - `src/components/desktop-layout.tsx` — wraps sections, Escape listener
 - `src/components/desktop-panel.tsx` — bridges section ↔ window context
 - `src/components/wm-card.tsx` — draggable/resizable window chrome
-- `src/components/desktop-mode-toggle.tsx` — floating toggle (top-right)
+- `src/components/desktop-mode-toggle.tsx` — floating toggle (top-right) with animated callout badge + shadcn Button
 
 ## Window Manager (Tiling)
 - `useReducer`-based, `MAX_MARGIN=8`
