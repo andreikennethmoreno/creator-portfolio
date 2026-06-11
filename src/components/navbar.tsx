@@ -13,10 +13,23 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DesktopModeNotification } from "@/components/desktop-mode-notification";
+import { ThemeToggleNotification } from "@/components/theme-toggle-notification";
 import { useDesktopMode } from "@/lib/desktop-mode-context";
 import { DATA } from "@/data/resume";
 import MiniPlayer from "@/components/mini-player";
-import { Search, Monitor, LayoutGrid, Folder, Camera, Play, BookOpen, Music, Code, MessageCircle, Heart } from "lucide-react";
+import {
+  Search,
+  Monitor,
+  LayoutGrid,
+  Folder,
+  Camera,
+  Play,
+  BookOpen,
+  Music,
+  Code,
+  MessageCircle,
+  Heart,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useWindowManager, APPS } from "@/lib/window-manager-context";
@@ -24,14 +37,28 @@ import { useWindowManager, APPS } from "@/lib/window-manager-context";
 export default function Navbar() {
   const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
-  const [hoverZone, setHoverZone] = useState<'left' | 'center' | 'right' | null>(null);
-  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, activeScreen, setActiveScreen, screenWindows, hasMaximizedWindow } = useWindowManager();
+  const [hoverZone, setHoverZone] = useState<
+    "left" | "center" | "right" | null
+  >(null);
+  const {
+    windows,
+    openWindow,
+    minimizeWindow,
+    restoreWindow,
+    focusWindow,
+    isAppOpen,
+    activeScreen,
+    setActiveScreen,
+    screenWindows,
+    hasMaximizedWindow,
+  } = useWindowManager();
 
-  const visibleWindowCount = windows.filter(w => !w.minimized).length;
-  const dockersHidden = isDesktop && (hasMaximizedWindow || visibleWindowCount >= 2);
-  const isLeftVisible = !dockersHidden || hoverZone === 'left';
-  const isCenterVisible = !dockersHidden || hoverZone === 'center';
-  const isRightVisible = !dockersHidden || hoverZone === 'right';
+  const visibleWindowCount = windows.filter((w) => !w.minimized).length;
+  const dockersHidden =
+    isDesktop && (hasMaximizedWindow || visibleWindowCount >= 2);
+  const isLeftVisible = !dockersHidden || hoverZone === "left";
+  const isCenterVisible = !dockersHidden || hoverZone === "center";
+  const isRightVisible = !dockersHidden || hoverZone === "right";
 
   useEffect(() => {
     if (!dockersHidden) {
@@ -44,19 +71,19 @@ export default function Navbar() {
     const handleMouseMove = (e: MouseEvent) => {
       if (e.clientY >= window.innerHeight - THRESHOLD) {
         const w = window.innerWidth;
-        if (e.clientX < w * 0.25) setHoverZone('left');
-        else if (e.clientX > w * 0.75) setHoverZone('right');
-        else setHoverZone('center');
+        if (e.clientX < w * 0.25) setHoverZone("left");
+        else if (e.clientX > w * 0.75) setHoverZone("right");
+        else setHoverZone("center");
       } else {
         setHoverZone(null);
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [dockersHidden]);
 
-  const handleAppClick = (app: typeof APPS[number]) => {
+  const handleAppClick = (app: (typeof APPS)[number]) => {
     openWindow(app);
   };
 
@@ -74,26 +101,38 @@ export default function Navbar() {
   return (
     <>
       {isDesktop && (
-        <SearchExplorer open={searchOpen} onClose={() => setSearchOpen(false)} onReveal={(section) => { revealSection(section); const app = APPS.find(a => a.id === section); if (app) openWindow(app); setSearchOpen(false); }} />
+        <SearchExplorer
+          open={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          onReveal={(section) => {
+            revealSection(section);
+            const app = APPS.find((a) => a.id === section);
+            if (app) openWindow(app);
+            setSearchOpen(false);
+          }}
+        />
       )}
       {isDesktop && <TopPanel />}
 
       <DesktopModeNotification />
+      <ThemeToggleNotification />
 
       <div
         className={cn(
           "pointer-events-none fixed inset-x-0 bottom-4 z-30 transition-all duration-300",
           isDesktop && searchOpen
             ? "opacity-0 translate-y-2 pointer-events-none"
-            : "opacity-100"
+            : "opacity-100",
         )}
       >
-        <Dock className={cn(
-          "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
-          dockersHidden && !isLeftVisible
-            ? "translate-y-[100px] opacity-0 pointer-events-none"
-            : "translate-y-0 opacity-100 pointer-events-auto",
-        )}>
+        <Dock
+          className={cn(
+            "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+            dockersHidden && !isLeftVisible
+              ? "translate-y-[100px] opacity-0 pointer-events-none"
+              : "translate-y-0 opacity-100 pointer-events-auto",
+          )}
+        >
           <Tooltip>
             <TooltipTrigger asChild>
               <button onClick={toggleDesktop}>
@@ -120,18 +159,28 @@ export default function Navbar() {
               {[0, 1, 2].map((screenIndex) => (
                 <Tooltip key={`screen-${screenIndex}`}>
                   <TooltipTrigger asChild>
-                    <button onClick={() => setActiveScreen(screenIndex)} className="relative">
-                      <DockIcon className={cn(
-                        "rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors font-mono text-xs",
-                        activeScreen === screenIndex && "text-foreground bg-muted"
-                      )}>
+                    <button
+                      onClick={() => setActiveScreen(screenIndex)}
+                      className="relative"
+                    >
+                      <DockIcon
+                        className={cn(
+                          "rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors font-mono text-xs",
+                          activeScreen === screenIndex &&
+                            "text-foreground bg-muted",
+                        )}
+                      >
                         {screenIndex + 1}
                       </DockIcon>
                       {screenWindows[screenIndex].length > 0 && (
-                        <span className={cn(
-                          "absolute -top-0.5 -right-0.5 size-2 rounded-full border border-background transition-colors",
-                          activeScreen === screenIndex ? "bg-primary" : "bg-muted-foreground/40"
-                        )} />
+                        <span
+                          className={cn(
+                            "absolute -top-0.5 -right-0.5 size-2 rounded-full border border-background transition-colors",
+                            activeScreen === screenIndex
+                              ? "bg-primary"
+                              : "bg-muted-foreground/40",
+                          )}
+                        />
                       )}
                     </button>
                   </TooltipTrigger>
@@ -149,24 +198,29 @@ export default function Navbar() {
           )}
         </Dock>
         {isDesktop && (
-          <div className={cn(
-            "absolute right-4 z-50 border bg-background/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300",
-            dockersHidden && !isRightVisible
-              ? "translate-y-[100px] opacity-0 pointer-events-none"
-              : "translate-y-0 opacity-100 pointer-events-auto",
-          )}>
+          <div
+            className={cn(
+              "absolute right-4 z-50 border bg-background/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300",
+              dockersHidden && !isRightVisible
+                ? "translate-y-[100px] opacity-0 pointer-events-none"
+                : "translate-y-0 opacity-100 pointer-events-auto",
+            )}
+          >
             <MiniPlayer />
           </div>
         )}
-        <Dock className={cn(
-          "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
-          dockersHidden && !isCenterVisible
-            ? "translate-y-[100px] opacity-0 pointer-events-none"
-            : "translate-y-0 opacity-100 pointer-events-auto",
-        )}>
+        <Dock
+          className={cn(
+            "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+            dockersHidden && !isCenterVisible
+              ? "translate-y-[100px] opacity-0 pointer-events-none"
+              : "translate-y-0 opacity-100 pointer-events-auto",
+          )}
+        >
           {DATA.navbar.map((item) => {
             const isExternal = item.href.startsWith("http");
-            const isHome = item.href === "/" || item.label?.toLowerCase() === "home";
+            const isHome =
+              item.href === "/" || item.label?.toLowerCase() === "home";
 
             if (isDesktop && isHome) {
               return (
@@ -222,21 +276,30 @@ export default function Navbar() {
               />
               {APPS.map((app) => {
                 const IconComp = APP_ICONS[app.id];
-                const win = windows.find(w => w.appId === app.id);
+                const win = windows.find((w) => w.appId === app.id);
                 const isOpen = !!win;
                 const isMinimized = win?.minimized;
                 return (
                   <Tooltip key={app.id}>
                     <TooltipTrigger asChild>
-                      <button onClick={() => handleAppClick(app)} className="relative">
+                      <button
+                        onClick={() => handleAppClick(app)}
+                        className="relative"
+                      >
                         <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                          {IconComp && <IconComp className="size-full rounded-sm overflow-hidden object-contain" />}
+                          {IconComp && (
+                            <IconComp className="size-full rounded-sm overflow-hidden object-contain" />
+                          )}
                         </DockIcon>
-                        {(isOpen) && (
-                          <span className={cn(
-                            "absolute -top-0.5 -right-0.5 size-2 rounded-full border border-background transition-colors",
-                            isMinimized ? "bg-muted-foreground/40" : "bg-primary"
-                          )} />
+                        {isOpen && (
+                          <span
+                            className={cn(
+                              "absolute -top-0.5 -right-0.5 size-2 rounded-full border border-background transition-colors",
+                              isMinimized
+                                ? "bg-muted-foreground/40"
+                                : "bg-primary",
+                            )}
+                          />
                         )}
                       </button>
                     </TooltipTrigger>
@@ -245,7 +308,10 @@ export default function Navbar() {
                       sideOffset={8}
                       className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
                     >
-                      <p>{app.title}{isMinimized ? " (minimized)" : ""}</p>
+                      <p>
+                        {app.title}
+                        {isMinimized ? " (minimized)" : ""}
+                      </p>
                       <TooltipArrow className="fill-primary" />
                     </TooltipContent>
                   </Tooltip>
@@ -253,87 +319,109 @@ export default function Navbar() {
               })}
             </>
           )}
-        {(Object.entries(DATA.contact.social)
-          .filter(([_, social]) => social.navbar)
-          .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
-          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email" && name !== "Twitter")).length > 0 || !isDesktop) && (
-          <Separator
-            orientation="vertical"
-            className="h-2/3 m-auto w-px bg-border"
-          />
-        )}
-        {Object.entries(DATA.contact.social)
-          .filter(([_, social]) => social.navbar)
-          .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
-          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email" && name !== "Twitter"))
-          .map(([name, social], index) => {
-            const isExternal = social.url.startsWith("http");
-            const IconComponent = social.icon;
-            return (
-              <Tooltip key={`social-${name}-${index}`}>
-                <TooltipTrigger asChild>
-                  <a
-                    href={social.url}
-                    target={isExternal ? "_blank" : undefined}
-                    rel={isExternal ? "noopener noreferrer" : undefined}
+          {(Object.entries(DATA.contact.social)
+            .filter(([_, social]) => social.navbar)
+            .filter(
+              ([name]) =>
+                !isDesktop || !APPS.some((a) => a.id === name.toLowerCase()),
+            )
+            .filter(
+              ([name]) =>
+                !isDesktop ||
+                (name !== "GitHub" && name !== "email" && name !== "Twitter"),
+            ).length > 0 ||
+            !isDesktop) && (
+            <Separator
+              orientation="vertical"
+              className="h-2/3 m-auto w-px bg-border"
+            />
+          )}
+          {Object.entries(DATA.contact.social)
+            .filter(([_, social]) => social.navbar)
+            .filter(
+              ([name]) =>
+                !isDesktop || !APPS.some((a) => a.id === name.toLowerCase()),
+            )
+            .filter(
+              ([name]) =>
+                !isDesktop ||
+                (name !== "GitHub" && name !== "email" && name !== "Twitter"),
+            )
+            .map(([name, social], index) => {
+              const isExternal = social.url.startsWith("http");
+              const IconComponent = social.icon;
+              return (
+                <Tooltip key={`social-${name}-${index}`}>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={social.url}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                    >
+                      <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                        <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
+                      </DockIcon>
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    sideOffset={8}
+                    className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
                   >
-                    <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                      <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
-                    </DockIcon>
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="top"
-                  sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-                >
-                  <p>{name}</p>
-                  <TooltipArrow className="fill-primary" />
-                </TooltipContent>
-              </Tooltip>
-            );
-          })}
-        {Object.entries(DATA.contact.social)
-          .filter(([_, social]) => social.navbar)
-          .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
-          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email" && name !== "Twitter")).length > 0 && (
-          <Separator
-            orientation="vertical"
-            className="h-2/3 m-auto w-px bg-border"
-          />
-        )}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-              <CardStyleToggle />
-            </DockIcon>
-          </TooltipTrigger>
-          <TooltipContent
-            side="top"
-            sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-          >
-            <p>card style</p>
-            <TooltipArrow className="fill-primary" />
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-              <ThemeToggle className="size-full cursor-pointer" />
-            </DockIcon>
-          </TooltipTrigger>
-          <TooltipContent
-            side="top"
-            sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-          >
-            <p>change theme</p>
-            <TooltipArrow className="fill-primary" />
-          </TooltipContent>
-        </Tooltip>
-      </Dock>
-    </div>
+                    <p>{name}</p>
+                    <TooltipArrow className="fill-primary" />
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
+          {Object.entries(DATA.contact.social)
+            .filter(([_, social]) => social.navbar)
+            .filter(
+              ([name]) =>
+                !isDesktop || !APPS.some((a) => a.id === name.toLowerCase()),
+            )
+            .filter(
+              ([name]) =>
+                !isDesktop ||
+                (name !== "GitHub" && name !== "email" && name !== "Twitter"),
+            ).length > 0 && (
+            <Separator
+              orientation="vertical"
+              className="h-2/3 m-auto w-px bg-border"
+            />
+          )}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                <CardStyleToggle />
+              </DockIcon>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              sideOffset={8}
+              className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+            >
+              <p>card style</p>
+              <TooltipArrow className="fill-primary" />
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                <ThemeToggle className="size-full cursor-pointer" />
+              </DockIcon>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              sideOffset={8}
+              className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+            >
+              <p>change theme</p>
+              <TooltipArrow className="fill-primary" />
+            </TooltipContent>
+          </Tooltip>
+        </Dock>
+      </div>
     </>
   );
 }
