@@ -7,7 +7,7 @@ import { useWindowManager } from "@/lib/window-manager-context"
 
 export function DesktopLayout({ children }: { children: React.ReactNode }) {
   const { isDesktop, revealedSection, revealSection } = useDesktopMode()
-  const { activeScreen, transitionDirection, resetTransition } = useWindowManager()
+  const { activeScreen, isTransitioning, resetTransition } = useWindowManager()
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -27,10 +27,10 @@ export function DesktopLayout({ children }: { children: React.ReactNode }) {
         <motion.div
           key={activeScreen}
           className="absolute inset-0"
-          initial={transitionDirection ? { x: transitionDirection === 'right' ? '100%' : '-100%' } : { x: 0 }}
+          initial={isTransitioning ? { x: '-100%' } : { x: 0 }}
           animate={{ x: 0 }}
-          exit={{ x: transitionDirection === 'right' ? '-100%' : '100%' }}
-          transition={{ type: 'spring', stiffness: 180, damping: 22, mass: 0.8 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'spring', stiffness: 220, damping: 28, mass: 0.55 }}
           onAnimationComplete={resetTransition}
         >
           {children}

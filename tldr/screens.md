@@ -31,9 +31,13 @@
 
 ## Transition
 - `src/components/desktop-layout.tsx` — wraps content in `AnimatePresence` + `motion.div`
-- Higher index → slides in from right
-- Lower index → slides in from left
-- Spring: stiffness 250, damping 30
+- **Always slides RIGHT**: enters from left (-100%), exits to right (+100%) — same direction regardless of which screen. No direction-dependent animation.
+- Uses `isTransitioning` flag to skip animation on first mount (`initial: { x: 0 }` when not transitioning)
+- **Spring**: stiffness 220, damping 28, mass 0.55
+- **Empty screens**: no background overlay — container is transparent. Transition only visible via window content sliding.
+- `AnimatePresence` default mode (simultaneous exit/enter)
+- `onAnimationComplete` → dispatches `TRANSITION_END`
+- **Wrap-around shortest path** in reducer for screen index direction, but animation direction is always the same
 
 ## Dock indicators
 - Active screen icon: filled primary dot + highlighted bg

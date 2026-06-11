@@ -43,9 +43,11 @@ Auto-tiles ALL non-maximized, non-minimized windows in a snake pattern:
 - **window resize** → all non-maximized windows re-tile to new viewport
 
 ### Screen Switch Animation
-- `AnimatePresence mode="wait"` in `DesktopLayout`
-- Spring slide: stiffness 250, damping 30
-- Higher screen # → slides in from right, lower from left
+- `AnimatePresence` (default simultaneous exit/enter) in `DesktopLayout`
+- **Always slides right**: enters from left (-100%), exits to right (+100%). Same for all directions.
+- No background overlay on container (transparent slide — no visual artifacts on empty screens)
+- `isTransitioning` flag prevents animation on first mount
+- Spring slide: stiffness 220, damping 28, mass 0.55
 - `onAnimationComplete` resets transition state
 
 ## Dock Auto-Hide

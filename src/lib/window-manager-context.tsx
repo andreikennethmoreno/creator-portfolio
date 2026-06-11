@@ -173,7 +173,10 @@ function wmReducer(state: WMState, action: WMAction): WMState {
   switch (action.type) {
     case "SET_ACTIVE_SCREEN": {
       if (action.index === state.activeScreen || action.index < 0 || action.index > 2) return state;
-      const direction = action.index > state.activeScreen ? 'right' : 'left';
+      const total = 3;
+      const diff = action.index - state.activeScreen;
+      const shortest = ((diff + total / 2) % total + total) % total - total / 2;
+      const direction = shortest > 0 ? 'right' : 'left';
       return { ...state, activeScreen: action.index, isTransitioning: true, transitionDirection: direction };
     }
 
