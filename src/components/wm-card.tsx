@@ -156,9 +156,9 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
               <button
                 onClick={(e) => { e.stopPropagation(); onMaximize?.() }}
                 className="font-mono text-[13px] text-foreground/40 hover:text-foreground transition-colors leading-none cursor-pointer px-0.5"
-                aria-label="Maximize window"
+                aria-label={win?.maximized ? "Restore window" : "Maximize window"}
               >
-                +
+                {win?.maximized ? "⤡" : "+"}
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); onClose?.() }}

@@ -22,6 +22,9 @@ File: `src/components/navbar.tsx` — 3 dockers rendered with MagicUI Dock compo
 - Contains: MiniPlayer
 
 ## Dock Auto-Hide
-- When `isDesktop && (hasMaximizedWindow || hasVisibleWindows)` — all dockers hidden
+- `hasFullscreenWindow = windows.some(w => !w.minimized && w.width >= vw-18 && w.height >= vh-18)`
+- `dockersHidden = isDesktop && hasFullscreenWindow`
+- Not based on `hasMaximizedWindow` or generic `hasVisibleWindows` anymore
+- Docks show when: window is restored to smaller size, minimized, or no windows open
 - Bottom 100px hover reveals in 3 zones (left 25%, center 50%, right 25%)
-- CSS transition: `translate-y-[100px] opacity-0` ↔ `translate-y-0 opacity-100`
+- CSS: `transition-all duration-300` always applied; toggles `translate-y-[100px] opacity-0 pointer-events-none` vs `translate-y-0 opacity-100 pointer-events-auto`

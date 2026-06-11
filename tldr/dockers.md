@@ -16,12 +16,14 @@ Three dock bars rendered inside `src/components/navbar.tsx`.
 - `absolute right-4`, visible only in desktop mode
 - Contains: MiniPlayer (YouTube mini-player for current Last.fm track)
 
-## Maximized Hide Behavior
-When `isDesktop && hasMaximizedWindow` (any window maximized):
+## Auto-Hide Behavior
+When `isDesktop && hasFullscreenWindow` (any non-minimized window covering viewport):
 - All dockers hidden below viewport (`translate-y-[100px] opacity-0`)
+- `hasFullscreenWindow` checks: `window.innerWidth - 16` x `window.innerHeight - 16` with 2px tolerance
 - `mousemove` listener tracks bottom 100px of screen:
   - Left 25% → reveals left docker
   - Middle 50% → reveals center docker
   - Right 25% → reveals right docker
 - Mouse above threshold → hides again
-- Uses `transition-all duration-300` CSS transitions
+- Uses `transition-all duration-300` CSS transitions (always applied, not conditional)
+- Docks show when window is: restored to smaller size, minimized, or no windows open

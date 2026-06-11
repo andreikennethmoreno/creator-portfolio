@@ -260,7 +260,14 @@ function wmReducer(state: WMState, action: WMAction): WMState {
         ...screen,
         windows: retileWindows(
           screen.windows.map(w =>
-            w.id === action.id ? { ...w, minimized: true } : w
+            w.id === action.id
+              ? {
+                  ...w,
+                  minimized: true,
+                  maximized: false,
+                  prevRect: null,
+                }
+              : w
           ),
           action.vw,
           action.vh,
@@ -343,7 +350,16 @@ function wmReducer(state: WMState, action: WMAction): WMState {
             ? {
                 ...w,
                 maximized: true,
-                prevRect: { x: w.x, y: w.y, width: w.width, height: w.height },
+                prevRect:
+                  w.width >= action.vw - MAX_MARGIN * 2 - 2 &&
+                  w.height >= action.vh - MAX_MARGIN * 2 - 2
+                    ? {
+                        x: Math.max(MAX_MARGIN, (action.vw - 640) / 2),
+                        y: Math.max(MAX_MARGIN, (action.vh - 480) / 2),
+                        width: 640,
+                        height: 480,
+                      }
+                    : { x: w.x, y: w.y, width: w.width, height: w.height },
                 x: MAX_MARGIN,
                 y: MAX_MARGIN,
                 width: action.vw - MAX_MARGIN * 2,
@@ -396,7 +412,7 @@ interface WMContextType {
   resetTransition: () => void;
 }
 
-const WMContext = createContext<WMContextType | null>(null);
+export const WMContext = createContext<WMContextType | null>(null);
 
 export function WindowManagerProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wmReducer, {
@@ -443,11 +459,9 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   );
   const toggleMaximize = useCallback(
     (id: string) => {
-      const win = activeWindows.find(w => w.id === id);
-      if (!win) return;
       dispatch({ type: "MAXIMIZE", id, vw: getVw(), vh: getVh() });
     },
-    [activeWindows]
+    []
   );
   const isAppOpen = useCallback(
     (appId: string) => activeWindows.some(w => w.appId === appId),
@@ -525,4 +539,13 @@ export function useWindowManager() {
   const ctx = useContext(WMContext);
   if (!ctx) throw new Error("useWindowManager outside WindowManagerProvider");
   return ctx;
+}
+
+export function ScreenProvider({ screenIndex, children }: { screenIndex: number; children: ReactNode }) {
+  const ctx = useWindowManager();
+  const scoped: WMContextType = {
+    ...ctx,
+    windows: ctx.screenWindows[screenIndex],
+  };
+  return <WMContext.Provider value={scoped}>{children}</WMContext.Provider>;
 }

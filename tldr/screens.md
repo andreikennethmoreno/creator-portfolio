@@ -31,13 +31,15 @@
 
 ## Transition
 - `src/components/desktop-layout.tsx` — wraps content in `AnimatePresence` + `motion.div`
-- **Always slides RIGHT**: enters from left (-100%), exits to right (+100%) — same direction regardless of which screen. No direction-dependent animation.
+- **macOS Spaces style**: `transitionDirection` from reducer (`'right'` if forward, `'left'` if backward)
+- **Forward** (1→2, 2→3, 3→1): new enters from RIGHT (`100%`), old exits LEFT (`-100%`). Like swiping left.
+- **Backward** (2→1, 3→2, 1→3): new enters from LEFT (`-100%`), old exits RIGHT (`100%`). Like swiping right.
 - Uses `isTransitioning` flag to skip animation on first mount (`initial: { x: 0 }` when not transitioning)
 - **Spring**: stiffness 220, damping 28, mass 0.55
 - **Empty screens**: no background overlay — container is transparent. Transition only visible via window content sliding.
 - `AnimatePresence` default mode (simultaneous exit/enter)
 - `onAnimationComplete` → dispatches `TRANSITION_END`
-- **Wrap-around shortest path** in reducer for screen index direction, but animation direction is always the same
+- **Wrap-around shortest path** in reducer for screen index direction, animation follows that direction
 
 ## Dock indicators
 - Active screen icon: filled primary dot + highlighted bg

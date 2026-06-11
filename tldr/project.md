@@ -30,8 +30,8 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui portfolio for Kenro
 - Toggle in navbar left dock → sets `isDesktop` in `DesktopModeProvider`
 - Full-screen windowed overlay, sections become draggable/resizable windows
 - Window manager with tiling layout (useReducer-based)
-- Dock auto-hides when windows are open
-- Screen transitions: smooth spring slide, always slides right (same direction all screens)
+- Dock auto-hides when fullscreen window is visible (covers viewport)
+- Screen transitions: macOS Spaces-style — forward pushes left, backward pushes right
 - Empty screens: no overlay, container transparent — only window content visible during slide
 - Uses `isTransitioning` to skip initial mount animation
 - See `tldr/desktop-mode.md` for details

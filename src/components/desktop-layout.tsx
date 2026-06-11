@@ -1,13 +1,13 @@
 "use client"
 
 import { useEffect } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { motion } from "motion/react"
 import { useDesktopMode } from "@/lib/desktop-mode-context"
-import { useWindowManager } from "@/lib/window-manager-context"
+import { useWindowManager, ScreenProvider } from "@/lib/window-manager-context"
 
 export function DesktopLayout({ children }: { children: React.ReactNode }) {
   const { isDesktop, revealedSection, revealSection } = useDesktopMode()
-  const { activeScreen, isTransitioning, resetTransition } = useWindowManager()
+  const { activeScreen } = useWindowManager()
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -23,19 +23,19 @@ export function DesktopLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="hidden lg:block fixed inset-0 z-10 overflow-hidden">
-      <AnimatePresence>
-        <motion.div
-          key={activeScreen}
-          className="absolute inset-0"
-          initial={isTransitioning ? { x: '-100%' } : { x: 0 }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', stiffness: 220, damping: 28, mass: 0.55 }}
-          onAnimationComplete={resetTransition}
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        className="flex h-full"
+        animate={{ x: `-${activeScreen * 100}%` }}
+        transition={{ type: 'spring', stiffness: 220, damping: 28, mass: 0.55 }}
+      >
+        {[0, 1, 2].map(screenIndex => (
+          <div key={screenIndex} className="w-screen h-full shrink-0">
+            <ScreenProvider screenIndex={screenIndex}>
+              {children}
+            </ScreenProvider>
+          </div>
+        ))}
+      </motion.div>
     </div>
   )
 }

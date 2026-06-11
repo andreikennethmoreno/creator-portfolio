@@ -44,18 +44,27 @@ Auto-tiles ALL non-maximized, non-minimized windows in a snake pattern:
 
 ### Screen Switch Animation
 - `AnimatePresence` (default simultaneous exit/enter) in `DesktopLayout`
-- **Always slides right**: enters from left (-100%), exits to right (+100%). Same for all directions.
+- **macOS Spaces style**: forward (1→2, 2→3, 3→1) = new from RIGHT (`100%`), old exits LEFT (`-100%`) → like swiping left to show next screen. Backward (2→1, 3→2, 1→3) = new from LEFT (`-100%`), old exits RIGHT (`100%`) → like swiping right to show previous screen.
 - No background overlay on container (transparent slide — no visual artifacts on empty screens)
 - `isTransitioning` flag prevents animation on first mount
 - Spring slide: stiffness 220, damping 28, mass 0.55
 - `onAnimationComplete` resets transition state
 
 ## Dock Auto-Hide
-- Dock hides when any visible (non-minimized) windows exist — same behavior as maximized
-- `dockersHidden = isDesktop && (hasMaximizedWindow || hasVisibleWindows)`
+- Dock hides only when a FULLSCREEN (covering viewport) window is visible — maximized OR single tiled window
+- After restoring to smaller size via `+` → dock shows (not fullscreen anymore)
+- After minimize → dock shows (no visible fullscreen windows)
+- `hasFullscreenWindow`: checks if any non-minimized window has `width >= vw-18 && height >= vh-18`
 - Bottom 100px hover reveals dock in 3 zones (left 25%, center 50%, right 25%)
 
-### Maximize
-- `x:8, y:8, width:vw-16, height:vh-16` (8px margin)
-- Saves `prevRect` before maximize (not used on unmax — re-enters tile)
+### Maximize / Restore
+- Click `+` in window chrome title bar → maximize: `x:8, y:8, width:vw-16, height:vh-16` (8px margin)
+- Click `⤡` (same button, changes icon) → restore to `prevRect` dimensions
+- When maximizing a window already at full viewport (tiled single window), saves smaller 640x480 centered as `prevRect` — so unmaximize actually makes the window smaller
+- `toggleMaximize` in context dispatches `MAXIMIZE` directly (no stale closure — reducer checks current state via `state.screens.activeScreen.windows`)
+- Button shows `+` normally, `⤡` when maximized (visual feedback)
 - Resize listener re-tiles ALL windows when viewport changes
+
+### Minimize on Maximized Window
+- MINIMIZE reducer clears `maximized: false, prevRect: null` so window restores to smaller tiled size
+- When minimized, that window is excluded from dock auto-hide check

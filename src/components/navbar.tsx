@@ -23,10 +23,15 @@ export default function Navbar() {
   const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
   const [hoverZone, setHoverZone] = useState<'left' | 'center' | 'right' | null>(null);
-  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, hasMaximizedWindow, activeScreen, setActiveScreen, screenWindows } = useWindowManager();
+  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, activeScreen, setActiveScreen, screenWindows } = useWindowManager();
 
-  const hasVisibleWindows = windows.some(w => !w.minimized);
-  const dockersHidden = isDesktop && (hasMaximizedWindow || hasVisibleWindows);
+  const hasFullscreenWindow = typeof window !== 'undefined' && windows.some(w => {
+    if (w.minimized) return false;
+    const fw = window.innerWidth - 16;
+    const fh = window.innerHeight - 16;
+    return w.width >= fw - 2 && w.height >= fh - 2;
+  });
+  const dockersHidden = isDesktop && hasFullscreenWindow;
   const isLeftVisible = !dockersHidden || hoverZone === 'left';
   const isCenterVisible = !dockersHidden || hoverZone === 'center';
   const isRightVisible = !dockersHidden || hoverZone === 'right';
@@ -84,11 +89,10 @@ export default function Navbar() {
         )}
       >
         <Dock className={cn(
-          "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
-          !dockersHidden || isLeftVisible ? "pointer-events-auto" : "pointer-events-none",
-          dockersHidden && "transition-all duration-300",
-          dockersHidden && !isLeftVisible && "translate-y-[100px] opacity-0",
-          dockersHidden && isLeftVisible && "translate-y-0 opacity-100",
+          "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+          dockersHidden && !isLeftVisible
+            ? "translate-y-[100px] opacity-0 pointer-events-none"
+            : "translate-y-0 opacity-100 pointer-events-auto",
         )}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -146,21 +150,19 @@ export default function Navbar() {
         </Dock>
         {isDesktop && (
           <Dock className={cn(
-            "absolute right-4 z-50 h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
-            !dockersHidden || isRightVisible ? "pointer-events-auto" : "pointer-events-none",
-            dockersHidden && "transition-all duration-300",
-            dockersHidden && !isRightVisible && "translate-y-[100px] opacity-0",
-            dockersHidden && isRightVisible && "translate-y-0 opacity-100",
+            "absolute right-4 z-50 h-14 p-2 w-fit flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+            dockersHidden && !isRightVisible
+              ? "translate-y-[100px] opacity-0 pointer-events-none"
+              : "translate-y-0 opacity-100 pointer-events-auto",
           )}>
             <MiniPlayer />
           </Dock>
         )}
         <Dock className={cn(
-          "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
-          !dockersHidden || isCenterVisible ? "pointer-events-auto" : "pointer-events-none",
-          dockersHidden && "transition-all duration-300",
-          dockersHidden && !isCenterVisible && "translate-y-[100px] opacity-0",
-          dockersHidden && isCenterVisible && "translate-y-0 opacity-100",
+          "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+          dockersHidden && !isCenterVisible
+            ? "translate-y-[100px] opacity-0 pointer-events-none"
+            : "translate-y-0 opacity-100 pointer-events-auto",
         )}>
           {DATA.navbar.map((item) => {
             const isExternal = item.href.startsWith("http");

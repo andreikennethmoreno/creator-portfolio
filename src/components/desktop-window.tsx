@@ -69,7 +69,7 @@ export function DesktopWindow({ window: win, children, className }: DesktopWindo
             className="size-3 rounded-full bg-emerald-500/70 hover:bg-emerald-500 transition-colors flex items-center justify-center"
             onClick={(e) => { e.stopPropagation(); toggleMaximize(win.id); }}
           >
-            <span className="text-[7px] text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity">+</span>
+            <span className="text-[7px] text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity">{win.maximized ? "⤡" : "+"}</span>
           </button>
         </div>
         <span className="flex-1 text-center text-[11px] font-mono text-foreground/60 truncate mr-8">
