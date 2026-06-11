@@ -4,6 +4,7 @@ import { Dock, DockIcon } from "@/components/magicui/dock";
 import { CardStyleToggle } from "@/components/card-style-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SearchExplorer } from "@/components/search-explorer";
+import { TopPanel } from "@/components/top-panel";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -74,6 +75,7 @@ export default function Navbar() {
       {isDesktop && (
         <SearchExplorer open={searchOpen} onClose={() => setSearchOpen(false)} onReveal={(section) => { revealSection(section); const app = APPS.find(a => a.id === section); if (app) openWindow(app); setSearchOpen(false); }} />
       )}
+      {isDesktop && <TopPanel />}
 
       <div
         className={cn(
@@ -248,14 +250,19 @@ export default function Navbar() {
               })}
             </>
           )}
-        <Separator
-          orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
-        />
+        {(Object.entries(DATA.contact.social)
+          .filter(([_, social]) => social.navbar)
+          .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
+          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email" && name !== "Twitter")).length > 0 || !isDesktop) && (
+          <Separator
+            orientation="vertical"
+            className="h-2/3 m-auto w-px bg-border"
+          />
+        )}
         {Object.entries(DATA.contact.social)
           .filter(([_, social]) => social.navbar)
           .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
-          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email"))
+          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email" && name !== "Twitter"))
           .map(([name, social], index) => {
             const isExternal = social.url.startsWith("http");
             const IconComponent = social.icon;
@@ -283,17 +290,18 @@ export default function Navbar() {
               </Tooltip>
             );
           })}
-        <Separator
-          orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
-        />
+        {Object.entries(DATA.contact.social)
+          .filter(([_, social]) => social.navbar)
+          .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
+          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email" && name !== "Twitter")).length > 0 && (
+          <Separator
+            orientation="vertical"
+            className="h-2/3 m-auto w-px bg-border"
+          />
+        )}
         <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
           <CardStyleToggle />
         </DockIcon>
-        <Separator
-          orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
-        />
         <Tooltip>
           <TooltipTrigger asChild>
             <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
