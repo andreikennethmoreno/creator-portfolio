@@ -14,13 +14,19 @@ File: `src/components/top-panel.tsx` — desktop-only hover-triggered panel. Ren
 - `font-mono` throughout, `text-[10px]` labels, `text-xs`/`text-sm` content
 - Springy easing: `cubic-bezier(0.34,1.56,0.64,1)`
 
-## Tabs (3)
-1. **Website** — tech stack badges (Next.js 16, React 19, TypeScript, Tailwind v4, etc.) + integrations list (YouTube API, Hardcover, Last.fm, Vercel, etc.)
-2. **Music** — placeholder "No track playing" (can integrate Last.fm later)
-3. **About** — shows DATA.name, DATA.description, DATA.location
+## Tabs (3) — single source of truth (no HUD panel)
+1. **Website** — imports `hud/website-tab.tsx` (stack badges + integrations)
+2. **Music** — imports `hud/player-tab.tsx` (reads from shared MusicPlayerContext)
+3. **About** — inline minimal content (name, description, location)
 
 ## State
 - `openRef` (ref, not state) for mousemove handler to read without re-renders
 - `hoverTimeout` ref for 400ms close delay
 - `isHoveringPanel` ref to prevent close while mouse is on panel
 - `activeTab` state for tab switching
+
+## Deleted: HUD panel dropdown
+- Removed `hud-panel.tsx` (floating dropdown + context provider)
+- Removed `HUDPanelProvider` from layout.tsx
+- Removed orphaned tab files: `system-tab.tsx`, `about-tab.tsx`, `sparkline.tsx`, `music-pill.tsx`
+- MiniPlayer click no longer opens anything

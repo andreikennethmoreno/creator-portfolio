@@ -42,5 +42,7 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion
 - 3 dockers: left (desktop toggle + screen switcher), center (links + app launchers + card style + wallpaper), right (mini player)
 - Left & center use MagicUI Dock (spring physics magnification); right is plain div (no magnification)
 - Mini player shows album art, track info, progress bar/CSS sound wave, play/pause
-- **TopPanel** (`src/components/top-panel.tsx`): hover-triggered panel at top center, 2 tabs (Information/Music), auto-hides on mouse leave
-- See `tldr/mini-player.md`, `tldr/top-panel.md`
+- **Top Panel** (`src/components/top-panel.tsx`): hover-triggered drop-down at top center, 4 tabs (Website/Tech Stack/Music/About)
+- **MiniPlayer** (`src/components/mini-player.tsx`): desktop mode right dock, reads from shared MusicPlayerContext
+- All music consumers read from single `MusicPlayerContext` — no duplicate YT players
+- See `tldr/top-panel.md`, `tldr/music-player-context.md`, `tldr/mini-player.md`

@@ -1,13 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Music, User, Code, Globe, Server, BookOpen, Camera, Play, MessageCircle, Heart, MapPin } from "lucide-react";
+import { X, Music, User, Code, Layout } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DATA } from "@/data/resume";
+import { useCardStyle } from "@/lib/card-style-context";
+import WebsiteTab from "@/components/hud/website-tab";
+import TechStackTab from "@/components/hud/tech-stack-tab";
+import PlayerTab from "@/components/hud/player-tab";
+import AboutTab from "@/components/hud/about-tab";
 
 export function TopPanel() {
+  const { style } = useCardStyle();
+  const isGlossy = style === "glossy";
   const [open, setOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"website" | "music" | "about">("website");
+  const [activeTab, setActiveTab] = useState<"website" | "tech" | "music" | "about">("website");
   const openRef = useRef(false);
   const hoverTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
   const isHoveringPanel = useRef(false);
@@ -60,16 +66,6 @@ export function TopPanel() {
     return () => window.removeEventListener("keydown", handler);
   }, [open]);
 
-  const INTEGRATIONS = [
-    { icon: Play, label: "YouTube Data API v3" },
-    { icon: Camera, label: "Behold.so (Instagram)" },
-    { icon: BookOpen, label: "Hardcover GraphQL API" },
-    { icon: Music, label: "Last.fm API" },
-    { icon: Server, label: "Vercel API" },
-    { icon: Globe, label: "Microlink API" },
-    { icon: Heart, label: "Ko-fi" },
-  ];
-
   return (
     <div
       onMouseEnter={() => {
@@ -95,9 +91,11 @@ export function TopPanel() {
     >
       <div
         className={cn(
-          "pointer-events-auto relative border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5",
-          "rounded-2xl overflow-hidden w-[420px] max-w-[calc(100vw-2rem)]",
+          "pointer-events-auto relative border rounded-2xl overflow-hidden w-[480px] max-w-[calc(100vw-2rem)]",
+          "shadow-[0_0_10px_3px] shadow-primary/5",
           "transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+          !isGlossy && "bg-card/90 backdrop-blur-3xl",
+          isGlossy && "bg-card/80 backdrop-blur-[4px] border-white/12 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]",
           open ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         )}
       >
@@ -120,6 +118,18 @@ export function TopPanel() {
               >
                 <Code size={12} />
                 Website
+              </button>
+              <button
+                onClick={() => setActiveTab("tech")}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
+                  activeTab === "tech"
+                    ? "bg-primary/20 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                <Layout size={12} />
+                Tech Stack
               </button>
               <button
                 onClick={() => setActiveTab("music")}
@@ -159,85 +169,10 @@ export function TopPanel() {
 
             <div className="h-px bg-border mx-3 my-1" />
 
-            {activeTab === "website" && (
-              <div className="p-3 flex flex-col gap-3">
-                <div>
-                  <p className="text-[10px] font-mono text-muted-foreground/50 px-1 pb-1.5 uppercase tracking-widest">
-                    stack
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["Next.js 16", "React 19", "TypeScript", "Tailwind v4", "shadcn/ui", "Motion"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 text-[10px] font-mono rounded-md bg-background border border-border text-muted-foreground"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-[10px] font-mono text-muted-foreground/50 px-1 pb-1.5 uppercase tracking-widest">
-                    integrations
-                  </p>
-                  <div className="flex flex-col gap-1">
-                    {INTEGRATIONS.map((item) => (
-                      <div
-                        key={item.label}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-muted transition-colors"
-                      >
-                        <span className="flex items-center justify-center size-6 shrink-0 rounded-md bg-background border border-border text-muted-foreground">
-                          <item.icon size={10} />
-                        </span>
-                        <span className="text-xs font-mono text-muted-foreground">
-                          {item.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "music" && (
-              <div className="p-3">
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-background/50 border border-border">
-                  <div className="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                    <Music size={16} className="text-muted-foreground" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-mono text-foreground truncate">
-                      No track playing
-                    </p>
-                    <p className="text-[10px] font-mono text-muted-foreground/60 truncate">
-                      Open the Last.fm player to start
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "about" && (
-              <div className="p-3 flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center justify-center size-9 shrink-0 rounded-xl bg-background border border-border text-primary">
-                    <User size={15} />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-sm font-mono text-foreground truncate">
-                      {DATA.name}
-                    </p>
-                    <p className="text-[10px] font-mono text-muted-foreground/60 truncate">
-                      {DATA.description}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground/70">
-                  <MapPin size={11} />
-                  <span>{DATA.location}</span>
-                </div>
-              </div>
-            )}
+            {activeTab === "website" && <WebsiteTab />}
+            {activeTab === "tech" && <TechStackTab />}
+            {activeTab === "music" && <PlayerTab />}
+            {activeTab === "about" && <AboutTab />}
           </div>
         </div>
 
@@ -249,7 +184,7 @@ export function TopPanel() {
           )}
         >
           <span className="text-[10px] font-mono text-muted-foreground/40">
-            {activeTab === "website" ? "apis & stack" : activeTab === "music" ? "now playing" : "about the creator"}
+            {activeTab === "website" ? "vercel & apis" : activeTab === "tech" ? "tech stack" : activeTab === "music" ? "now playing" : "about the creator"}
           </span>
           <span className="text-[10px] font-mono text-muted-foreground/20">·</span>
           <span className="text-[10px] font-mono text-muted-foreground/40">

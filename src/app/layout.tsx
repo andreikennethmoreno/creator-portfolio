@@ -7,6 +7,8 @@ import { CardStyleProvider } from "@/lib/card-style-context";
 import { DesktopModeProvider } from "@/lib/desktop-mode-context";
 import { WindowManagerProvider } from "@/lib/window-manager-context";
 import { LayoutShell } from "@/components/layout-shell";
+import { MusicPlayerProvider } from "@/lib/music-player-context";
+import HiddenIframeContainer from "@/components/hidden-iframe-container";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -64,11 +66,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let initialTrack = null
+  let initialVideoId = null
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    const res = await fetch(`${baseUrl}/api/lastfm`, { next: { revalidate: 60 } })
+    if (res.ok) {
+      const data = await res.json()
+      initialTrack = data.track ?? null
+      initialVideoId = data.videoId ?? null
+    }
+  } catch {}
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -92,11 +106,14 @@ export default function RootLayout({
               <DesktopModeProvider>
               <WindowManagerProvider>
               <CardStyleProvider>
-                <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0"></div>
-                <LayoutShell>
-                  {children}
-                </LayoutShell>
-                <Navbar />
+                 <MusicPlayerProvider initialTrack={initialTrack} initialVideoId={initialVideoId}>
+                     <HiddenIframeContainer />
+                     <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0"></div>
+                     <LayoutShell>
+                       {children}
+                     </LayoutShell>
+                     <Navbar />
+                 </MusicPlayerProvider>
               </CardStyleProvider>
               </WindowManagerProvider>
               </DesktopModeProvider>

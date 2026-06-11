@@ -1,10 +1,10 @@
 "use client";
 
 import { Dock, DockIcon } from "@/components/magicui/dock";
+import { TopPanel } from "@/components/top-panel";
 import { CardStyleToggle } from "@/components/card-style-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SearchExplorer } from "@/components/search-explorer";
-import { TopPanel } from "@/components/top-panel";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
