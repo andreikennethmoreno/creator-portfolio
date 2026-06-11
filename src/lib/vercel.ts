@@ -26,14 +26,14 @@ const BASE = "https://api.vercel.com";
 
 function vercelHeaders() {
   return {
-    Authorization: `Bearer ${process.env.VERCEL_API_TOKEN}`,
+    Authorization: `Bearer ${process.env.MY_VERCEL_TOKEN}`,
     "Content-Type": "application/json",
   };
 }
 
 function teamQuery() {
-  return process.env.VERCEL_TEAM_ID
-    ? `&teamId=${process.env.VERCEL_TEAM_ID}`
+  return process.env.MY_VERCEL_TEAM_ID
+    ? `&teamId=${process.env.MY_VERCEL_TEAM_ID}`
     : "";
 }
 
