@@ -199,7 +199,7 @@ A full desktop-like window manager that transforms the single-scroll layout into
 | **Meta Threads Graph API** | Fetch Threads posts | `THREADS_ACCESS_TOKEN`, `THREADS_USER_ID` | `revalidate: 3600` (1 hour) |
 | **Hardcover GraphQL API** | Fetch books (reading, read, want to read) + stats | `HARDCOVER_API_TOKEN`, `HARDCOVER_USER_ID` | `revalidate: 3600` (1 hour) |
 | **Last.fm API** | Fetch most recent scrobble (now playing / recently played) | `LASTFM_API_KEY`, `LASTFM_USERNAME` | `revalidate: 60` (60 seconds) |
-| **Vercel API** | Fetch top projects with deployment counts | `MY_VERCEL_TOKEN`, `MY_VERCEL_TEAM_ID` | `revalidate: 3600` (1 hour) |
+| **Vercel API** | Fetch top projects with deployment counts | `MY_VERCEL_API_TOKEN`, `MY_VERCEL_TEAM_ID` | `revalidate: 3600` (1 hour) |
 | **Microlink API** | Screenshot generation for Vercel project cards | Public API (no auth) | Client-side fetch |
 | **Ko-fi** | Donation/support widget + embedded card | Ko-fi link + `kofi-react-widget` package | Static |
 
@@ -386,7 +386,7 @@ Edit a single file — **`src/data/resume.tsx`** — to personalize:
 | `HARDCOVER_USER_ID` | Yes | Hardcover GraphQL API | Book data |
 | `LASTFM_API_KEY` | Yes | Last.fm API | Recent scrobble |
 | `LASTFM_USERNAME` | Yes | Last.fm API | Recent scrobble |
-| `MY_VERCEL_TOKEN` | Yes | Vercel API | Top projects fetch |
+| `MY_VERCEL_API_TOKEN` | Yes | Vercel API | Top projects fetch |
 | `MY_VERCEL_TEAM_ID` | Yes | Vercel API | Top projects fetch |
 
 ---

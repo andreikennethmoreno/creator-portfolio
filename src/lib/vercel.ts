@@ -26,7 +26,7 @@ const BASE = "https://api.vercel.com";
 
 function vercelHeaders() {
   return {
-    Authorization: `Bearer ${process.env.MY_VERCEL_TOKEN}`,
+    Authorization: `Bearer ${process.env.MY_VERCEL_API_TOKEN}`,
     "Content-Type": "application/json",
   };
 }
