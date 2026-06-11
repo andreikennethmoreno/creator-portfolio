@@ -4,12 +4,13 @@ Three dock bars rendered inside `src/components/navbar.tsx`.
 
 ## Left Docker
 - `absolute left-4`, hidden on mobile
-- Contains: desktop mode toggle button only
+- Contains: desktop mode toggle button, separator, screen switcher icons 1/2/3 (desktop mode only)
 
 ## Center Docker
 - `relative mx-auto` (centered)
-- Contains: nav links (home/social), desktop apps icons, card style toggle, wallpaper toggle
+- Contains: nav links (home/social), desktop apps icons, card style toggle, wallpaper toggle (hidden on desktop)
 - App icons appear only in desktop mode
+- ThemeToggle (wallpaper cycler) hidden when `isDesktop` — tooltip says "change theme"
 
 ## Right Docker
 - `absolute right-4`, visible only in desktop mode

@@ -23,7 +23,7 @@ export default function Navbar() {
   const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
   const [searchOpen, setSearchOpen] = useState(false);
   const [hoverZone, setHoverZone] = useState<'left' | 'center' | 'right' | null>(null);
-  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, hasMaximizedWindow } = useWindowManager();
+  const { windows, openWindow, minimizeWindow, restoreWindow, focusWindow, isAppOpen, hasMaximizedWindow, activeScreen, setActiveScreen, screenWindows } = useWindowManager();
 
   const hasVisibleWindows = windows.some(w => !w.minimized);
   const dockersHidden = isDesktop && (hasMaximizedWindow || hasVisibleWindows);
@@ -55,14 +55,7 @@ export default function Navbar() {
   }, [dockersHidden]);
 
   const handleAppClick = (app: typeof APPS[number]) => {
-    const win = windows.find(w => w.appId === app.id);
-    if (!win) {
-      openWindow(app);
-    } else if (win.minimized) {
-      restoreWindow(win.id);
-    } else {
-      minimizeWindow(win.id);
-    }
+    openWindow(app);
   };
 
   const APP_ICONS: Record<string, React.ElementType> = {
@@ -114,6 +107,42 @@ export default function Navbar() {
               <TooltipArrow className="fill-primary" />
             </TooltipContent>
           </Tooltip>
+          {isDesktop && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-2/3 m-auto w-px bg-border"
+              />
+              {[0, 1, 2].map((screenIndex) => (
+                <Tooltip key={`screen-${screenIndex}`}>
+                  <TooltipTrigger asChild>
+                    <button onClick={() => setActiveScreen(screenIndex)} className="relative">
+                      <DockIcon className={cn(
+                        "rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors font-mono text-xs",
+                        activeScreen === screenIndex && "text-foreground bg-muted"
+                      )}>
+                        {screenIndex + 1}
+                      </DockIcon>
+                      {screenWindows[screenIndex].length > 0 && (
+                        <span className={cn(
+                          "absolute -top-0.5 -right-0.5 size-2 rounded-full border border-background transition-colors",
+                          activeScreen === screenIndex ? "bg-primary" : "bg-muted-foreground/40"
+                        )} />
+                      )}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    sideOffset={8}
+                    className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                  >
+                    <p>Screen {screenIndex + 1}</p>
+                    <TooltipArrow className="fill-primary" />
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </>
+          )}
         </Dock>
         {isDesktop && (
           <Dock className={cn(
@@ -229,6 +258,7 @@ export default function Navbar() {
         {Object.entries(DATA.contact.social)
           .filter(([_, social]) => social.navbar)
           .filter(([name]) => !isDesktop || !APPS.some(a => a.id === name.toLowerCase()))
+          .filter(([name]) => !isDesktop || (name !== "GitHub" && name !== "email"))
           .map(([name, social], index) => {
             const isExternal = social.url.startsWith("http");
             const IconComponent = social.icon;
@@ -263,25 +293,29 @@ export default function Navbar() {
         <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
           <CardStyleToggle />
         </DockIcon>
-        <Separator
-          orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
-        />
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-              <ThemeToggle className="size-full cursor-pointer" />
-            </DockIcon>
-          </TooltipTrigger>
-          <TooltipContent
-            side="top"
-            sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-          >
-            <p>Wallpaper</p>
-            <TooltipArrow className="fill-primary" />
-          </TooltipContent>
-        </Tooltip>
+        {!isDesktop && (
+          <>
+            <Separator
+              orientation="vertical"
+              className="h-2/3 m-auto w-px bg-border"
+            />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <ThemeToggle className="size-full cursor-pointer" />
+                </DockIcon>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                sideOffset={8}
+                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              >
+                <p>change theme</p>
+                <TooltipArrow className="fill-primary" />
+              </TooltipContent>
+            </Tooltip>
+          </>
+        )}
       </Dock>
     </div>
     </>

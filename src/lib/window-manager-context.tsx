@@ -66,7 +66,6 @@ function computeTilingLayout(index: number, count: number, vw: number, vh: numbe
   }
 
   const cols = Math.ceil(Math.sqrt(count));
-
   const rows = Math.ceil(count / cols);
   const cellW = (vw - (cols + 1) * m) / cols;
   const cellH = (vh - (rows + 1) * m) / rows;
@@ -91,10 +90,21 @@ function retileWindows(windows: AppWindow[], vw: number, vh: number): AppWindow[
   });
 }
 
-interface WMState {
+interface ScreenState {
   windows: AppWindow[];
   zTop: number;
   idCounter: number;
+}
+
+function emptyScreen(): ScreenState {
+  return { windows: [], zTop: 0, idCounter: 0 };
+}
+
+interface WMState {
+  screens: [ScreenState, ScreenState, ScreenState];
+  activeScreen: number;
+  isTransitioning: boolean;
+  transitionDirection: 'left' | 'right' | null;
 }
 
 type WMAction =
@@ -106,115 +116,226 @@ type WMAction =
   | { type: "MOVE"; id: string; x: number; y: number }
   | { type: "RESIZE"; id: string; x: number; y: number; width: number; height: number }
   | { type: "MAXIMIZE"; id: string; vw: number; vh: number }
-  | { type: "RESIZE_MAXIMIZED_AND_RETILE"; vw: number; vh: number };
+  | { type: "RESIZE_MAXIMIZED_AND_RETILE"; vw: number; vh: number }
+  | { type: "SET_ACTIVE_SCREEN"; index: number; vw: number; vh: number }
+  | { type: "TRANSFER_WINDOW"; appId: string; toScreen: number; vw: number; vh: number }
+  | { type: "TRANSITION_END" };
+
+function vp() {
+  return {
+    vw: typeof window !== "undefined" ? window.innerWidth : 1920,
+    vh: typeof window !== "undefined" ? window.innerHeight : 1080,
+  };
+}
+
+function withActiveScreen(state: WMState, fn: (screen: ScreenState) => ScreenState): WMState {
+  const screens = [...state.screens] as [ScreenState, ScreenState, ScreenState];
+  screens[state.activeScreen] = fn(screens[state.activeScreen]);
+  return { ...state, screens };
+}
+
+function handleTransfer(
+  state: WMState,
+  appId: string,
+  fromScreen: number,
+  toScreen: number,
+  vw: number,
+  vh: number
+): WMState {
+  const win = state.screens[fromScreen].windows.find(w => w.appId === appId);
+  if (!win) return state;
+
+  const newScreens = [...state.screens] as [ScreenState, ScreenState, ScreenState];
+
+  newScreens[fromScreen] = {
+    ...newScreens[fromScreen],
+    windows: newScreens[fromScreen].windows.filter(w => w.id !== win.id),
+  };
+
+  const tgt = { ...newScreens[toScreen] };
+  const newId = `win-${tgt.idCounter}`;
+  const transferredWin: AppWindow = {
+    ...win,
+    id: newId,
+    zIndex: tgt.zTop + 1,
+    minimized: false,
+  };
+
+  tgt.windows = retileWindows([...tgt.windows, transferredWin], vw, vh);
+  tgt.zTop++;
+  tgt.idCounter++;
+  newScreens[toScreen] = tgt;
+
+  return { ...state, screens: newScreens };
+}
 
 function wmReducer(state: WMState, action: WMAction): WMState {
-  const vw = action.type === "OPEN" || action.type === "CLOSE"
-    ? (typeof window !== "undefined" ? window.innerWidth : 1920)
-    : "vw" in action ? action.vw : 1920;
-  const vh = action.type === "OPEN" || action.type === "CLOSE"
-    ? (typeof window !== "undefined" ? window.innerHeight : 1080)
-    : "vh" in action ? action.vh : 1080;
-
   switch (action.type) {
-    case "OPEN": {
-      const existing = state.windows.find((w) => w.appId === action.appId);
-      if (existing) {
-        if (!existing.minimized) return state;
-        const updated = state.windows.map((w) =>
-          w.id === existing.id ? { ...w, minimized: false, zIndex: state.zTop + 1 } : w
-        );
-        return {
-          ...state,
-          zTop: state.zTop + 1,
-          windows: retileWindows(updated, vw, vh),
-        };
+    case "SET_ACTIVE_SCREEN": {
+      if (action.index === state.activeScreen || action.index < 0 || action.index > 2) return state;
+      const direction = action.index > state.activeScreen ? 'right' : 'left';
+      return { ...state, activeScreen: action.index, isTransitioning: true, transitionDirection: direction };
+    }
+
+    case "TRANSITION_END":
+      return { ...state, isTransitioning: false, transitionDirection: null };
+
+    case "TRANSFER_WINDOW": {
+      const { appId, toScreen, vw, vh } = action;
+      let fromScreen = -1;
+      for (let i = 0; i < 3; i++) {
+        if (state.screens[i].windows.some(w => w.appId === appId)) {
+          fromScreen = i;
+          break;
+        }
       }
-      const newZ = state.zTop + 1;
-      const newWin: AppWindow = {
-        id: `win-${state.idCounter}`,
-        appId: action.appId,
-        title: action.title,
-        x: 0, y: 0, width: 520, height: 400,
-        minimized: false, maximized: false, prevRect: null, zIndex: newZ,
-      };
-      const updated = [...state.windows, newWin];
-      return {
-        windows: retileWindows(updated, vw, vh),
-        zTop: newZ,
-        idCounter: state.idCounter + 1,
-      };
+      if (fromScreen < 0) return state;
+      return handleTransfer(state, appId, fromScreen, toScreen, vw, vh);
     }
+
+    case "OPEN": {
+      const { appId, title } = action;
+      const { vw, vh } = vp();
+
+      for (let i = 0; i < 3; i++) {
+        const existing = state.screens[i].windows.find(w => w.appId === appId);
+        if (existing) {
+          if (i === state.activeScreen) {
+            return withActiveScreen(state, screen => {
+              if (!existing.minimized) {
+                return {
+                  ...screen,
+                  windows: screen.windows.map(w =>
+                    w.id === existing.id ? { ...w, minimized: true } : w
+                  ),
+                };
+              }
+              const updated = screen.windows.map(w =>
+                w.id === existing.id
+                  ? { ...w, minimized: false, zIndex: screen.zTop + 1 }
+                  : w
+              );
+              return {
+                ...screen,
+                windows: retileWindows(updated, vw, vh),
+                zTop: screen.zTop + 1,
+              };
+            });
+          }
+          return handleTransfer(state, appId, i, state.activeScreen, vw, vh);
+        }
+      }
+
+      return withActiveScreen(state, screen => {
+        const newZ = screen.zTop + 1;
+        const newWin: AppWindow = {
+          id: `win-${screen.idCounter}`,
+          appId,
+          title,
+          x: 0, y: 0, width: 520, height: 400,
+          minimized: false, maximized: false, prevRect: null, zIndex: newZ,
+        };
+        return {
+          ...screen,
+          windows: retileWindows([...screen.windows, newWin], vw, vh),
+          zTop: newZ,
+          idCounter: screen.idCounter + 1,
+        };
+      });
+    }
+
     case "CLOSE": {
-      const updated = state.windows.filter((w) => w.id !== action.id);
-      return {
-        ...state,
-        windows: retileWindows(updated, vw, vh),
-      };
+      const { vw, vh } = vp();
+      return withActiveScreen(state, screen => ({
+        ...screen,
+        windows: retileWindows(screen.windows.filter(w => w.id !== action.id), vw, vh),
+      }));
     }
-    case "MINIMIZE": {
-      const updated = state.windows.map((w) =>
-        w.id === action.id ? { ...w, minimized: true } : w
-      );
-      return {
-        ...state,
-        windows: retileWindows(updated, action.vw, action.vh),
-      };
-    }
+
+    case "MINIMIZE":
+      return withActiveScreen(state, screen => ({
+        ...screen,
+        windows: retileWindows(
+          screen.windows.map(w =>
+            w.id === action.id ? { ...w, minimized: true } : w
+          ),
+          action.vw,
+          action.vh,
+        ),
+      }));
+
     case "RESTORE": {
-      const newZ = state.zTop + 1;
-      const updated = state.windows.map((w) =>
-        w.id === action.id ? { ...w, minimized: false, zIndex: newZ } : w
-      );
-      return {
-        ...state,
+      const newZ = state.screens[state.activeScreen].zTop + 1;
+      return withActiveScreen(state, screen => ({
+        ...screen,
         zTop: newZ,
-        windows: retileWindows(updated, action.vw, action.vh),
-      };
+        windows: retileWindows(
+          screen.windows.map(w =>
+            w.id === action.id ? { ...w, minimized: false, zIndex: newZ } : w
+          ),
+          action.vw,
+          action.vh,
+        ),
+      }));
     }
+
     case "FOCUS": {
-      const win = state.windows.find((w) => w.id === action.id);
-      if (!win || win.zIndex === state.zTop) return state;
-      const newZ = state.zTop + 1;
-      return {
-        ...state,
+      const screen = state.screens[state.activeScreen];
+      const win = screen.windows.find(w => w.id === action.id);
+      if (!win || win.zIndex === screen.zTop) return state;
+      const newZ = screen.zTop + 1;
+      return withActiveScreen(state, s => ({
+        ...s,
         zTop: newZ,
-        windows: state.windows.map((w) =>
+        windows: s.windows.map(w =>
           w.id === action.id ? { ...w, zIndex: newZ } : w
         ),
-      };
+      }));
     }
+
     case "MOVE":
-      return {
-        ...state,
-        windows: state.windows.map((w) =>
+      return withActiveScreen(state, screen => ({
+        ...screen,
+        windows: screen.windows.map(w =>
           w.id === action.id ? { ...w, x: action.x, y: action.y } : w
         ),
-      };
+      }));
+
     case "RESIZE":
-      return {
-        ...state,
-        windows: state.windows.map((w) =>
+      return withActiveScreen(state, screen => ({
+        ...screen,
+        windows: screen.windows.map(w =>
           w.id === action.id
             ? { ...w, x: action.x, y: action.y, width: action.width, height: action.height }
             : w
         ),
-      };
+      }));
+
     case "MAXIMIZE": {
-      const win = state.windows.find((w) => w.id === action.id);
+      const screen = state.screens[state.activeScreen];
+      const win = screen.windows.find(w => w.id === action.id);
       if (!win) return state;
       if (win.maximized) {
-        const updated = state.windows.map((w) =>
-          w.id === action.id ? { ...w, maximized: false, prevRect: null } : w
-        );
-        return {
-          ...state,
-          windows: retileWindows(updated, action.vw, action.vh),
-        };
+        return withActiveScreen(state, s => ({
+          ...s,
+          windows: s.windows.map(w =>
+            w.id === action.id
+              ? {
+                  ...w,
+                  maximized: false,
+                  prevRect: null,
+                  x: w.prevRect?.x ?? MAX_MARGIN,
+                  y: w.prevRect?.y ?? MAX_MARGIN,
+                  width: w.prevRect?.width ?? 520,
+                  height: w.prevRect?.height ?? 400,
+                }
+              : w
+          ),
+        }));
       }
-      return {
-        ...state,
-        windows: state.windows.map((w) =>
+      return withActiveScreen(state, s => ({
+        ...s,
+        windows: s.windows.map(w =>
           w.id === action.id
             ? {
                 ...w,
@@ -227,21 +348,24 @@ function wmReducer(state: WMState, action: WMAction): WMState {
               }
             : w
         ),
-      };
+      }));
     }
+
     case "RESIZE_MAXIMIZED_AND_RETILE": {
-      return {
-        ...state,
+      const { vw, vh } = action;
+      const newScreens = state.screens.map(screen => ({
+        ...screen,
         windows: retileWindows(
-          state.windows.map((w) =>
+          screen.windows.map(w =>
             w.maximized
-              ? { ...w, x: MAX_MARGIN, y: MAX_MARGIN, width: action.vw - MAX_MARGIN * 2, height: action.vh - MAX_MARGIN * 2 }
+              ? { ...w, x: MAX_MARGIN, y: MAX_MARGIN, width: vw - MAX_MARGIN * 2, height: vh - MAX_MARGIN * 2 }
               : w
           ),
-          action.vw,
-          action.vh,
+          vw,
+          vh,
         ),
-      };
+      })) as [ScreenState, ScreenState, ScreenState];
+      return { ...state, screens: newScreens };
     }
   }
 }
@@ -261,19 +385,28 @@ interface WMContextType {
   getWindow: (appId: string) => AppWindow | undefined;
   hasMaximizedWindow: boolean;
   retileAll: () => void;
+  activeScreen: number;
+  setActiveScreen: (index: number) => void;
+  screenWindows: AppWindow[][];
+  isTransitioning: boolean;
+  transitionDirection: 'left' | 'right' | null;
+  resetTransition: () => void;
 }
 
 const WMContext = createContext<WMContextType | null>(null);
 
 export function WindowManagerProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wmReducer, {
-    windows: [],
-    zTop: 0,
-    idCounter: 0,
+    screens: [emptyScreen(), emptyScreen(), emptyScreen()],
+    activeScreen: 0,
+    isTransitioning: false,
+    transitionDirection: null,
   });
 
   const getVw = () => (typeof window !== "undefined" ? window.innerWidth : 1920);
   const getVh = () => (typeof window !== "undefined" ? window.innerHeight : 1080);
+
+  const activeWindows = state.screens[state.activeScreen].windows;
 
   const openWindow = useCallback(
     (app: AppDef) => dispatch({ type: "OPEN", appId: app.id, title: app.title }),
@@ -307,33 +440,45 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   );
   const toggleMaximize = useCallback(
     (id: string) => {
-      const win = state.windows.find((w) => w.id === id);
+      const win = activeWindows.find(w => w.id === id);
       if (!win) return;
       dispatch({ type: "MAXIMIZE", id, vw: getVw(), vh: getVh() });
     },
-    [state.windows]
+    [activeWindows]
   );
   const isAppOpen = useCallback(
-    (appId: string) => state.windows.some((w) => w.appId === appId),
-    [state.windows]
+    (appId: string) => activeWindows.some(w => w.appId === appId),
+    [activeWindows]
   );
   const isAppMinimized = useCallback(
     (appId: string) => {
-      const win = state.windows.find((w) => w.appId === appId);
+      const win = activeWindows.find(w => w.appId === appId);
       return win ? win.minimized : false;
     },
-    [state.windows]
+    [activeWindows]
   );
   const getWindow = useCallback(
-    (appId: string) => state.windows.find((w) => w.appId === appId),
-    [state.windows]
+    (appId: string) => activeWindows.find(w => w.appId === appId),
+    [activeWindows]
   );
-  const hasMaximizedWindow = state.windows.some((w) => w.maximized);
+  const hasMaximizedWindow = activeWindows.some(w => w.maximized);
 
   const retileAll = useCallback(
     () => dispatch({ type: "RESIZE_MAXIMIZED_AND_RETILE", vw: getVw(), vh: getVh() }),
     []
   );
+
+  const setActiveScreen = useCallback(
+    (index: number) => dispatch({ type: "SET_ACTIVE_SCREEN", index, vw: getVw(), vh: getVh() }),
+    []
+  );
+
+  const resetTransition = useCallback(
+    () => dispatch({ type: "TRANSITION_END" }),
+    []
+  );
+
+  const screenWindows = state.screens.map(s => s.windows);
 
   useEffect(() => {
     const handleResize = () => {
@@ -346,7 +491,7 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   return (
     <WMContext.Provider
       value={{
-        windows: state.windows,
+        windows: activeWindows,
         openWindow,
         closeWindow,
         minimizeWindow,
@@ -360,6 +505,12 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
         getWindow,
         hasMaximizedWindow,
         retileAll,
+        activeScreen: state.activeScreen,
+        setActiveScreen,
+        screenWindows,
+        isTransitioning: state.isTransitioning,
+        transitionDirection: state.transitionDirection,
+        resetTransition,
       }}
     >
       {children}

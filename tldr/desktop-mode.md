@@ -2,6 +2,12 @@
 
 Toggle in navbar left dock → sets `isDesktop` in `DesktopModeProvider`
 
+## Screens (Virtual Desktops)
+- 3 screens managed in `window-manager-context.tsx` reducer
+- Left dock shows 1/2/3 icons with separator after desktop toggle
+- Each screen has independent window state (preserved on switch)
+- Apps transfer between screens on click (see `tldr/screens.md`)
+
 ## Behavior
 - **Normal mode**: centered column `max-w-2xl`, sections are static cards
 - **Desktop mode**: full-screen windowed overlay, sections become draggable/resizable windows
@@ -36,7 +42,13 @@ Auto-tiles ALL non-maximized, non-minimized windows in a snake pattern:
 - **MAXIMIZE (unmax)** → exits fullscreen → re-enters tile layout
 - **window resize** → all non-maximized windows re-tile to new viewport
 
-### Dock Auto-Hide
+### Screen Switch Animation
+- `AnimatePresence mode="wait"` in `DesktopLayout`
+- Spring slide: stiffness 250, damping 30
+- Higher screen # → slides in from right, lower from left
+- `onAnimationComplete` resets transition state
+
+## Dock Auto-Hide
 - Dock hides when any visible (non-minimized) windows exist — same behavior as maximized
 - `dockersHidden = isDesktop && (hasMaximizedWindow || hasVisibleWindows)`
 - Bottom 100px hover reveals dock in 3 zones (left 25%, center 50%, right 25%)
