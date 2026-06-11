@@ -41,7 +41,7 @@ export default function Navbar() {
     youtube: Play,
     reading: BookOpen,
     listening: Music,
-    projects: Code,
+    vercel: Code,
     threads: MessageCircle,
     support: Heart,
   };

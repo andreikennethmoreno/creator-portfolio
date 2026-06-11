@@ -13,7 +13,7 @@ export const APPS: AppDef[] = [
   { id: "youtube", title: "YouTube" },
   { id: "reading", title: "Reading" },
   { id: "listening", title: "Listening" },
-  { id: "projects", title: "Projects" },
+  { id: "vercel", title: "Projects" },
   { id: "threads", title: "Feed" },
   { id: "support", title: "Support" },
 ];
@@ -27,6 +27,8 @@ export interface AppWindow {
   width: number;
   height: number;
   minimized: boolean;
+  maximized: boolean;
+  prevRect: { x: number; y: number; width: number; height: number } | null;
   zIndex: number;
 }
 
@@ -43,7 +45,8 @@ type WMAction =
   | { type: "RESTORE"; id: string }
   | { type: "FOCUS"; id: string }
   | { type: "MOVE"; id: string; x: number; y: number }
-  | { type: "RESIZE"; id: string; x: number; y: number; width: number; height: number };
+  | { type: "RESIZE"; id: string; x: number; y: number; width: number; height: number }
+  | { type: "MAXIMIZE"; id: string; vw: number; vh: number };
 
 function wmReducer(state: WMState, action: WMAction): WMState {
   switch (action.type) {
@@ -74,6 +77,8 @@ function wmReducer(state: WMState, action: WMAction): WMState {
         width: 520,
         height: 400,
         minimized: false,
+        maximized: false,
+        prevRect: null,
         zIndex: newZ,
       };
       return {
@@ -126,12 +131,50 @@ function wmReducer(state: WMState, action: WMAction): WMState {
     case "RESIZE":
       return {
         ...state,
-        windows: state.windows.map((w) =>
+        windows:         state.windows.map((w) =>
           w.id === action.id
             ? { ...w, x: action.x, y: action.y, width: action.width, height: action.height }
             : w
         ),
       };
+    case "MAXIMIZE": {
+      const win = state.windows.find((w) => w.id === action.id);
+      if (!win) return state;
+      if (win.maximized) {
+        return {
+          ...state,
+          windows: state.windows.map((w) =>
+            w.id === action.id
+              ? {
+                  ...w,
+                  maximized: false,
+                  x: w.prevRect?.x ?? 80,
+                  y: w.prevRect?.y ?? 60,
+                  width: w.prevRect?.width ?? 520,
+                  height: w.prevRect?.height ?? 400,
+                  prevRect: null,
+                }
+              : w
+          ),
+        };
+      }
+      return {
+        ...state,
+        windows: state.windows.map((w) =>
+          w.id === action.id
+            ? {
+                ...w,
+                maximized: true,
+                prevRect: { x: w.x, y: w.y, width: w.width, height: w.height },
+                x: 0,
+                y: 0,
+                width: action.vw,
+                height: action.vh,
+              }
+            : w
+        ),
+      };
+    }
   }
 }
 
@@ -144,12 +187,17 @@ interface WMContextType {
   focusWindow: (id: string) => void;
   moveWindow: (id: string, x: number, y: number) => void;
   resizeWindow: (id: string, x: number, y: number, w: number, h: number) => void;
+  toggleMaximize: (id: string) => void;
   isAppOpen: (appId: string) => boolean;
   isAppMinimized: (appId: string) => boolean;
   getWindow: (appId: string) => AppWindow | undefined;
 }
 
 const WMContext = createContext<WMContextType | null>(null);
+
+function clamp(v: number, min: number, max: number) {
+  return Math.max(min, Math.min(v, max));
+}
 
 export function WindowManagerProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wmReducer, {
@@ -188,6 +236,18 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "RESIZE", id, x, y, width, height }),
     []
   );
+  const toggleMaximize = useCallback(
+    (id: string) => {
+      const win = state.windows.find((w) => w.id === id);
+      if (!win) return;
+      if (win.maximized) {
+        dispatch({ type: "MAXIMIZE", id, vw: 0, vh: 0 });
+      } else {
+        dispatch({ type: "MAXIMIZE", id, vw: window.innerWidth, vh: window.innerHeight });
+      }
+    },
+    [state.windows]
+  );
   const isAppOpen = useCallback(
     (appId: string) => state.windows.some((w) => w.appId === appId),
     [state.windows]
@@ -215,6 +275,7 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
         focusWindow,
         moveWindow,
         resizeWindow,
+        toggleMaximize,
         isAppOpen,
         isAppMinimized,
         getWindow,

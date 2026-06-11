@@ -12,7 +12,7 @@ interface DesktopPanelProps {
 
 export function DesktopPanel({ children, sectionId }: DesktopPanelProps) {
   const { isDesktop } = useDesktopMode()
-  const { getWindow, focusWindow, closeWindow, minimizeWindow, moveWindow, resizeWindow } = useWindowManager()
+  const { getWindow, focusWindow, closeWindow, minimizeWindow, moveWindow, resizeWindow, toggleMaximize } = useWindowManager()
 
   if (!isDesktop) return <>{children}</>
   if (!sectionId) return null
@@ -29,6 +29,7 @@ export function DesktopPanel({ children, sectionId }: DesktopPanelProps) {
         onMinimize: () => minimizeWindow(win.id),
         onMove: (x: number, y: number) => moveWindow(win.id, x, y),
         onResizeRect: (x: number, y: number, w: number, h: number) => resizeWindow(win.id, x, y, w, h),
+        onMaximize: () => toggleMaximize(win.id),
         onFocus: () => focusWindow(win.id),
       }}
     >

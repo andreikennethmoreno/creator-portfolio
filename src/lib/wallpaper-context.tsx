@@ -57,6 +57,11 @@ export function WallpaperProvider({
 
   useEffect(() => {
     extractAndApply(defaultUrl).then(setPalette).catch(console.error);
+    WALLPAPERS.forEach((w) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = w.url;
+    });
   }, []);
 
   return (

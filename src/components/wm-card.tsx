@@ -32,13 +32,15 @@ const EDGES: { dir: EdgeDir; className: string }[] = [
 export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: WMCardProps) {
   const { style } = useCardStyle();
   const isGlossy = style === "glossy";
-  const { isWindow, win, onClose, onMove, onResizeRect, onFocus } = useCardWindow();
+  const { isWindow, win, onClose, onMinimize, onMaximize, onMove, onResizeRect, onFocus } = useCardWindow();
 
   const { onMouseDown: onTitlebarMouseDown } = useDrag(
     win?.x ?? 0,
     win?.y ?? 0,
     onMove ?? (() => {}),
     onFocus,
+    win?.width,
+    win?.height,
   );
 
   const onEdgeResize = useCallback(
@@ -67,6 +69,13 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
         if (dir.includes("s")) nh = Math.max(120, oh + dy);
         if (dir.includes("n")) { nh = Math.max(120, oh - dy); ny = oy + oh - nh; }
 
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        if (nx < 0) { nx = 0; }
+        if (ny < 0) { ny = 0; }
+        if (nx + nw > vw) { nw = Math.max(200, vw - nx); }
+        if (ny + nh > vh) { nh = Math.max(120, vh - ny); }
+
         onResizeRect(nx, ny, nw, nh);
       };
 
@@ -80,6 +89,8 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
     },
     [onResizeRect, win, onFocus],
   );
+
+  if (isWindow && win?.minimized) return null;
 
   return (
     <div
@@ -111,13 +122,18 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
         )}
         onMouseDown={isWindow ? (e) => { onFocus?.(); onTitlebarMouseDown(e); } : undefined}
       >
-        <div className="flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-foreground/15" />
-          <span className="size-2 rounded-full bg-foreground/15" />
-          <span className="size-2 rounded-full bg-primary/50" />
-        </div>
+        {!isWindow && (
+          <div className="flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-foreground/15" />
+            <span className="size-2 rounded-full bg-foreground/15" />
+            <span className="size-2 rounded-full bg-primary/50" />
+          </div>
+        )}
 
-        <span className="font-mono text-[11px] text-foreground/50 tracking-wide select-none">
+        <span className={cn(
+          "font-mono text-[11px] tracking-wide select-none",
+          isWindow ? "text-foreground/70" : "text-foreground/50"
+        )}>
           {title}
         </span>
 
@@ -129,13 +145,29 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
             </span>
           )}
           {isWindow ? (
-            <button
-              onClick={(e) => { e.stopPropagation(); onClose?.() }}
-              className="font-mono text-[11px] text-foreground/40 hover:text-destructive transition-colors leading-none cursor-pointer"
-              aria-label="Close window"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={(e) => { e.stopPropagation(); onMinimize?.() }}
+                className="font-mono text-[13px] text-foreground/40 hover:text-foreground transition-colors leading-none cursor-pointer px-0.5"
+                aria-label="Minimize window"
+              >
+                ─
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onMaximize?.() }}
+                className="font-mono text-[13px] text-foreground/40 hover:text-foreground transition-colors leading-none cursor-pointer px-0.5"
+                aria-label="Maximize window"
+              >
+                +
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onClose?.() }}
+                className="font-mono text-[13px] text-foreground/40 hover:text-destructive transition-colors leading-none cursor-pointer px-0.5"
+                aria-label="Close window"
+              >
+                ✕
+              </button>
+            </div>
           ) : href ? (
             <a
               href={href}

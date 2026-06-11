@@ -8,6 +8,7 @@ export type CardWindowCtx = {
   win: AppWindow | null;
   onClose?: () => void;
   onMinimize?: () => void;
+  onMaximize?: () => void;
   onMove?: (x: number, y: number) => void;
   onResizeRect?: (x: number, y: number, w: number, h: number) => void;
   onFocus?: () => void;

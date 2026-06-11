@@ -7,6 +7,8 @@ export function useDrag(
   currentY: number,
   onMove: (x: number, y: number) => void,
   onStart?: () => void,
+  width?: number,
+  height?: number,
 ) {
   const startRef = useRef({ mx: 0, my: 0, ox: 0, oy: 0 });
 
@@ -17,10 +19,17 @@ export function useDrag(
       onStart?.();
 
       const handleMove = (me: MouseEvent) => {
-        onMove(
-          startRef.current.ox + me.clientX - startRef.current.mx,
-          startRef.current.oy + me.clientY - startRef.current.my,
-        );
+        let newX = startRef.current.ox + me.clientX - startRef.current.mx;
+        let newY = startRef.current.oy + me.clientY - startRef.current.my;
+
+        if (width !== undefined && height !== undefined) {
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          newX = Math.max(0, Math.min(newX, vw - width));
+          newY = Math.max(0, Math.min(newY, vh - height));
+        }
+
+        onMove(newX, newY);
       };
 
       const handleUp = () => {
@@ -31,7 +40,7 @@ export function useDrag(
       document.addEventListener("mousemove", handleMove);
       document.addEventListener("mouseup", handleUp);
     },
-    [currentX, currentY, onMove, onStart],
+    [currentX, currentY, onMove, onStart, width, height],
   );
 
   return { onMouseDown };

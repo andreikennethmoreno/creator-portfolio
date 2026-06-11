@@ -34,7 +34,7 @@ export default async function Page() {
         <DesktopPanel sectionId="listening">
           <LastFmCard />
         </DesktopPanel>
-        <DesktopPanel sectionId="projects">
+        <DesktopPanel sectionId="vercel">
           <VercelProjects projects={projects} />
         </DesktopPanel>
         <DesktopPanel sectionId="threads">

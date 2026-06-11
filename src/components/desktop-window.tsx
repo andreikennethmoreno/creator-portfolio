@@ -12,10 +12,12 @@ interface DesktopWindowProps {
 }
 
 export function DesktopWindow({ window: win, children, className }: DesktopWindowProps) {
-  const { focusWindow, moveWindow, closeWindow, minimizeWindow } = useWindowManager();
+  const { focusWindow, moveWindow, closeWindow, minimizeWindow, toggleMaximize } = useWindowManager();
+
+  if (win.minimized) return null;
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const drag = useDrag(win.x, win.y, (x, y) => moveWindow(win.id, x, y), () => focusWindow(win.id));
+  const drag = useDrag(win.x, win.y, (x, y) => moveWindow(win.id, x, y), () => focusWindow(win.id), win.width, win.height);
 
   useEffect(() => {
     const el = contentRef.current;
@@ -63,7 +65,12 @@ export function DesktopWindow({ window: win, children, className }: DesktopWindo
           >
             <span className="text-[7px] text-amber-950 opacity-0 group-hover:opacity-100 transition-opacity">─</span>
           </button>
-          <span className="size-3 rounded-full bg-emerald-500/70 hover:bg-emerald-500 transition-colors" />
+          <button
+            className="size-3 rounded-full bg-emerald-500/70 hover:bg-emerald-500 transition-colors flex items-center justify-center"
+            onClick={(e) => { e.stopPropagation(); toggleMaximize(win.id); }}
+          >
+            <span className="text-[7px] text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity">+</span>
+          </button>
         </div>
         <span className="flex-1 text-center text-[11px] font-mono text-foreground/60 truncate mr-8">
           {win.title}
