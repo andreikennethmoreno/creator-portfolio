@@ -8,16 +8,16 @@ export async function getYouTubeVideoId(
     return null
   }
 
-  const q = encodeURIComponent(`${trackName} ${artist} official audio`)
+  const q = encodeURIComponent(`${trackName} ${artist}`)
   const res = await fetch(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&videoCategoryId=10&maxResults=1&key=${key}`,
+    `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&maxResults=1&key=${key}`,
     { next: { revalidate: 3600 } }
   )
 
   if (!res.ok) {
     const body = await res.text()
     console.warn('YouTube search failed:', res.status, body)
-    return null
+    throw new Error(`YouTube search failed: ${res.status}`)
   }
 
   const data = await res.json()

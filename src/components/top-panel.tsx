@@ -125,7 +125,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
       >
         <div
           className={cn(
-            "overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full",
+            "overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full",
             open ? "max-h-[60vh] opacity-100" : "max-h-0 opacity-0"
           )}
         >
@@ -136,7 +136,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "website"
-                    ? "bg-primary/20 text-primary"
+                    ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -148,7 +148,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "tech"
-                    ? "bg-primary/20 text-primary"
+                    ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -160,7 +160,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "music"
-                    ? "bg-primary/20 text-primary"
+                    ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -172,7 +172,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "about"
-                    ? "bg-primary/20 text-primary"
+                    ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >

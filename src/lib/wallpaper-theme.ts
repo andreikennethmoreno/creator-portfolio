@@ -119,6 +119,13 @@ function lighten(rgb: RGB, amount: number): RGB {
   return rgb.map(v => Math.min(255, Math.round(v + (255 - v) * amount))) as RGB;
 }
 
+function clampOklchLightness(css: string, minL: number, maxL: number): string {
+  const match = css.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+  if (!match) return css;
+  const l = Math.max(minL, Math.min(maxL, parseFloat(match[1])));
+  return `oklch(${l} ${match[2]} ${match[3]})`;
+}
+
 export function buildPalette(img: HTMLImageElement): Palette {
   const pixels = getImagePixels(img);
   const colors = kMeans(pixels, 16);
@@ -169,6 +176,9 @@ export function applyPaletteToDOM(palette: Palette) {
 
   root.classList.toggle("dark", palette.isDark);
 
+  const accent = clampOklchLightness(palette.accent, palette.isDark ? 0.25 : 0, palette.isDark ? 1 : 0.65);
+  const primary = clampOklchLightness(palette.primary, palette.isDark ? 0.40 : 0, palette.isDark ? 1 : 0.65);
+
   const vars: Record<string, string> = {
     "--background":           palette.bg,
     "--foreground":           palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
@@ -176,22 +186,22 @@ export function applyPaletteToDOM(palette: Palette) {
     "--card-foreground":      palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
     "--popover":              palette.card,
     "--popover-foreground":   palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
-    "--primary":              palette.primary,
+    "--primary":              primary,
     "--primary-foreground":   palette.isDark ? "oklch(0.98 0 0)" : "oklch(0.05 0 0)",
-    "--secondary":            palette.accent,
+    "--secondary":            accent,
     "--secondary-foreground": palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
     "--muted":                palette.muted,
     "--muted-foreground":     palette.isDark ? "oklch(0.68 0 0)" : "oklch(0.42 0 0)",
-    "--accent":               palette.accent,
-    "--accent-foreground":    palette.fg,
+    "--accent":               accent,
+    "--accent-foreground":    palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
     "--border":               palette.border,
     "--input":                palette.card,
-    "--ring":                 palette.primary,
+    "--ring":                 primary,
     "--sidebar":              palette.bgAlt,
-    "--sidebar-foreground":   palette.fg,
-    "--sidebar-primary":      palette.primary,
+    "--sidebar-foreground":   palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
+    "--sidebar-primary":      primary,
     "--sidebar-border":       palette.border,
-    "--sidebar-ring":         palette.primary,
+    "--sidebar-ring":         primary,
   };
 
   for (const [prop, value] of Object.entries(vars)) {

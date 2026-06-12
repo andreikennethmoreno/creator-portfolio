@@ -5,24 +5,6 @@ import { useEffect, useState } from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
-function formatDuration(iso: string): string {
-  const match = iso.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-  if (!match) return "";
-  const hours = match[1] ? parseInt(match[1]) : 0;
-  const minutes = match[2] ? parseInt(match[2]) : 0;
-  const seconds = match[3] ? parseInt(match[3]) : 0;
-  if (hours > 0) {
-    return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-  }
-  return `${minutes}:${String(seconds).padStart(2, "0")}`;
-}
-
-function decodeHtml(text: string): string {
-  const el = document.createElement("textarea");
-  el.innerHTML = text;
-  return el.value;
-}
-
 const fallbackVideos = [
   {
     id: "WrTq4lRHEy8",
@@ -65,37 +47,10 @@ export default function YoutubeSection() {
   const [videos, setVideos] = useState(fallbackVideos);
 
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-    if (!apiKey) return;
-
-    const playlistId = "PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd";
-
-    fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${apiKey}`,
-    )
+    fetch("/api/youtube-playlist")
       .then((res) => res.json())
       .then((data) => {
-        const videoIds = data.items
-          .map((item: any) => item.snippet.resourceId.videoId)
-          .join(",");
-        return fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${apiKey}`,
-        )
-          .then((res) => res.json())
-          .then((details) => ({ playlist: data, details }));
-      })
-      .then(({ playlist, details }) => {
-        const durationMap: Record<string, string> = {};
-        details.items.forEach((item: any) => {
-          durationMap[item.id] = formatDuration(item.contentDetails.duration);
-        });
-        const fetched = playlist.items.map((item: any) => ({
-          id: item.snippet.resourceId.videoId,
-          title: decodeHtml(item.snippet.title),
-          duration: durationMap[item.snippet.resourceId.videoId] || "",
-          href: `https://youtu.be/${item.snippet.resourceId.videoId}`,
-        }));
-        if (fetched.length > 0) setVideos(fetched);
+        if (data.videos && data.videos.length > 0) setVideos(data.videos);
       })
       .catch(() => {});
   }, []);

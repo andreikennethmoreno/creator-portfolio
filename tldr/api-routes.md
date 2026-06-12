@@ -4,7 +4,14 @@
 - **File**: `src/app/api/lastfm/route.ts`
 - Returns `{ track: { name, artist, album, image }, videoId: string | null }`
 - Proxies Last.fm API for recent scrobble
+- Caches YouTube search result per track in memory (avoids re-searching same song on 10s poll)
 - Environment: `LASTFM_API_KEY`, `LASTFM_USERNAME`
+
+## `/api/youtube-playlist` (GET)
+- **File**: `src/app/api/youtube-playlist/route.ts`
+- Returns `{ videos: [{ id, title, duration, href }] }`
+- Fetches playlist items + video durations from YouTube API, cached with `revalidate: 3600`
+- Environment: `YOUTUBE_API_KEY` (or `NEXT_PUBLIC_YOUTUBE_API_KEY`)
 
 ## External API Dependencies
 | Service | Purpose | Auth |

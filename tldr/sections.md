@@ -7,6 +7,12 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 ## Hero
 - Avatar, name, tagline, location, terminal mode toggle
 - Grid background pattern (48px squares, gray 10% opacity)
+- **Terminal**: Click anywhere on the card (titlebar, content, avatar — entire `<section>` area) to open. Boot sequence (100ms interval), then interactive prompt.
+- **Desktop mode**: Terminal fills the entire window (`h-full` on container + terminal body when `isWindow && terminalOpen`)
+- **Commands**: whoami, location, status, contact, links, matrix, clear, exit
+- **`matrix` command**: Takes over the entire terminal body — full-size `<MatrixRain />` overlay. `matrixMode` state toggled on `cmd === "matrix"`, exit via [exit] button or Escape key.
+- **MatrixRain** (`src/components/matrix-rain.tsx`): DOM `<pre>`-based, auto-sized via ResizeObserver (fills parent). Dense straight-down columns (one per char width), katakana + ASCII, `--primary` CSS color with opacity fade trail (7 chars deep). rAF loop, pauses on tab hidden.
+- **"click me" button**: `dark:bg-primary dark:text-primary-foreground bg-primary/15 text-primary-foreground` + `animate-pulse` — full primary bg in dark, subtle tint in light, text always readable (primary-foreground). Pulsating cursor uses `dark:bg-primary-foreground bg-primary-foreground`.
 
 ## Instagram (`instagram-card.tsx`)
 - **Type**: Async server component

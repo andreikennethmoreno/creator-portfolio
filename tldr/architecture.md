@@ -30,3 +30,4 @@ src/
 - **BlurFade stagger**: Scroll-reveal with staggered delays `[0.04, 0.28, ...]`
 - **Dock icons**: Wrapped in `DockIcon` → `Tooltip` → `TooltipTrigger` → `button`/`a`
 - **Desktop mode**: Sections open as draggable/resizable windows with tiling
+- **MatrixRain** (`src/components/matrix-rain.tsx`): DOM `<pre>`-based Matrix rain, auto-sizes to parent via ResizeObserver. Dense straight-down columns with `--primary` CSS var + opacity fade. Used as full terminal takeover overlay when `matrix` command typed in HeroSection.

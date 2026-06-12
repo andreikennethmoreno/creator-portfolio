@@ -2,11 +2,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { WMCard } from "@/components/wm-card";
+import { useCardWindow } from "@/lib/card-window-context";
+import { cn } from "@/lib/utils";
 import { DATA } from "@/data/resume";
+import MatrixRain from "@/components/matrix-rain";
 
 const BOOT_LINES = [
   "booting kenroms.dev...",
@@ -30,15 +34,17 @@ const COMMANDS: Record<string, string> = {
   status: "very active on YouTube and Twitter",
   contact: "kennonirom@gmail.com",
   links: "youtube: @kenroms  |  twitter: @Kenroms  |  github: kenroms",
-  help: "available commands: whoami, location, status, contact, links, clear, exit",
+  help: "available commands: whoami, location, status, contact, links, matrix, clear, exit",
   clear: "__CLEAR__",
   exit: "__EXIT__",
 };
 
-type HistoryEntry = { prompt: string; output: string };
+type HistoryEntry = { prompt: string; output: string | ReactNode };
 
 export default function HeroSection() {
+  const { isWindow } = useCardWindow();
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [matrixMode, setMatrixMode] = useState(false);
   const [bootLines, setBootLines] = useState<string[]>([]);
   const [booted, setBooted] = useState(false);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -48,7 +54,10 @@ export default function HeroSection() {
 
   // Reset + run boot sequence whenever terminal opens
   useEffect(() => {
-    if (!terminalOpen) return;
+    if (!terminalOpen) {
+      setMatrixMode(false);
+      return;
+    }
     setBootLines([]);
     setBooted(false);
     setHistory([]);
@@ -68,6 +77,15 @@ export default function HeroSection() {
 
     return () => clearInterval(interval);
   }, [terminalOpen]);
+
+  useEffect(() => {
+    if (!matrixMode) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMatrixMode(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [matrixMode]);
 
   useEffect(() => {
     const el = bottomRef.current?.closest(".overflow-y-auto");
@@ -91,15 +109,21 @@ export default function HeroSection() {
       return;
     }
 
+    if (cmd === "matrix") {
+      setMatrixMode(true);
+      setInput("");
+      return;
+    }
+
     const output = COMMANDS[cmd] ?? `command not found: ${cmd}. type 'help' for available commands.`;
     setHistory((prev) => [...prev, { prompt: cmd, output }]);
     setInput("");
   };
 
   return (
-    <section id="hero">
+    <section id="hero" onClick={!terminalOpen ? () => setTerminalOpen(true) : undefined}>
       <WMCard
-        title={terminalOpen ? "~/hello — terminal" : "~/hello"}
+        title={terminalOpen ? (matrixMode ? "~/hello — matrix" : "~/hello — terminal") : "~/hello"}
         rightSlot={terminalOpen ? (
           <button
             onClick={(e) => { e.stopPropagation(); setTerminalOpen(false); }}
@@ -109,7 +133,7 @@ export default function HeroSection() {
           </button>
         ) : undefined}
       >
-        <div className="relative min-h-[120px]">
+        <div className={cn("relative", isWindow && terminalOpen ? "h-full" : "min-h-[120px]")}>
 
           {/* ── NORMAL MODE ── */}
           <div
@@ -136,11 +160,11 @@ export default function HeroSection() {
                     {DATA.description}
                     <button
                       onClick={() => setTerminalOpen(true)}
-                      className="inline-flex items-center gap-1 ml-2 px-2 py-0 rounded font-mono text-xs bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-colors cursor-pointer animate-pulse hover:animate-none leading-none align-middle"
+                      className="inline-flex items-center gap-1 ml-2 px-2 py-0 rounded font-mono text-xs dark:bg-primary dark:text-primary-foreground bg-primary/15 text-primary-foreground hover:dark:bg-primary/80 hover:bg-primary/30 transition-colors cursor-pointer animate-pulse leading-none align-middle"
                     >
                       <span>$</span>
                       <span>click me</span>
-                      <span className="inline-block w-1.5 h-3 bg-primary animate-pulse" />
+                      <span className="inline-block w-1.5 h-3 dark:bg-primary-foreground bg-primary-foreground animate-pulse" />
                     </button>
                   </p>
                 </BlurFade>
@@ -156,15 +180,25 @@ export default function HeroSection() {
           >
             {/* Terminal body */}
             <div
-              className="font-mono text-sm min-h-[160px] max-h-[260px] overflow-y-auto cursor-text [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full"
-              onClick={() => inputRef.current?.focus()}
+              className={cn(
+                "font-mono text-sm cursor-text [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full",
+                matrixMode ? "overflow-hidden" : "overflow-y-auto",
+                isWindow && terminalOpen ? "h-full" : "min-h-[160px] max-h-[260px]"
+              )}
+              onClick={() => !matrixMode && inputRef.current?.focus()}
             >
+              {matrixMode ? (
+                <div className="w-full h-full min-h-[160px]">
+                  <MatrixRain />
+                </div>
+              ) : (
+                <>
                 {bootLines.map((line, i) => (
                   <div
                     key={i}
                     className={
                       line?.startsWith(">")
-                        ? "text-primary"
+                        ? "text-primary-foreground"
                         : line === ""
                         ? "h-2"
                         : "text-muted-foreground"
@@ -177,22 +211,26 @@ export default function HeroSection() {
                 {booted && history.map((entry, i) => (
                   <div key={i} className="mt-1">
                     <div>
-                      <span className="text-primary">{PROMPT}</span>
+                      <span className="text-primary-foreground">{PROMPT}</span>
                       <span className="text-foreground">{entry.prompt}</span>
                     </div>
-                    <div className="text-muted-foreground pl-2 whitespace-pre-wrap">{entry.output}</div>
+                    {typeof entry.output === "string" ? (
+                      <div className="text-muted-foreground pl-2 whitespace-pre-wrap">{entry.output}</div>
+                    ) : (
+                      <div className="pl-2">{entry.output}</div>
+                    )}
                   </div>
                 ))}
 
                 {booted && (
                   <div className="flex items-center gap-0 mt-1">
-                    <span className="text-primary shrink-0">{PROMPT}</span>
+                    <span className="text-primary-foreground shrink-0">{PROMPT}</span>
                     <input
                       ref={inputRef}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleCommand}
-                      className="bg-transparent outline-none flex-1 text-foreground caret-primary min-w-0"
+                      className="bg-transparent outline-none flex-1 text-foreground caret-foreground min-w-0"
                       autoComplete="off"
                       spellCheck={false}
                     />
@@ -200,6 +238,8 @@ export default function HeroSection() {
                 )}
 
                 <div ref={bottomRef} />
+                </>
+              )}
               </div>
           </div>
 
