@@ -46,10 +46,10 @@ const SECTIONS = [
   { icon: Play, label: "youtube", sub: "social" },
   { icon: BookOpen, label: "reading", sub: "section" },
   { icon: Music, label: "listening", sub: "section" },
-  { icon: Code, label: "vercel", sub: "section" },
+  { icon: Code, label: "vercel", sub: "section", keywords: ["projects"] },
   { icon: MessageCircle, label: "twitter", sub: "social" },
   { icon: Heart, label: "support", sub: "section" },
-  { icon: Palette, label: "themes", sub: "wallpapers" },
+  { icon: Palette, label: "themes", sub: "wallpapers", keywords: ["wallpaper"] },
 ];
 
 export function SearchExplorer({
@@ -91,7 +91,8 @@ export function SearchExplorer({
 
   const filtered = query.trim()
     ? SECTIONS.filter((s) =>
-        s.label.toLowerCase().includes(query.toLowerCase()),
+        s.label.toLowerCase().includes(query.toLowerCase()) ||
+        s.keywords?.some((k) => k.includes(query.toLowerCase())),
       )
     : null;
 

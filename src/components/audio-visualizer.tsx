@@ -15,6 +15,28 @@ type Props = {
   className?: string;
 };
 
+const CSS_VARS = ["--primary", "--secondary", "--accent", "--chart-1", "--chart-2", "--chart-3", "--ring"];
+
+function getThemeColors(): string[] {
+  const style = getComputedStyle(document.documentElement);
+  return CSS_VARS.map((v) => style.getPropertyValue(v).trim()).filter(Boolean);
+}
+
+function pickColor(colors: string[], index: number, total: number): string {
+  if (colors.length === 0) return "oklch(0.5 0.1 200)";
+  const segment = total / colors.length;
+  const idx = Math.min(Math.floor(index / segment), colors.length - 1);
+  return colors[idx];
+}
+
+function applyAlpha(color: string, alpha: number): string {
+  const match = color.match(/^(oklch|hsl|hwb|lch|lab)\((.+)\)$/);
+  if (match) {
+    return `${match[1]}(${match[2]} / ${alpha})`;
+  }
+  return color;
+}
+
 export default function AudioVisualizer({ playing, className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
@@ -36,14 +58,6 @@ export default function AudioVisualizer({ playing, className }: Props) {
     }
     const heights = barHeightsRef.current;
 
-    function getPrimaryColor() {
-      return (
-        getComputedStyle(document.documentElement)
-          .getPropertyValue("--primary")
-          .trim() || "0 0% 50%"
-      );
-    }
-
     function draw(timestamp: number) {
       if (!ctx || !canvas) return;
       const dt = timestamp - timeRef.current;
@@ -52,7 +66,7 @@ export default function AudioVisualizer({ playing, className }: Props) {
       const MAX_H = canvas.height - 4;
       const barW = (canvas.width - GAP * (BAR_COUNT - 1)) / BAR_COUNT;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const primaryHsl = getPrimaryColor();
+      const colors = getThemeColors();
 
       for (let i = 0; i < BAR_COUNT; i++) {
         let target: number;
@@ -86,12 +100,13 @@ export default function AudioVisualizer({ playing, className }: Props) {
         const h = Math.max(MIN_H, heights[i]);
         const y = (canvas.height - h) / 2;
         const alpha =
-          0.45 +
-          0.55 *
+          0.75 +
+          0.25 *
             (1 -
               Math.abs((i / (BAR_COUNT - 1)) * 2 - 1) * 0.4);
 
-        ctx.fillStyle = `hsl(${primaryHsl} / ${alpha})`;
+        const raw = pickColor(colors, i, BAR_COUNT);
+        ctx.fillStyle = applyAlpha(raw, alpha);
         ctx.beginPath();
         ctx.roundRect(x, y, Math.max(1, barW), h, 2);
         ctx.fill();
@@ -113,7 +128,7 @@ export default function AudioVisualizer({ playing, className }: Props) {
       ref={canvasRef}
       width={140}
       height={32}
-      className={className ?? "shrink-0 hidden sm:block"}
+      className={className ?? "shrink-0"}
       style={{ imageRendering: "pixelated" }}
     />
   );

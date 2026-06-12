@@ -138,7 +138,7 @@ export default function Navbar() {
       >
         <Dock
           className={cn(
-            "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+            "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border border-primary/15 bg-card/90 backdrop-blur-3xl shadow-[0_0_15px_5px] shadow-primary/15 transition-all duration-300",
             dockersHidden && !isLeftVisible
               ? "translate-y-[100px] opacity-0 pointer-events-none"
               : "translate-y-0 opacity-100 pointer-events-auto",
@@ -211,7 +211,7 @@ export default function Navbar() {
         {isDesktop && (
           <div
             className={cn(
-              "absolute right-4 z-50 border bg-background/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300 cursor-pointer",
+              "absolute right-4 z-50 border border-primary/20 bg-background/90 backdrop-blur-3xl shadow-[0_0_15px_5px] shadow-primary/20 rounded-xl transition-all duration-300 cursor-pointer",
               dockersHidden && !isRightVisible
                 ? "translate-y-[100px] opacity-0 pointer-events-none"
                 : "translate-y-0 opacity-100 pointer-events-auto",
@@ -224,7 +224,7 @@ export default function Navbar() {
         <Dock
           disableMagnification={isSmallScreen}
           className={cn(
-            "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border border-l-0 lg:border-l bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+            "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border border-l-0 lg:border-l border-primary/15 bg-card/90 backdrop-blur-3xl shadow-[0_0_15px_5px] shadow-primary/15 transition-all duration-300",
             dockersHidden && !isCenterVisible
               ? "translate-y-[100px] opacity-0 pointer-events-none"
               : "translate-y-0 opacity-100 pointer-events-auto",

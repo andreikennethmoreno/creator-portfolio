@@ -1,32 +1,10 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
 import AudioVisualizer from "@/components/audio-visualizer";
 import { useMusicPlayer } from "@/lib/music-player-context";
 
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-}
-
 export default function MiniPlayer() {
-  const { track, isPlaying, currentTime, duration, toggle, seek } = useMusicPlayer();
-  const [hovering, setHovering] = useState(false);
-  const progressRef = useRef<HTMLDivElement>(null);
-
-  const handleSeek = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!progressRef.current || !duration) return;
-      const rect = progressRef.current.getBoundingClientRect();
-      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      seek(pct * duration);
-    },
-    [duration, seek]
-  );
-
-  const showProgressBar = !isPlaying || (isPlaying && hovering);
-  const hasDuration = duration > 0;
+  const { track, isPlaying, toggle } = useMusicPlayer();
 
   if (!track) {
     return (
@@ -45,9 +23,7 @@ export default function MiniPlayer() {
 
   return (
     <div
-      className="flex items-center gap-2.5 px-2.5 py-1.5 min-w-[320px]"
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
+      className="flex items-center gap-2.5 px-2.5 py-1.5 min-w-[280px]"
     >
       {/* Album art */}
       <div className="size-9 shrink-0 rounded overflow-hidden border">
@@ -75,20 +51,9 @@ export default function MiniPlayer() {
         <p className="text-[10px] text-muted-foreground truncate leading-tight">{track.artist}</p>
       </div>
 
-      {/* Progress bar or sound wave */}
-      <div className="flex-1 min-w-0 flex items-center gap-1.5">
-        {showProgressBar && hasDuration ? (
-          <>
-            <div ref={progressRef} className="flex-1 h-1 bg-muted rounded-full cursor-pointer overflow-hidden" onClick={handleSeek}>
-              <div className="h-full bg-foreground/50 rounded-full transition-[width] duration-100" style={{ width: `${(currentTime / duration) * 100}%` }} />
-            </div>
-            <span className="text-[10px] font-mono text-muted-foreground tabular-nums whitespace-nowrap">
-              {formatTime(currentTime)}/{formatTime(duration)}
-            </span>
-          </>
-        ) : isPlaying && !hovering ? (
-          <AudioVisualizer playing={isPlaying} />
-        ) : null}
+      {/* Sound wave */}
+      <div className="flex-1 min-w-0 flex items-center justify-center">
+        <AudioVisualizer playing={isPlaying} />
       </div>
 
       {/* Play/pause */}

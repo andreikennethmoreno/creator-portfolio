@@ -179,6 +179,12 @@ export function applyPaletteToDOM(palette: Palette) {
   const accent = clampOklchLightness(palette.accent, palette.isDark ? 0.25 : 0, palette.isDark ? 1 : 0.65);
   const primary = clampOklchLightness(palette.primary, palette.isDark ? 0.40 : 0, palette.isDark ? 1 : 0.65);
 
+  const chart1 = clampOklchLightness(primary, 0.35, 0.7);
+  const chart2 = clampOklchLightness(accent, 0.3, 0.65);
+  const chart3 = clampOklchLightness(primary, 0.25, 0.6);
+  const chart4 = clampOklchLightness(accent, 0.2, 0.55);
+  const chart5 = clampOklchLightness(palette.isDark ? palette.fgMuted : palette.muted, 0.1, 0.45);
+
   const vars: Record<string, string> = {
     "--background":           palette.bg,
     "--foreground":           palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
@@ -197,6 +203,11 @@ export function applyPaletteToDOM(palette: Palette) {
     "--border":               palette.border,
     "--input":                palette.card,
     "--ring":                 primary,
+    "--chart-1":              chart1,
+    "--chart-2":              chart2,
+    "--chart-3":              chart3,
+    "--chart-4":              chart4,
+    "--chart-5":              chart5,
     "--sidebar":              palette.bgAlt,
     "--sidebar-foreground":   palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
     "--sidebar-primary":      primary,

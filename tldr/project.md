@@ -28,8 +28,9 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion
 ## Theme
 - Custom context (`src/lib/theme-context.tsx`), persists to `localStorage.theme`
 - View Transitions API for animated toggle (`AnimatedThemeToggler`)
-- Wallpaper system with k-means palette extraction (`wallpaper-context.tsx`) — 9 wallpapers in rotation
+- Wallpaper system with k-means palette extraction (`wallpaper-context.tsx`) — 7 wallpapers in rotation, all preloaded at build time via `<link rel="preload">` tags
 - `ThemeToggle` = wallpaper cycler; `ModeToggle` = light/dark toggle
+- Wallpaper URLs/hosts stored in `src/lib/wallpaper-data.ts` (server-safe import, no `"use client"`)
 
 ## Desktop Mode
 - Toggle in navbar left dock → `isDesktop` in `DesktopModeProvider`
@@ -49,3 +50,12 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion
 - **MiniPlayer** (`src/components/mini-player.tsx`): desktop mode right dock, reads from shared MusicPlayerContext
 - All music consumers read from single `MusicPlayerContext` — no duplicate YT players
 - See `tldr/top-panel.md`, `tldr/music-player-context.md`, `tldr/mini-player.md`
+
+## Search Explorer
+- Spotlight-style search (`search-explorer.tsx`), triggered from center dock (search icon)
+- `SECTIONS` array defines 9 searchable items: hero, instagram, youtube, reading, listening, vercel, twitter, support, themes
+- **Keyword matching**: each section can have a `keywords` array for alt search terms. e.g. `vercel` has `keywords: ["projects"]`, `themes` has `keywords: ["wallpaper"]`
+- Filter checks both `label` and `keywords` (case-insensitive substring)
+- Selecting "themes" opens the wallpaper carousel inside the search panel
+- All other results call `onReveal(label)` → finds matching APP in `window-manager-context.tsx` via `APPS.find(a => a.id === section)` → opens window
+- See `tldr/search-explorer.md`

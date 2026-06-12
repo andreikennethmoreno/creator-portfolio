@@ -1,3 +1,5 @@
+import { WALLPAPER_URLS, DEFAULT_WALLPAPER_URL, WALLPAPER_HOSTS } from "@/lib/wallpaper-data";
+
 import Navbar from "@/components/navbar";
 import { WallpaperBackground } from "@/components/wallpaper-background";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -15,8 +17,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const DEFAULT_WALLPAPER =
-  "https://raw.githubusercontent.com/dharmx/walls/main/nord/a_group_of_people_walking_on_a_hill.png";
+const DEFAULT_WALLPAPER = DEFAULT_WALLPAPER_URL;
 
 const geist = Geist({
   subsets: ["latin"],
@@ -92,6 +93,13 @@ export default async function RootLayout({
           geistMono.variable,
         )}
       >
+        {WALLPAPER_HOSTS.map((host) => (
+          <link key={host} rel="preconnect" href={host} />
+        ))}
+        <link rel="preload" as="image" href={DEFAULT_WALLPAPER_URL} fetchPriority="high" />
+        {WALLPAPER_URLS.slice(1).map((url) => (
+          <link key={url} rel="preload" as="image" href={url} />
+        ))}
         <div
           aria-hidden="true"
           className="hidden"
