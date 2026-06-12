@@ -2,6 +2,10 @@
 
 All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 
+> **Env dependency map:** See `tldr/env-vars.md` for which env vars each section uses and current crash behavior.
+
+> **Toggle status:** No section toggle system exists yet. All sections always render regardless of config.
+
 > **Threads removed.** Replaced by Twitter social link. No Threads section, no API route, no env vars. Twitter handle: @Kenroms.
 
 ## Hero
