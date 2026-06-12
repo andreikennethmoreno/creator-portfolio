@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { DATA } from "@/data/resume";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
@@ -54,6 +55,8 @@ export default function YoutubeSection() {
       })
       .catch(() => {});
   }, []);
+
+  if (!DATA.sections.youtube) return null;
 
   return (
     <section id="youtube">

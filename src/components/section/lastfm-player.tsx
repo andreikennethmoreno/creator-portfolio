@@ -4,6 +4,7 @@ import { useRef, useCallback } from 'react'
 import BlurFade from '@/components/magicui/blur-fade'
 import { WMCard } from '@/components/wm-card'
 import { useMusicPlayer } from '@/lib/music-player-context'
+import { env } from '@/lib/env'
 import AudioVisualizer from '@/components/audio-visualizer'
 
 function timeAgo(dateStr: string): string {
@@ -36,7 +37,7 @@ export default function LastFmPlayer() {
 
   return (
     <section id="lastfm">
-      <WMCard title="lastfm.feed" href={`https://last.fm/user/${process.env.NEXT_PUBLIC_LASTFM_USERNAME}`} hrefLabel="Open Last.fm">
+      <WMCard title="lastfm.feed" href={`https://last.fm/user/${env.lastfmUserPublic() || 'user'}`} hrefLabel="Open Last.fm">
         <BlurFade delay={0.48}>
           {track ? (
             <div className="flex flex-col gap-3">

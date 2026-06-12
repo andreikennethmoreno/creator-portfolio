@@ -1,3 +1,5 @@
+import { DATA } from "@/data/resume"
+import { env } from "@/lib/env"
 import BlurFade from "@/components/magicui/blur-fade"
 import { WMCard } from "@/components/wm-card"
 import {
@@ -9,12 +11,31 @@ import {
 import { HardcoverBooksCarousel } from "@/components/section/hardcover-books-carousel"
 
 export default async function HardcoverCard() {
-  const [currentlyReading, recentlyRead, wantToRead, stats] = await Promise.all([
-    getCurrentlyReading(),
-    getRecentlyRead(15),
-    getWantToRead(15),
-    getReadingStats(),
-  ])
+  if (!DATA.sections.hardcover) return null;
+
+  let currentlyReading: Awaited<ReturnType<typeof getCurrentlyReading>> = [];
+  let recentlyRead: Awaited<ReturnType<typeof getRecentlyRead>> = [];
+  let wantToRead: Awaited<ReturnType<typeof getWantToRead>> = [];
+  let unavailable = false;
+
+  try {
+    if (!env.hardcoverToken() || !env.hardcoverUser()) {
+      unavailable = true;
+    } else {
+      const results = await Promise.allSettled([
+        getCurrentlyReading(),
+        getRecentlyRead(15),
+        getWantToRead(15),
+        getReadingStats(),
+      ]);
+      if (results[0].status === "fulfilled") currentlyReading = results[0].value;
+      if (results[1].status === "fulfilled") recentlyRead = results[1].value;
+      if (results[2].status === "fulfilled") wantToRead = results[2].value;
+      if (results.some(r => r.status === "rejected")) unavailable = true;
+    }
+  } catch {
+    unavailable = true;
+  }
 
   return (
     <section id="hardcover">
@@ -24,11 +45,17 @@ export default async function HardcoverCard() {
           hrefLabel="Open Hardcover"
         >
           <BlurFade delay={0.52}>
-            <div className="flex flex-col gap-4">
-              <HardcoverBooksCarousel label="read" books={recentlyRead} />
-              <HardcoverBooksCarousel label="currently reading" books={currentlyReading} />
-              <HardcoverBooksCarousel label="want to read" books={wantToRead} />
-            </div>
+            {unavailable ? (
+              <div className="h-[200px] flex items-center justify-center">
+                <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <HardcoverBooksCarousel label="read" books={recentlyRead} />
+                <HardcoverBooksCarousel label="currently reading" books={currentlyReading} />
+                <HardcoverBooksCarousel label="want to read" books={wantToRead} />
+              </div>
+            )}
           </BlurFade>
       </WMCard>
     </section>

@@ -1,3 +1,5 @@
+import { env } from "@/lib/env"
+
 export type BeholdPost = {
   id: string
   mediaUrl: string
@@ -22,7 +24,7 @@ export type BeholdFeedResponse = {
 }
 
 export async function getInstagramPosts(limit = 6): Promise<BeholdPost[]> {
-  const feedId = process.env.NEXT_PUBLIC_BEHOLD_FEED_ID
+  const feedId = env.behold()
 
   if (!feedId) {
     console.warn('NEXT_PUBLIC_BEHOLD_FEED_ID not set')

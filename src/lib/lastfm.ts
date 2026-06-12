@@ -1,3 +1,5 @@
+import { env } from "@/lib/env"
+
 const LASTFM_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/'
 
 export type LastFmTrack = {
@@ -11,8 +13,8 @@ export type LastFmTrack = {
 }
 
 export async function getRecentTrack(): Promise<LastFmTrack | null> {
-  const { LASTFM_API_KEY } = process.env
-  const LASTFM_USERNAME = process.env.NEXT_PUBLIC_LASTFM_USERNAME
+  const LASTFM_API_KEY = env.lastfmKey()
+  const LASTFM_USERNAME = env.lastfmUserPublic()
 
   if (!LASTFM_API_KEY || !LASTFM_USERNAME) {
     console.warn('Last.fm env vars not set')

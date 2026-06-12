@@ -11,6 +11,7 @@ import { WindowManagerProvider } from "@/lib/window-manager-context";
 import { LayoutShell } from "@/components/layout-shell";
 import { MusicPlayerProvider } from "@/lib/music-player-context";
 import HiddenIframeContainer from "@/components/hidden-iframe-container";
+import { env } from "@/lib/env";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -75,7 +76,7 @@ export default async function RootLayout({
   let initialTrack = null
   let initialVideoId = null
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    const baseUrl = env.baseUrl() || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/lastfm`, { next: { revalidate: 60 } })
     if (res.ok) {
       const data = await res.json()

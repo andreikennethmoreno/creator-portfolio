@@ -1,12 +1,11 @@
+import { env } from "@/lib/env"
+
 export async function getYouTubeVideoId(
   trackName: string,
   artist: string
 ): Promise<string | null> {
-  const key = process.env.YOUTUBE_API_KEY
-  if (!key) {
-    console.warn('YOUTUBE_API_KEY not set')
-    return null
-  }
+  const key = env.youtubeServerKey()
+  if (!key) return null
 
   const q = encodeURIComponent(`${trackName} ${artist}`)
   const res = await fetch(

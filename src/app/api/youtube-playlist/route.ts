@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { env } from "@/lib/env";
 
 const PLAYLIST_ID = "PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd";
 
@@ -15,7 +16,7 @@ function formatDuration(iso: string): string {
 }
 
 export async function GET() {
-  const key = process.env.YOUTUBE_API_KEY || process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+  const key = env.youtubeServerKey() || env.youtube();
   if (!key) {
     return NextResponse.json({ videos: [] });
   }

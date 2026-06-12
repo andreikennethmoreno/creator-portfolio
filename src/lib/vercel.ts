@@ -1,3 +1,5 @@
+import { env } from "@/lib/env"
+
 type VercelProject = {
   id: string;
   name: string;
@@ -26,15 +28,14 @@ const BASE = "https://api.vercel.com";
 
 function vercelHeaders() {
   return {
-    Authorization: `Bearer ${process.env.MY_VERCEL_API_TOKEN}`,
+    Authorization: `Bearer ${env.vercelToken()}`,
     "Content-Type": "application/json",
   };
 }
 
 function teamQuery() {
-  return process.env.MY_VERCEL_TEAM_ID
-    ? `&teamId=${process.env.MY_VERCEL_TEAM_ID}`
-    : "";
+  const teamId = env.vercelTeam()
+  return teamId ? `&teamId=${teamId}` : "";
 }
 
 async function getDeploymentCount(projectId: string): Promise<number> {

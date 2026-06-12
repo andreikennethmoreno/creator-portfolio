@@ -1,3 +1,5 @@
+import { env } from "@/lib/env"
+
 const HARDCOVER_ENDPOINT = 'https://api.hardcover.app/v1/graphql'
 
 async function hardcoverQuery<T>(query: string): Promise<T | null> {
@@ -5,7 +7,7 @@ async function hardcoverQuery<T>(query: string): Promise<T | null> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': process.env.HARDCOVER_API_TOKEN!,
+      'authorization': env.hardcoverToken() ?? '',
     },
     body: JSON.stringify({ query }),
     next: { revalidate: 3600 },
@@ -40,7 +42,7 @@ export type HardcoverBook = {
 }
 
 export async function getCurrentlyReading(): Promise<HardcoverBook[]> {
-  const userId = process.env.HARDCOVER_USER_ID
+  const userId = env.hardcoverUser()
   const data = await hardcoverQuery<{ user_books: HardcoverBook[] }>(`
     query CurrentlyReading {
       user_books(
@@ -70,7 +72,7 @@ export async function getCurrentlyReading(): Promise<HardcoverBook[]> {
 }
 
 export async function getRecentlyRead(limit = 5): Promise<HardcoverBook[]> {
-  const userId = process.env.HARDCOVER_USER_ID
+  const userId = env.hardcoverUser()
   const data = await hardcoverQuery<{ user_books: HardcoverBook[] }>(`
     query RecentlyRead {
       user_books(
@@ -101,7 +103,7 @@ export async function getRecentlyRead(limit = 5): Promise<HardcoverBook[]> {
 }
 
 export async function getWantToRead(limit = 5): Promise<HardcoverBook[]> {
-  const userId = process.env.HARDCOVER_USER_ID
+  const userId = env.hardcoverUser()
   const data = await hardcoverQuery<{ user_books: HardcoverBook[] }>(`
     query WantToRead {
       user_books(
@@ -137,7 +139,7 @@ export type ReadingStats = {
 }
 
 export async function getReadingStats(): Promise<ReadingStats> {
-  const userId = process.env.HARDCOVER_USER_ID
+  const userId = env.hardcoverUser()
   const data = await hardcoverQuery<{
     user_books_aggregate: { aggregate: { count: number; avg: { rating: number } } }
   }>(`

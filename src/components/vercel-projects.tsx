@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DATA } from "@/data/resume";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 import { getTopVercelProjects } from "@/lib/vercel";
@@ -101,19 +102,27 @@ function ProjectCard({ project }: { project: Project }) {
 
 export default function VercelProjects({
   projects,
+  unavailable,
 }: {
   projects: Awaited<ReturnType<typeof getTopVercelProjects>>;
+  unavailable?: boolean;
 }) {
+  if (!DATA.sections.vercel) return null;
+
   return (
     <section id="projects">
       <WMCard
         title="vercel.projects"
-        count={projects.length}
-        href="https://vercel.com/dashboard"
+        count={unavailable ? undefined : projects.length}
+        href={unavailable ? undefined : "https://vercel.com/dashboard"}
         hrefLabel="Open Vercel Dashboard"
       >
         <BlurFade delay={0.4}>
-          {projects.length > 0 ? (
+          {unavailable ? (
+            <div className="h-[200px] flex items-center justify-center">
+              <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+            </div>
+          ) : projects.length > 0 ? (
             <div className="grid grid-cols-2 gap-4">
               {projects.map((project) => (
                 <ProjectCard key={project.name} project={project} />

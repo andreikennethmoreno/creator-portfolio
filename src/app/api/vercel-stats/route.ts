@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
+import { env } from '@/lib/env'
 
 export const revalidate = 3600
 
 export async function GET() {
-  const token = process.env.MY_VERCEL_API_TOKEN
-  const teamId = process.env.MY_VERCEL_TEAM_ID
+  const token = env.vercelToken()
+  const teamId = env.vercelTeam()
   const BASE = 'https://api.vercel.com'
 
   if (!token) {

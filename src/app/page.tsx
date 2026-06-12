@@ -7,12 +7,15 @@ import HardcoverCard from "@/components/section/hardcover-card";
 import KofiCard from "@/components/KofiCard"
 import LastFmCard from "@/components/section/lastfm-card"
 import VercelProjects from "@/components/vercel-projects"
+import { DATA } from "@/data/resume";
+import { env } from "@/lib/env";
 import { getTopVercelProjects } from "@/lib/vercel";
 
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const projects = await getTopVercelProjects(4);
+  const vercelUnavailable = !(DATA.sections.vercel && env.vercelToken());
+  const projects = vercelUnavailable ? [] : await getTopVercelProjects(4);
   return (
     <DesktopLayout>
       <main className="min-h-dvh flex flex-col gap-14 relative contents">
@@ -34,7 +37,7 @@ export default async function Page() {
           <HardcoverCard />
         </DesktopPanel>
         <DesktopPanel sectionId="vercel">
-          <VercelProjects projects={projects} />
+          <VercelProjects projects={projects} unavailable={vercelUnavailable} />
         </DesktopPanel>
         <DesktopPanel sectionId="support">
           <KofiCard />

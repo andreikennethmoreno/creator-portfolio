@@ -1,3 +1,4 @@
+import { DATA } from "@/data/resume"
 import BlurFade from "@/components/magicui/blur-fade"
 import { WMCard } from "@/components/wm-card"
 
@@ -7,6 +8,7 @@ const TIERS = [
 ]
 
 export default function KofiCard() {
+  if (!DATA.sections.kofi) return null;
   return (
     <section id="kofi">
       <WMCard

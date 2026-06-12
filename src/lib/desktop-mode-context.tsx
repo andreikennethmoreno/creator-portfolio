@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback } from "react"
+import { createContext, useContext, useState, useCallback, useEffect } from "react"
 
 type DesktopModeContextType = {
   isDesktop: boolean
@@ -19,6 +19,16 @@ const DesktopModeContext = createContext<DesktopModeContextType>({
 export function DesktopModeProvider({ children }: { children: React.ReactNode }) {
   const [isDesktop, setIsDesktop] = useState(false)
   const [revealedSection, setRevealedSection] = useState<string | null>(null)
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)")
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) setIsDesktop(false)
+    }
+    handler(mq)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
 
   const toggleDesktop = () => {
     setIsDesktop((prev) => {

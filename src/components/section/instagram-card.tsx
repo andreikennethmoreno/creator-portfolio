@@ -1,20 +1,38 @@
+import { DATA } from "@/data/resume";
 import { getInstagramPosts } from "@/lib/instagram";
+import { env } from "@/lib/env";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
 export default async function InstagramCard() {
-  const posts = await getInstagramPosts(6);
+  if (!DATA.sections.instagram) return null;
+
+  let posts: Awaited<ReturnType<typeof getInstagramPosts>> = [];
+  let unavailable = false;
+  try {
+    if (!env.behold()) {
+      unavailable = true;
+    } else {
+      posts = await getInstagramPosts(6);
+    }
+  } catch {
+    unavailable = true;
+  }
 
   return (
     <section id="instagram">
       <WMCard
         title="instagram.feed"
-        count={posts.length}
+        count={unavailable ? undefined : posts.length}
         href="https://instagram.com/ken.roms"
         hrefLabel="Open Instagram"
       >
         <BlurFade delay={0.28}>
-          {posts.length > 0 ? (
+          {unavailable ? (
+            <div className="h-[200px] flex items-center justify-center">
+              <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+            </div>
+          ) : posts.length > 0 ? (
             <div className="grid grid-cols-3 gap-1">
               {posts.map((post) => (
                 <a
