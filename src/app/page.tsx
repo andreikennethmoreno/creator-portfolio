@@ -27,11 +27,11 @@ export default async function Page() {
         <DesktopPanel sectionId="youtube">
           <YoutubeSection />
         </DesktopPanel>
-        <DesktopPanel sectionId="reading">
-          <HardcoverCard />
-        </DesktopPanel>
         <DesktopPanel sectionId="listening">
           <LastFmCard />
+        </DesktopPanel>
+        <DesktopPanel sectionId="reading">
+          <HardcoverCard />
         </DesktopPanel>
         <DesktopPanel sectionId="vercel">
           <VercelProjects projects={projects} />

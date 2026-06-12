@@ -9,7 +9,7 @@ import TechStackTab from "@/components/hud/tech-stack-tab";
 import PlayerTab from "@/components/hud/player-tab";
 import AboutTab from "@/components/hud/about-tab";
 
-export function TopPanel() {
+export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
   const { style } = useCardStyle();
   const isGlossy = style === "glossy";
   const [open, setOpen] = useState(false);
@@ -17,6 +17,14 @@ export function TopPanel() {
   const openRef = useRef(false);
   const hoverTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
   const isHoveringPanel = useRef(false);
+
+  useEffect(() => {
+    if (panelTrigger && panelTrigger > 0) {
+      openRef.current = true;
+      setOpen(true);
+      setActiveTab("music");
+    }
+  }, [panelTrigger]);
 
   useEffect(() => {
     const THRESHOLD = 30;

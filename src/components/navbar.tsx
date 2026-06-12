@@ -53,6 +53,17 @@ export default function Navbar() {
     hasMaximizedWindow,
   } = useWindowManager();
 
+  const [isSmallScreen, setIsSmallScreen] = useState(true);
+
+  useEffect(() => {
+    const check = () => setIsSmallScreen(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const [panelTrigger, setPanelTrigger] = useState(0);
+
   const visibleWindowCount = windows.filter((w) => !w.minimized).length;
   const dockersHidden =
     isDesktop && (hasMaximizedWindow || visibleWindowCount >= 2);
@@ -112,7 +123,7 @@ export default function Navbar() {
           }}
         />
       )}
-      {isDesktop && <TopPanel />}
+      {isDesktop && <TopPanel panelTrigger={panelTrigger} />}
 
       <DesktopModeNotification />
       <ThemeToggleNotification />
@@ -200,18 +211,20 @@ export default function Navbar() {
         {isDesktop && (
           <div
             className={cn(
-              "absolute right-4 z-50 border bg-background/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300",
+              "absolute right-4 z-50 border bg-background/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 rounded-xl transition-all duration-300 cursor-pointer",
               dockersHidden && !isRightVisible
                 ? "translate-y-[100px] opacity-0 pointer-events-none"
                 : "translate-y-0 opacity-100 pointer-events-auto",
             )}
+            onClick={() => setPanelTrigger(p => p + 1)}
           >
             <MiniPlayer />
           </div>
         )}
         <Dock
+          disableMagnification={isSmallScreen}
           className={cn(
-            "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
+            "z-50 relative h-14 p-2 w-fit mx-auto flex gap-2 border border-l-0 lg:border-l bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5 transition-all duration-300",
             dockersHidden && !isCenterVisible
               ? "translate-y-[100px] opacity-0 pointer-events-none"
               : "translate-y-0 opacity-100 pointer-events-auto",
@@ -322,7 +335,7 @@ export default function Navbar() {
               })}
             </>
           )}
-          {(Object.entries(DATA.contact.social)
+          {!isSmallScreen && (Object.entries(DATA.contact.social)
             .filter(([_, social]) => social.navbar)
             .filter(
               ([name]) =>

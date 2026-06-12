@@ -9,6 +9,7 @@ interface DockProps {
   children: ReactNode;
   magnification?: number;
   distance?: number;
+  disableMagnification?: boolean;
 }
 
 interface DockIconProps {
@@ -36,14 +37,14 @@ interface DockContextValue {
 
 const DockContext = createContext<DockContextValue | null>(null);
 
-const Dock = ({ className, children, magnification = DEFAULT_MAGNIFICATION, distance = DEFAULT_DISTANCE }: DockProps) => {
+const Dock = ({ className, children, magnification = DEFAULT_MAGNIFICATION, distance = DEFAULT_DISTANCE, disableMagnification = false }: DockProps) => {
   const mouseX = useMotionValue(Infinity);
 
   return (
     <DockContext.Provider value={{ mouseX, magnification, distance }}>
       <motion.div
-        onMouseMove={(e) => mouseX.set(e.pageX)}
-        onMouseLeave={() => mouseX.set(Infinity)}
+        onMouseMove={disableMagnification ? undefined : (e) => mouseX.set(e.pageX)}
+        onMouseLeave={disableMagnification ? undefined : () => mouseX.set(Infinity)}
         className={cn("mx-auto w-max h-full flex items-end justify-center overflow-visible rounded-xl border", className)}
       >
         {children}
