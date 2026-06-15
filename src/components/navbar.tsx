@@ -339,10 +339,6 @@ export default function Navbar() {
           )}
           {!isDesktop && CONFIG.creator.dock.socials.length > 0 && (
             <>
-              <Separator
-                orientation="vertical"
-                className="h-2/3 m-auto w-px bg-border"
-              />
               {CONFIG.creator.dock.socials.map((name) => {
                 const social = CONFIG.contact.social[name as keyof typeof CONFIG.contact.social]
                 const isExternal = social.url.startsWith("http");

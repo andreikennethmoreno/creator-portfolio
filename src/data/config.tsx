@@ -40,13 +40,56 @@ export const CONFIG = {
   url: "https://github.com/andreikennethmoreno",
   description:
     "Software Engineer, Content Creator. Love building things and learning shit. Very active on YouTube and Twitter.",
-  avatarUrl: "https://storage.ko-fi.com/cdn/useruploads/27d854e4-a478-41ec-acbe-f79865f858be_149867fb-a92d-4a0f-a16d-5e06c123c8c5.png",
+  avatarUrl:
+    "https://storage.ko-fi.com/cdn/useruploads/27d854e4-a478-41ec-acbe-f79865f858be_149867fb-a92d-4a0f-a16d-5e06c123c8c5.png",
 
   // ── General (app-wide toggles) ──────────────
   general: {
     defaultCardStyle: "glossy" as "default" | "glossy",
     showDesktopModeNotification: true,
     showThemeToggleNotification: true,
+    wallpapers: [
+      // {
+      //   name: "snow",
+      //   label: "snow",
+      //   url: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGF2Z3J1Ym9jcjB0MmU3cTRucjhpbHB5Mm91aHdhMXlrcGwxMHJyNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rRmBOCZDJJGU0/giphy.gif",
+      // },
+      {
+        name: "hillside_walk",
+        label: "Hillside Walk",
+        url: "https://raw.githubusercontent.com/dharmx/walls/main/nord/a_group_of_people_walking_on_a_hill.png",
+      },
+      {
+        name: "sunset_boulevard",
+        label: "Sunset Boulevard",
+        url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-004.jpg",
+      },
+      {
+        name: "blue_black_pattern",
+        label: "Blue and Black",
+        url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/tile/a_blue_and_black_pattern.png",
+      },
+      {
+        name: "watercolor_town",
+        label: "Watercolor Town",
+        url: "https://raw.githubusercontent.com/dharmx/walls/main/unsorted/a_watercolor_of_a_town.jpg",
+      },
+      {
+        name: "dessert_scenery",
+        label: "Sunset Scenery",
+        url: "https://raw.githubusercontent.com/mylinuxforwork/wallpaper/refs/heads/main/sunset-scenery-minimalist.jpg",
+      },
+      {
+        name: "ghibli_plains",
+        label: "Ghibli Plains",
+        url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-003.jpg",
+      },
+      {
+        name: "red_sun_mountains",
+        label: "Red Sun Over Mountains",
+        url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/solarized/a_red_sun_over_mountains.jpg",
+      },
+    ],
   },
 
   // ── Contact / Social Links ──────────────────
@@ -109,9 +152,7 @@ export const CONFIG = {
       vercel: true,
       kofi: true,
     },
-    navbar: [
-      { href: "/", icon: HomeIcon, label: "Home" },
-    ],
+    navbar: [{ href: "/", icon: HomeIcon, label: "Home" }],
     dock: {
       cardStyleToggle: true,
       themeToggle: true,
@@ -122,22 +163,43 @@ export const CONFIG = {
       channelUrl: "https://www.youtube.com/@kenroms",
       playlistId: "PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd",
       fallbackVideos: [
-        { id: "WrTq4lRHEy8", title: "Build Your First 2D Game in Godot – Step-by-Step Beginner Guide + GitHub Source Upload", duration: "56:04", href: "https://youtu.be/WrTq4lRHEy8" },
-        { id: "DupS46tLPn0", title: "Build & Deploy Full Stack Next.js & React CRUD App with Auth | ShadCN UI, PostgreSQL, Prisma", duration: "2:19:47", href: "https://youtu.be/DupS46tLPn0" },
-        { id: "XeR_SGBUjTs", title: "Build an Anime Website with MyAnimeList API using React Tailwind Axios Postman | HOW TO REST API", duration: "2:16:53", href: "https://youtu.be/XeR_SGBUjTs" },
-        { id: "gTD8b5Yxuuo", title: "Build a Full Stack CRUD App using React Tailwind Node PostgreSQL | Best practice & Industry standard", duration: "1:41:32", href: "https://youtu.be/gTD8b5Yxuuo" },
-        { id: "s_DtrDkjyfA", title: "Build a Portfolio with Contact Page using Email JS React Bootstrap | JUST COPY PASTE! Quick and Easy", duration: "1:00:03", href: "https://youtu.be/s_DtrDkjyfA" },
+        {
+          id: "WrTq4lRHEy8",
+          title:
+            "Build Your First 2D Game in Godot – Step-by-Step Beginner Guide + GitHub Source Upload",
+          duration: "56:04",
+          href: "https://youtu.be/WrTq4lRHEy8",
+        },
+        {
+          id: "DupS46tLPn0",
+          title:
+            "Build & Deploy Full Stack Next.js & React CRUD App with Auth | ShadCN UI, PostgreSQL, Prisma",
+          duration: "2:19:47",
+          href: "https://youtu.be/DupS46tLPn0",
+        },
+        {
+          id: "XeR_SGBUjTs",
+          title:
+            "Build an Anime Website with MyAnimeList API using React Tailwind Axios Postman | HOW TO REST API",
+          duration: "2:16:53",
+          href: "https://youtu.be/XeR_SGBUjTs",
+        },
+        {
+          id: "gTD8b5Yxuuo",
+          title:
+            "Build a Full Stack CRUD App using React Tailwind Node PostgreSQL | Best practice & Industry standard",
+          duration: "1:41:32",
+          href: "https://youtu.be/gTD8b5Yxuuo",
+        },
+        {
+          id: "s_DtrDkjyfA",
+          title:
+            "Build a Portfolio with Contact Page using Email JS React Bootstrap | JUST COPY PASTE! Quick and Easy",
+          duration: "1:00:03",
+          href: "https://youtu.be/s_DtrDkjyfA",
+        },
       ],
     },
-    wallpapers: [
-      { name: "hillside_walk", label: "Hillside Walk", url: "https://raw.githubusercontent.com/dharmx/walls/main/nord/a_group_of_people_walking_on_a_hill.png" },
-      { name: "sunset_boulevard", label: "Sunset Boulevard", url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-004.jpg" },
-      { name: "blue_black_pattern", label: "Blue and Black", url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/tile/a_blue_and_black_pattern.png" },
-      { name: "watercolor_town", label: "Watercolor Town", url: "https://raw.githubusercontent.com/dharmx/walls/main/unsorted/a_watercolor_of_a_town.jpg" },
-      { name: "dessert_scenery", label: "Sunset Scenery", url: "https://raw.githubusercontent.com/mylinuxforwork/wallpaper/refs/heads/main/sunset-scenery-minimalist.jpg" },
-      { name: "ghibli_plains", label: "Ghibli Plains", url: "https://raw.githubusercontent.com/whoisYoges/lwalpapers/PicturesOnly/wallpapers/b-003.jpg" },
-      { name: "red_sun_mountains", label: "Red Sun Over Mountains", url: "https://images.weserv.nl/?url=raw.githubusercontent.com/dharmx/walls/main/solarized/a_red_sun_over_mountains.jpg" },
-    ],
     terminal: {
       bootLines: [
         "booting kenroms.dev...",
@@ -183,7 +245,7 @@ export const CONFIG = {
   dev: {},
 } as const;
 
-export const WALLPAPER_URLS = CONFIG.creator.wallpapers.map((w) => w.url);
+export const WALLPAPER_URLS = CONFIG.general.wallpapers.map((w) => w.url);
 export const DEFAULT_WALLPAPER_URL = WALLPAPER_URLS[0];
 export const WALLPAPER_HOSTS = [
   "https://raw.githubusercontent.com",

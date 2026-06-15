@@ -20,7 +20,7 @@ Single file driving all changeable content:
 - `CONFIG.contact.social.*` — all social links + icons
 - `CONFIG.youtube.playlistId` — YouTube playlist ID
 - `CONFIG.youtube.fallbackVideos` — fallback when API key missing
-- `CONFIG.wallpapers` — wallpaper array (name, label, url)
+- `CONFIG.general.wallpapers` — wallpaper array (name, label, url)
 - `CONFIG.terminal.bootLines/prompt/commands` — hero terminal mode
 - `CONFIG.kofi.tiers` — Ko-fi support tiers
 - `CONFIG.contact.social.*.url` — HUD about-tab links (via direct property access)

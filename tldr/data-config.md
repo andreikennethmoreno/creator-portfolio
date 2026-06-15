@@ -13,7 +13,8 @@ CONFIG
 ├── general               ← app-wide settings
 │   ├── defaultCardStyle  → "default" | "glossy"
 │   ├── showDesktopModeNotification → bool
-│   └── showThemeToggleNotification → bool
+│   ├── showThemeToggleNotification → bool
+│   └── wallpapers        → [{ name, label, url }] — 7 wallpapers
 │
 ├── contact
 │   ├── email
@@ -25,7 +26,7 @@ CONFIG
 │   ├── navbar            → dock items [{ href, icon, label }]
 │   ├── dock              → { cardStyleToggle, themeToggle, search, socials }
 │   ├── youtube           → channelUrl, playlistId, fallbackVideos
-│   ├── wallpapers        → [{ name, label, url }] — 7 wallpapers
+
 │   ├── terminal          → bootLines, prompt, commands
 │   └── kofi              → url, tiers
 │
@@ -38,7 +39,7 @@ CONFIG
 ```
 
 ## Derived Exports
-- `WALLPAPER_URLS` — array of wallpaper image URLs (from CONFIG.creator.wallpapers)
+- `WALLPAPER_URLS` — array of wallpaper image URLs (from CONFIG.general.wallpapers)
 - `DEFAULT_WALLPAPER_URL` — first wallpaper URL
 - `WALLPAPER_HOSTS` — preconnect origins
 

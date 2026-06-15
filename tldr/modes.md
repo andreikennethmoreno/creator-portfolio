@@ -10,7 +10,7 @@ One root config (`CONFIG`), three modes — each renders a different layout.
 
 | Mode | Config Namespace | Layout |
 |------|-----------------|--------|
-| **creator** | `CONFIG.creator.*` | Current portfolio (sections, dock, desktop mode, wallpapers, etc.) |
+| **creator** | `CONFIG.creator.*` | Current portfolio (sections, dock, desktop mode, etc.) |
 | **linktree** | `CONFIG.linktree.*` | Linktree-style page (ordered links, terminal easter egg, dock) |
 | **dev** | `CONFIG.dev.*` | Older/dev portfolio (TBD) |
 

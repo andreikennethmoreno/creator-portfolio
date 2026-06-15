@@ -85,7 +85,7 @@ export default function LinktreeLayout() {
 
   return (
     <div className="lg:fixed lg:inset-0 lg:overflow-hidden flex flex-col items-center justify-center py-6 px-6">
-      <div className="w-full max-w-sm relative">
+      <div className="w-full max-w-sm lg:max-w-md xl:max-w-lg relative">
         {/* ── NORMAL VIEW ── */}
         <div className={cn(
           "transition-all duration-500",
@@ -95,7 +95,7 @@ export default function LinktreeLayout() {
             <WMCard title="~/hello">
               <div className="flex items-center gap-4">
                 <BlurFade delay={0.04} className="shrink-0">
-                  <Avatar className="size-16 border rounded-xl shadow-lg ring-4 ring-muted">
+                  <Avatar className="size-16 lg:size-20 border rounded-xl shadow-lg ring-4 ring-muted">
                     <AvatarImage alt={CONFIG.name} src={CONFIG.avatarUrl} />
                     <AvatarFallback>{CONFIG.initials}</AvatarFallback>
                   </Avatar>
@@ -103,12 +103,12 @@ export default function LinktreeLayout() {
                 <div className="min-w-0">
                   <BlurFadeText
                     delay={0.04}
-                    className="text-xl font-semibold tracking-tight"
+                    className="text-xl lg:text-2xl font-semibold tracking-tight"
                     yOffset={8}
                     text={CONFIG.name}
                   />
                   <BlurFade delay={0.08}>
-                    <p className="text-sm text-foreground/80">
+                    <p className="text-sm lg:text-base text-foreground/80">
                       {CONFIG.description}
                     </p>
                   </BlurFade>
@@ -138,10 +138,10 @@ export default function LinktreeLayout() {
                     ],
                   )}
                 >
-                  <span className="flex items-center justify-center size-8 shrink-0 rounded-lg bg-background border border-border text-foreground/80">
-                    <IconComponent className="size-4" />
+                  <span className="flex items-center justify-center size-8 lg:size-10 shrink-0 rounded-lg bg-background border border-border text-foreground/80">
+                    <IconComponent className="size-4 lg:size-5" />
                   </span>
-                  <span className="flex-1 text-sm font-medium text-foreground/80">
+                  <span className="flex-1 text-sm lg:text-base font-medium text-foreground/80">
                     {social.name}
                   </span>
                   <ArrowUpRight size={14} className="shrink-0 text-foreground/30" />
