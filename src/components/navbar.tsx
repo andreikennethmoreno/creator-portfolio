@@ -15,7 +15,7 @@ import {
 import { DesktopModeNotification } from "@/components/desktop-mode-notification";
 import { ThemeToggleNotification } from "@/components/theme-toggle-notification";
 import { useDesktopMode } from "@/lib/desktop-mode-context";
-import { DATA } from "@/data/resume";
+import { CONFIG } from "@/data/config";
 import MiniPlayer from "@/components/mini-player";
 import {
   Search,
@@ -231,7 +231,7 @@ export default function Navbar() {
           )}
         >
           {/* Renders Search Icon only in desktop mode */}
-          {isDesktop && (
+          {isDesktop && CONFIG.dock.search && (
             <Tooltip key="search-trigger">
               <TooltipTrigger asChild>
                 <button onClick={() => setSearchOpen(true)}>
@@ -252,7 +252,7 @@ export default function Navbar() {
           )}
 
           {/* Renders other navbar items (skips anything labeled "home" or with "/" href completely) */}
-          {DATA.navbar
+          {CONFIG.navbar
             .filter(
               (item) =>
                 item.href !== "/" && item.label?.toLowerCase() !== "home",
@@ -335,107 +335,80 @@ export default function Navbar() {
               })}
             </>
           )}
-          {!isSmallScreen && (Object.entries(DATA.contact.social)
-            .filter(([_, social]) => social.navbar)
-            .filter(
-              ([name]) =>
-                !isDesktop || !APPS.some((a) => a.id === name.toLowerCase()),
-            )
-            .filter(
-              ([name]) =>
-                !isDesktop ||
-                (name !== "GitHub" && name !== "email" && name !== "Twitter"),
-            ).length > 0 ||
-            !isDesktop) && (
-            <Separator
-              orientation="vertical"
-              className="h-2/3 m-auto w-px bg-border"
-            />
-          )}
-          {Object.entries(DATA.contact.social)
-            .filter(([_, social]) => social.navbar)
-            .filter(
-              ([name]) =>
-                !isDesktop || !APPS.some((a) => a.id === name.toLowerCase()),
-            )
-            .filter(
-              ([name]) =>
-                !isDesktop ||
-                (name !== "GitHub" && name !== "email" && name !== "Twitter"),
-            )
-            .map(([name, social], index) => {
-              const isExternal = social.url.startsWith("http");
-              const IconComponent = social.icon;
-              return (
-                <Tooltip key={`social-${name}-${index}`}>
-                  <TooltipTrigger asChild>
-                    <a
-                      href={social.url}
-                      target={isExternal ? "_blank" : undefined}
-                      rel={isExternal ? "noopener noreferrer" : undefined}
+          {CONFIG.dock.socials.length > 0 && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-2/3 m-auto w-px bg-border"
+              />
+              {CONFIG.dock.socials.map((name) => {
+                const social = CONFIG.contact.social[name as keyof typeof CONFIG.contact.social]
+                const isExternal = social.url.startsWith("http");
+                const IconComponent = social.icon;
+                return (
+                  <Tooltip key={`social-${name}`}>
+                    <TooltipTrigger asChild>
+                      <a
+                        href={social.url}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      >
+                        <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                          <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
+                        </DockIcon>
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      sideOffset={8}
+                      className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
                     >
-                      <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                        <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
-                      </DockIcon>
-                    </a>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    sideOffset={8}
-                    className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-                  >
-                    <p>{name}</p>
-                    <TooltipArrow className="fill-primary" />
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })}
-          {Object.entries(DATA.contact.social)
-            .filter(([_, social]) => social.navbar)
-            .filter(
-              ([name]) =>
-                !isDesktop || !APPS.some((a) => a.id === name.toLowerCase()),
-            )
-            .filter(
-              ([name]) =>
-                !isDesktop ||
-                (name !== "GitHub" && name !== "email" && name !== "Twitter"),
-            ).length > 0 && (
-            <Separator
-              orientation="vertical"
-              className="h-2/3 m-auto w-px bg-border"
-            />
+                      <p>{name}</p>
+                      <TooltipArrow className="fill-primary" />
+                    </TooltipContent>
+                  </Tooltip>
+                )
+              })}
+              <Separator
+                orientation="vertical"
+                className="h-2/3 m-auto w-px bg-border"
+              />
+            </>
           )}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                <CardStyleToggle />
-              </DockIcon>
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              sideOffset={8}
-              className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-            >
-              <p>card style</p>
-              <TooltipArrow className="fill-primary" />
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                <ThemeToggle className="size-full cursor-pointer" />
-              </DockIcon>
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              sideOffset={8}
-              className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-            >
-              <p>change theme</p>
-              <TooltipArrow className="fill-primary" />
-            </TooltipContent>
-          </Tooltip>
+          {CONFIG.dock.cardStyleToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <CardStyleToggle />
+                </DockIcon>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                sideOffset={8}
+                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              >
+                <p>card style</p>
+                <TooltipArrow className="fill-primary" />
+              </TooltipContent>
+            </Tooltip>
+          )}
+          {CONFIG.dock.themeToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <ThemeToggle className="size-full cursor-pointer" />
+                </DockIcon>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                sideOffset={8}
+                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              >
+                <p>change theme</p>
+                <TooltipArrow className="fill-primary" />
+              </TooltipContent>
+            </Tooltip>
+          )}
         </Dock>
       </div>
     </>

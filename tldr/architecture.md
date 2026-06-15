@@ -17,7 +17,7 @@ src/
 │   └── (root)        # navbar, wm-card, desktop-layout, etc.
 ├── lib/              # Contexts, utils, API helpers
 └── data/
-    └── resume.tsx    # Single source of truth for personal data
+    └── config.tsx    # SINGLE source of truth for ALL dynamic data (personal info, sections toggle, YouTube playlist/fallbacks, wallpapers, terminal, Ko-fi tiers, default card style, social links)
 ```
 
 ## Rendering Patterns

@@ -1,11 +1,11 @@
-import { DATA } from "@/data/resume";
+import { CONFIG } from "@/data/config";
 import { getInstagramPosts } from "@/lib/instagram";
 import { env } from "@/lib/env";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
 export default async function InstagramCard() {
-  if (!DATA.sections.instagram) return null;
+  if (!CONFIG.sections.instagram) return null;
 
   let posts: Awaited<ReturnType<typeof getInstagramPosts>> = [];
   let unavailable = false;
@@ -24,7 +24,7 @@ export default async function InstagramCard() {
       <WMCard
         title="instagram.feed"
         count={unavailable ? undefined : posts.length}
-        href="https://instagram.com/ken.roms"
+        href={CONFIG.contact.social.Instagram.url}
         hrefLabel="Open Instagram"
       >
         <BlurFade delay={0.28}>

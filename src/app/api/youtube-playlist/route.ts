@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { env } from "@/lib/env";
-
-const PLAYLIST_ID = "PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd";
+import { CONFIG } from "@/data/config";
 
 function formatDuration(iso: string): string {
   const match = iso.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -23,7 +22,7 @@ export async function GET() {
 
   try {
     const playlistRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=50&key=${key}`,
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${CONFIG.youtube.playlistId}&maxResults=50&key=${key}`,
       { next: { revalidate: 3600 } },
     );
     if (!playlistRes.ok) {

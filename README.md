@@ -336,7 +336,7 @@ All server-side fetches use Next.js `fetch` with `next: { revalidate }` for Incr
 - **Client Components** (interactivity only): `YoutubeSection`, `LastFmPlayer`, `HardcoverBooksCarousel`, `Navbar`, `SearchExplorer`, `MiniPlayer`, `WMCard`, `DesktopLayout`, `DesktopPanel`, `DesktopWindow`, `HeroSection`, `VercelProjects`, `ModeToggle`, `AnimatedThemeToggler`, `ThemeToggle`, `CardStyleToggle`
 
 ### Data Flow
-- All personal data driven by a single config file: `src/data/resume.tsx` (`DATA` object)
+- All dynamic data driven by a single config file: `src/data/config.tsx` (`CONFIG` object)
 - External API calls → Next.js `fetch` with `revalidate` → ISR cache → rendered in section components
 - Theme state → React Context → consumed via `useTheme()` hook
 - Wallpaper state → React Context → consumed via `useWallpaper()` hook; palette extracted from image pixels via k-means clustering
@@ -361,15 +361,22 @@ All server-side fetches use Next.js `fetch` with `next: { revalidate }` for Incr
 
 ## Configuration & Data-Driven Design
 
-Edit a single file — **`src/data/resume.tsx`** — to personalize:
+Edit a single file — **`src/data/config.tsx`** — to personalize:
 
 | Data Section | What It Controls |
 |---|---|
-| `name`, `initials`, `url`, `location`, `description` | Hero identity & meta tags |
-| `avatarUrl` | Profile picture |
-| `skills` | Tech stack icons displayed on the page |
+| `name`, `initials`, `url`, `description`, `avatarUrl` | Hero identity & meta tags |
+| `sections.*` | Toggle each section on/off (lastfm, instagram, youtube, etc.) |
 | `navbar` | Navigation dock items |
 | `contact.email`, `contact.social.*` | Social links, visibility in navbar, icons |
+| `youtube.playlistId` | Featured YouTube playlist |
+| `youtube.fallbackVideos` | Videos shown when API key is missing |
+| `wallpapers` | Array of background wallpapers (name, label, url) |
+| `terminal.bootLines`, `terminal.prompt`, `terminal.commands` | Hero terminal mode content |
+| `kofi.url`, `kofi.tiers` | Ko-fi support button & pricing tiers |
+| `defaultCardStyle` | Default card appearance ("default" or "glossy") |
+| `dock.cardStyleToggle`, `dock.themeToggle`, `dock.search`, `dock.socials` | Universal dock feature visibility + social link list |
+| `showDesktopModeNotification`, `showThemeToggleNotification` | Onboarding notification visibility |
 
 ---
 
@@ -416,7 +423,7 @@ Edit a single file — **`src/data/resume.tsx`** — to personalize:
    pnpm dev
    ```
 
-6. Open the [Config file](./src/data/resume.tsx) and make changes to personalize.
+6. Open the [Config file](./src/data/config.tsx) and make changes to personalize.
 
 ### Available Scripts
 

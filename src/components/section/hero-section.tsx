@@ -9,32 +9,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { WMCard } from "@/components/wm-card";
 import { useCardWindow } from "@/lib/card-window-context";
 import { cn } from "@/lib/utils";
-import { DATA } from "@/data/resume";
+import { CONFIG } from "@/data/config";
 import MatrixRain from "@/components/matrix-rain";
 
-const BOOT_LINES = [
-  "booting kenroms.dev...",
-  "loading modules... done.",
-  "establishing connection... ok",
-  "> whoami",
-  "kenroms — software engineer, content creator",
-  "> location",
-  "Philippines 🇵🇭",
-  "> status",
-  "very active on YouTube and Twitter",
-  "",
-  "type 'help' for available commands.",
-];
-
-const PROMPT = "visitor@kenroms.dev:~$ ";
-
+const { bootLines: BOOT_LINES, prompt: PROMPT, commands: _baseCommands } = CONFIG.terminal;
 const COMMANDS: Record<string, string> = {
-  whoami: "kenroms — software engineer, content creator",
-  location: "Philippines 🇵🇭",
-  status: "very active on YouTube and Twitter",
-  contact: "kennonirom@gmail.com",
-  links: "youtube: @kenroms  |  twitter: @Kenroms  |  github: kenroms",
-  help: "available commands: whoami, location, status, contact, links, matrix, clear, exit",
+  ..._baseCommands,
   clear: "__CLEAR__",
   exit: "__EXIT__",
 };
@@ -144,8 +124,8 @@ export default function HeroSection() {
             <div className="flex items-center gap-5">
               <BlurFade delay={0.04} className="shrink-0">
                 <Avatar className="size-24 md:size-32 border rounded-xl shadow-lg ring-4 ring-muted">
-                  <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                  <AvatarFallback>{DATA.initials}</AvatarFallback>
+                  <AvatarImage alt={CONFIG.name} src={CONFIG.avatarUrl} />
+                  <AvatarFallback>{CONFIG.initials}</AvatarFallback>
                 </Avatar>
               </BlurFade>
               <div className="flex flex-col gap-1 min-w-0">
@@ -153,11 +133,11 @@ export default function HeroSection() {
                   delay={0.04}
                   className="text-3xl font-semibold tracking-tighter sm:text-4xl lg:text-5xl"
                   yOffset={8}
-                  text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
+                  text={`Hi, I'm ${CONFIG.name.split(" ")[0]}`}
                 />
                 <BlurFade delay={0.08}>
                   <p className="text-muted-foreground max-w-150 md:text-lg lg:text-xl">
-                    {DATA.description}
+                    {CONFIG.description}
                     <button
                       onClick={() => setTerminalOpen(true)}
                       className="inline-flex items-center gap-1 ml-2 px-2 py-0 rounded font-mono text-xs dark:bg-primary dark:text-primary-foreground bg-primary/15 text-primary-foreground hover:dark:bg-primary/80 hover:bg-primary/30 transition-colors cursor-pointer animate-pulse leading-none align-middle"

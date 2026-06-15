@@ -1,4 +1,4 @@
-import { DATA } from "@/data/resume"
+import { CONFIG } from "@/data/config"
 import { env } from "@/lib/env"
 import BlurFade from "@/components/magicui/blur-fade"
 import { WMCard } from "@/components/wm-card"
@@ -11,7 +11,7 @@ import {
 import { HardcoverBooksCarousel } from "@/components/section/hardcover-books-carousel"
 
 export default async function HardcoverCard() {
-  if (!DATA.sections.hardcover) return null;
+  if (!CONFIG.sections.hardcover) return null;
 
   let currentlyReading: Awaited<ReturnType<typeof getCurrentlyReading>> = [];
   let recentlyRead: Awaited<ReturnType<typeof getRecentlyRead>> = [];
@@ -41,7 +41,7 @@ export default async function HardcoverCard() {
     <section id="hardcover">
       <WMCard
           title="hardcover.feed"
-          href="https://hardcover.app/@kenroms"
+          href={CONFIG.contact.social.Hardcover.url}
           hrefLabel="Open Hardcover"
         >
           <BlurFade delay={0.52}>

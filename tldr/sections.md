@@ -4,7 +4,7 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 
 > **Env dependency map:** See `tldr/env-vars.md` for which env vars each section uses and current crash behavior.
 
-> **Toggle status:** No section toggle system exists yet. All sections always render regardless of config.
+> **Toggle status:** Section visibility controlled by `CONFIG.sections.*` in `src/data/config.tsx`.
 
 > **Threads removed.** Replaced by Twitter social link. No Threads section, no API route, no env vars. Twitter handle: @Kenroms.
 
@@ -13,7 +13,7 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 - Grid background pattern (48px squares, gray 10% opacity)
 - **Terminal**: Click anywhere on the card (titlebar, content, avatar — entire `<section>` area) to open. Boot sequence (100ms interval), then interactive prompt.
 - **Desktop mode**: Terminal fills the entire window (`h-full` on container + terminal body when `isWindow && terminalOpen`)
-- **Commands**: whoami, location, status, contact, links, matrix, clear, exit
+- **Commands**: whoami, location, status, contact, links, matrix, clear, exit (data from `CONFIG.terminal` in config.tsx)
 - **`matrix` command**: Takes over the entire terminal body — full-size `<MatrixRain />` overlay. `matrixMode` state toggled on `cmd === "matrix"`, exit via [exit] button or Escape key.
 - **MatrixRain** (`src/components/matrix-rain.tsx`): DOM `<pre>`-based, auto-sized via ResizeObserver (fills parent). Dense straight-down columns (one per char width), katakana + ASCII, `--primary` CSS color with opacity fade trail (7 chars deep). rAF loop, pauses on tab hidden.
 - **"click me" button**: `dark:bg-primary dark:text-primary-foreground bg-primary/15 text-primary-foreground` + `animate-pulse` — full primary bg in dark, subtle tint in light, text always readable (primary-foreground). Pulsating cursor uses `dark:bg-primary-foreground bg-primary-foreground`.
@@ -26,11 +26,11 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 
 ## YouTube (`youtube-section.tsx`)
 - **Type**: Client component
-- **Source**: YouTube Data API v3 (playlist `PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd`)
+- **Source**: YouTube Data API v3 (playlist ID from `CONFIG.youtube.playlistId` in config.tsx)
 - **Grid**: 2 columns, `aspect-video` thumbnails
 - **Hover**: `bg-card/60` overlay + `text-muted-foreground` title text
 - **Duration badge**: `bg-black/80 text-white` bottom-right
-- **Fallback**: 5 hardcoded videos when no API key
+- **Fallback**: 5 videos from `CONFIG.youtube.fallbackVideos` (config.tsx) when no API key
 
 ## Hardcover (`hardcover-card.tsx` + `hardcover-books-carousel.tsx`)
 - **Type**: Async server component + client carousel
@@ -58,7 +58,7 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 - **Left**: `holdingsign.gif` (720x1280, 31 frames, palette mode) from `/public/`, `h-52 w-full object-cover` in `140px` column
 - **GIF smoothing**: CSS `filter: brightness(1.02) contrast(1.02) blur(0.4px)` + `image-rendering: auto` to fix GIF color banding
 - **Overlay**: "good/karma" text centered with `pt-16`, bold black `text-[11px]` font-mono
-- **Right**: Clickable tip tiers ($5 coffee, $10 large coffee) as rounded links, `pr-3` padding
+- **Right**: Clickable tip tiers from `CONFIG.kofi.tiers` (config.tsx) as rounded links, `pr-3` padding
 - **Button**: `kofi-react-widget` floating button
 
 ## Hover Overlay Pattern (Instagram / YouTube / Hardcover)

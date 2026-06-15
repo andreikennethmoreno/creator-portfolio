@@ -13,9 +13,9 @@ File: `src/components/navbar.tsx` — 3 dockers rendered with MagicUI Dock compo
 
 ## Center Docker
 - `relative mx-auto` centered
-- Items: nav links from DATA.navbar, social links (navbar:true, filtered on desktop), app icons (desktop mode only), CardStyleToggle, wallpaper cycler
-- **Social links on desktop**: GitHub and email are hidden via `.filter([name]) => !isDesktop || (name !== "GitHub" && name !== "email")`
-- **ThemeToggle (wallpaper cycler)**: visible on all modes (both desktop & mobile/tablet). Tooltip: "change theme". Positioned beside CardStyleToggle with a separator.
+- Items: nav links from CONFIG.navbar, social links from CONFIG.dock.socials (ordered as listed), app icons (desktop mode only), CardStyleToggle (if CONFIG.dock.cardStyleToggle), wallpaper cycler (if CONFIG.dock.themeToggle), search (if CONFIG.dock.search, desktop mode only)
+- **Social links driven by `CONFIG.dock.socials`** — an array of contact.social key names. Edit this array to control exactly which socials appear and their order.
+- **CardStyleToggle** and **ThemeToggle** each wrapped in CONFIG.dock.* boolean — set to false to hide from dock
 
 ## Right Docker
 - Visible only in desktop mode (`isDesktop &&`)

@@ -4,6 +4,7 @@ import { Monitor, X } from "lucide-react"
 import { useDesktopMode } from "@/lib/desktop-mode-context"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { CONFIG } from "@/data/config"
 import { useEffect, useState } from "react"
 
 const LS_KEY = "desktop-mode-notification-dismissed"
@@ -26,7 +27,7 @@ export function DesktopModeNotification() {
     localStorage.setItem(LS_KEY, "true")
   }
 
-  if (isDesktop || dismissed) return null
+  if (!CONFIG.showDesktopModeNotification || isDesktop || dismissed) return null
 
   return (
     <div className="hidden lg:block fixed bottom-20 left-4 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">

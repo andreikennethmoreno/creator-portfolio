@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DATA } from "@/data/resume";
+import { CONFIG } from "@/data/config";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 import { getTopVercelProjects } from "@/lib/vercel";
@@ -107,7 +107,7 @@ export default function VercelProjects({
   projects: Awaited<ReturnType<typeof getTopVercelProjects>>;
   unavailable?: boolean;
 }) {
-  if (!DATA.sections.vercel) return null;
+  if (!CONFIG.sections.vercel) return null;
 
   return (
     <section id="projects">

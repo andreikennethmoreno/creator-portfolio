@@ -25,7 +25,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { WALLPAPERS, useWallpaper } from "@/lib/wallpaper-context";
+import { useWallpaper } from "@/lib/wallpaper-context";
+import { CONFIG } from "@/data/config";
+
+const WALLPAPERS = CONFIG.wallpapers;
 import { flushSync } from "react-dom";
 
 interface SearchExplorerProps {

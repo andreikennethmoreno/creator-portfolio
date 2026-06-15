@@ -1,19 +1,16 @@
-import { DATA } from "@/data/resume"
+import { CONFIG } from "@/data/config"
 import BlurFade from "@/components/magicui/blur-fade"
 import { WMCard } from "@/components/wm-card"
 
-const TIERS = [
-  { label: 'coffee', amount: '$5 USD', note: 'one-time tip' },
-  { label: 'large coffee', amount: '$10 USD', note: "you're a legend" },
-]
+const TIERS = CONFIG.kofi.tiers
 
 export default function KofiCard() {
-  if (!DATA.sections.kofi) return null;
+  if (!CONFIG.sections.kofi) return null;
   return (
     <section id="kofi">
       <WMCard
         title="kofi.feed"
-        href="https://ko-fi.com/kenroms"
+        href={CONFIG.kofi.url}
         hrefLabel="Open Ko-fi"
       >
         <BlurFade delay={0.6}>
@@ -34,7 +31,7 @@ export default function KofiCard() {
               {TIERS.map((tier) => (
                 <a
                   key={tier.label}
-                  href="https://ko-fi.com/kenroms"
+                  href={CONFIG.kofi.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-between border border-border/50 px-3 py-2 rounded-lg text-sm hover:bg-muted/30 transition-colors"
@@ -48,7 +45,7 @@ export default function KofiCard() {
                 </a>
               ))}
               <a
-                href="mailto:kennonirom@gmail.com"
+                href={`mailto:${CONFIG.contact.email}`}
                 className="text-[10px] font-mono text-muted-foreground/40 hover:text-foreground transition-colors text-center pt-1"
               >
                 or say hi

@@ -14,9 +14,9 @@
 | `MY_VERCEL_TEAM_ID` | `vercel-projects.tsx`, `/api/vercel-stats` | Yes (empty) | No — placeholder "— not configured —" |
 | `NEXT_PUBLIC_BASE_URL` | OG images, meta, layout.tsx | Yes (empty) | No — defaults to http://localhost:3000 |
 
-## Section Toggle System (src/data/resume.tsx)
+## Section Toggle System (src/data/config.tsx)
 
-Added `sections` object to DATA config. Each key maps to a section:
+Added `sections` object to CONFIG. Each key maps to a section:
 - `lastfm`, `instagram`, `youtube`, `hardcover`, `vercel`, `kofi`
 - Set to `false` to hide the section entirely (returns null)
 - Default: all `true`
@@ -61,6 +61,6 @@ When env var missing OR fetch fails:
 ## Source file locations
 - Sections: `src/app/page.tsx` (imports + layout)
 - Each section component: `src/components/` (youtube-section, instagram-card, hardcover-card, lastfm-card, lastfm-player, vercel-projects, kofi-card)
-- DATA config: `src/data/resume.tsx`
+- DATA config: `src/data/config.tsx`
 - Env helper: `src/lib/env.ts`
 - .env.example: root

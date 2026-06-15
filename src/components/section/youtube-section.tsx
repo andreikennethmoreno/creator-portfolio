@@ -2,50 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import { DATA } from "@/data/resume";
+import { CONFIG } from "@/data/config";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
-const fallbackVideos = [
-  {
-    id: "WrTq4lRHEy8",
-    title:
-      "Build Your First 2D Game in Godot – Step-by-Step Beginner Guide + GitHub Source Upload",
-    duration: "56:04",
-    href: "https://youtu.be/WrTq4lRHEy8",
-  },
-  {
-    id: "DupS46tLPn0",
-    title:
-      "Build & Deploy Full Stack Next.js & React CRUD App with Auth | ShadCN UI, PostgreSQL, Prisma",
-    duration: "2:19:47",
-    href: "https://youtu.be/DupS46tLPn0",
-  },
-  {
-    id: "XeR_SGBUjTs",
-    title:
-      "Build an Anime Website with MyAnimeList API using React Tailwind Axios Postman | HOW TO REST API",
-    duration: "2:16:53",
-    href: "https://youtu.be/XeR_SGBUjTs",
-  },
-  {
-    id: "gTD8b5Yxuuo",
-    title:
-      "Build a Full Stack CRUD App using React Tailwind Node PostgreSQL | Best practice & Industry standard",
-    duration: "1:41:32",
-    href: "https://youtu.be/gTD8b5Yxuuo",
-  },
-  {
-    id: "s_DtrDkjyfA",
-    title:
-      "Build a Portfolio with Contact Page using Email JS React Bootstrap | JUST COPY PASTE! Quick and Easy",
-    duration: "1:00:03",
-    href: "https://youtu.be/s_DtrDkjyfA",
-  },
-];
-
 export default function YoutubeSection() {
-  const [videos, setVideos] = useState(fallbackVideos);
+  const [videos, setVideos] = useState(CONFIG.youtube.fallbackVideos);
 
   useEffect(() => {
     fetch("/api/youtube-playlist")
@@ -56,14 +18,14 @@ export default function YoutubeSection() {
       .catch(() => {});
   }, []);
 
-  if (!DATA.sections.youtube) return null;
+  if (!CONFIG.sections.youtube) return null;
 
   return (
     <section id="youtube">
       <WMCard
           title="youtube.feed"
           count={videos.length}
-          href="https://www.youtube.com/@kenroms"
+          href={CONFIG.youtube.channelUrl}
           hrefLabel="Open YouTube"
         >
           <BlurFade delay={0.44}>

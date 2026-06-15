@@ -14,7 +14,7 @@ All providers in `src/app/layout.tsx` (order matters):
 | HUDPanelProvider | `hud/hud-panel.tsx` | `open`, `close`, `isOpen`, `activeTab` |
 
 ## Data Flow
-- `resume.tsx` → DATA object → consumed by navbar, hero, sections
+- `config.tsx` → CONFIG object → consumed by navbar, hero, sections
 - External API → `fetch()` with `revalidate` → ISR cache → rendered component
 - Theme/Wallpaper/Desktop state → React Contexts → consumed via custom hooks
 - Music player state → `MusicPlayerContext` → shared by MiniPlayer, LastFmPlayer, HUD PlayerTab

@@ -9,11 +9,13 @@ const STACK = [
   { label: 'deploy', value: 'vercel · isr' },
 ]
 
+import { CONFIG } from "@/data/config"
+
 const LINKS = [
-  { label: 'youtube', href: 'https://youtube.com/@kenroms', value: '@kenroms' },
-  { label: 'twitter', href: 'https://twitter.com/Kenroms', value: '@Kenroms' },
-  { label: 'github', href: 'https://github.com/andreikennethmoreno', value: 'andreikennethmoreno' },
-  { label: 'ko-fi', href: 'https://ko-fi.com/kenroms', value: 'ko-fi.com/kenroms' },
+  { label: 'youtube', href: CONFIG.contact.social.YouTube.url, value: '@kenroms' },
+  { label: 'twitter', href: CONFIG.contact.social.Twitter.url, value: '@Kenroms' },
+  { label: 'github', href: CONFIG.contact.social.GitHub.url, value: 'andreikennethmoreno' },
+  { label: 'ko-fi', href: CONFIG.contact.social["Ko-fi"].url, value: 'ko-fi.com/kenroms' },
 ]
 
 export default function AboutTab() {
@@ -37,7 +39,7 @@ export default function AboutTab() {
 
         <div className="flex flex-col gap-1">
           <span className="text-muted-foreground">CONTACT</span>
-          <a href="mailto:kennonirom@gmail.com" className="text-foreground hover:underline truncate">kennonirom@gmail.com</a>
+          <a href={`mailto:${CONFIG.contact.email}`} className="text-foreground hover:underline truncate">{CONFIG.contact.email}</a>
         </div>
 
         <div className="flex flex-col gap-1">

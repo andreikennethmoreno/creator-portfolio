@@ -3,6 +3,7 @@
 import { Image, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { CONFIG } from "@/data/config";
 import { useEffect, useState } from "react";
 
 const LS_KEY = "theme-toggle-notification-dismissed";
@@ -20,7 +21,7 @@ export function ThemeToggleNotification() {
     localStorage.setItem(LS_KEY, "true");
   };
 
-  if (dismissed) return null;
+  if (!CONFIG.showThemeToggleNotification || dismissed) return null;
 
   return (
     <div className="fixed bottom-20 right-4 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">

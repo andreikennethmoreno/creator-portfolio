@@ -1,4 +1,4 @@
-import { WALLPAPER_URLS, DEFAULT_WALLPAPER_URL, WALLPAPER_HOSTS } from "@/lib/wallpaper-data";
+import { WALLPAPER_URLS, DEFAULT_WALLPAPER_URL, WALLPAPER_HOSTS, CONFIG } from "@/data/config";
 
 import Navbar from "@/components/navbar";
 import { WallpaperBackground } from "@/components/wallpaper-background";
@@ -12,7 +12,6 @@ import { LayoutShell } from "@/components/layout-shell";
 import { MusicPlayerProvider } from "@/lib/music-player-context";
 import HiddenIframeContainer from "@/components/hidden-iframe-container";
 import { env } from "@/lib/env";
-import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -33,17 +32,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(DATA.url),
+  metadataBase: new URL(CONFIG.url),
   title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    default: CONFIG.name,
+    template: `%s | ${CONFIG.name}`,
   },
-  description: DATA.description,
+  description: CONFIG.description,
   openGraph: {
-    title: `${DATA.name}`,
-    description: DATA.description,
-    url: DATA.url,
-    siteName: `${DATA.name}`,
+    title: `${CONFIG.name}`,
+    description: CONFIG.description,
+    url: CONFIG.url,
+    siteName: `${CONFIG.name}`,
     locale: "en_US",
     type: "website",
   },
@@ -59,7 +58,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: `${DATA.name}`,
+    title: `${CONFIG.name}`,
     card: "summary_large_image",
   },
   verification: {

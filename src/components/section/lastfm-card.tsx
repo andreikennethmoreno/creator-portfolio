@@ -1,11 +1,11 @@
-import { DATA } from "@/data/resume"
+import { CONFIG } from "@/data/config"
 import { env } from "@/lib/env"
 import BlurFade from "@/components/magicui/blur-fade"
 import { WMCard } from "@/components/wm-card"
 import LastFmPlayer from './lastfm-player'
 
 export default async function LastFmCard() {
-  if (!DATA.sections.lastfm) return null;
+  if (!CONFIG.sections.lastfm) return null;
 
   if (!env.lastfmKey() || !env.lastfmUserPublic()) {
     return (
