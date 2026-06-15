@@ -31,7 +31,7 @@ import { HomeIcon } from "lucide-react";
 export const CONFIG = {
   // ── Mode ────────────────────────────────────
   // "creator" | "linktree" | "dev"
-  mode: "linktree" as "creator" | "linktree" | "dev",
+  mode: "dev" as "creator" | "linktree" | "dev",
 
   // ── Identity ────────────────────────────────
   name: "Kenroms",
@@ -242,7 +242,51 @@ export const CONFIG = {
   },
 
   // ── Dev Mode ────────────────────────────────
-  dev: {},
+  dev: {
+    sections: {
+      about: true,
+      experience: true,
+      education: true,
+      projects: true,
+    },
+    aboutSegments: [
+      [
+        {
+          t: "text",
+          c: "Computer Science student at Cavite State University building open-source tools, and accessible developer education.",
+        },
+      ],
+      [
+        {
+          t: "text",
+          c: "Technical content creator on YouTube — collaborated with ",
+        },
+        { t: "link", c: "Neon", h: "https://neon.tech" },
+        {
+          t: "text",
+          c: " to beta-test their auth solution, producing tutorials with ",
+        },
+        { t: "bold", c: "{viewCount}+ total views" },
+        { t: "text", c: "." },
+      ],
+      [
+        {
+          t: "text",
+          c: "Experienced with React, Next.js, TypeScript, Python, Flask, .NET, and various database and cloud platforms.",
+        },
+      ],
+      [
+        { t: "text", c: "Built and deployed an " },
+        {
+          t: "link",
+          c: "AI-powered LMS",
+          h: "https://nextgen-lms.vercel.app/",
+        },
+        { t: "text", c: " adopted by 3 academic institutions reaching " },
+        { t: "bold", c: "1000+ students." },
+      ],
+    ] as const,
+  },
 } as const;
 
 export const WALLPAPER_URLS = CONFIG.general.wallpapers.map((w) => w.url);

@@ -95,7 +95,7 @@ export async function getTopVercelProjects(limit = 3): Promise<EnrichedProject[]
           deployedUrl,
           deploymentCount,
           framework: project.framework ?? null,
-          favicon: `https://${deployedUrl}/favicon.ico`,
+          favicon: `https://www.google.com/s2/favicons?domain=${deployedUrl}&sz=32`,
         } satisfies EnrichedProject;
       })
     );

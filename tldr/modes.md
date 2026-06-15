@@ -12,7 +12,18 @@ One root config (`CONFIG`), three modes — each renders a different layout.
 |------|-----------------|--------|
 | **creator** | `CONFIG.creator.*` | Current portfolio (sections, dock, desktop mode, etc.) |
 | **linktree** | `CONFIG.linktree.*` | Linktree-style page (ordered links, terminal easter egg, dock) |
-| **dev** | `CONFIG.dev.*` | Older/dev portfolio (TBD) |
+| **dev** | `CONFIG.dev.*` | Dev-focused portfolio (about, experience, education, projects sections) |
+
+## Dev Mode Sections (Placeholders)
+
+4 placeholder components created in `src/components/section/`:
+- `about-section.tsx` — `$ cat about.md`
+- `experience-section.tsx` — `$ cat experience.json`
+- `education-section.tsx` — `$ cat education.md`
+- `projects-section.tsx` — `$ cat projects.json`
+
+Each wraps `WMCard` + `BlurFade` — same pattern as all existing sections.
+Not yet wired into `page.tsx`. See `tldr/dev-sections.md` for full details.
 
 ## Shared Identity (root level)
 `CONFIG.name`, `CONFIG.initials`, `CONFIG.url`, `CONFIG.description`, `CONFIG.avatarUrl`, `CONFIG.contact.*`
@@ -25,7 +36,7 @@ Every mode reads from these — change once, updates everywhere.
 ## Current State
 - `CONFIG.creator` — fully populated with all existing portfolio config
 - `CONFIG.linktree` — `{ links: [social keys], showTerminal: true, showDock: true }`
-- `CONFIG.dev` — empty: `{}`
+- `CONFIG.dev` — empty `{}` (placeholder components exist, not wired yet)
 
 ## Linktree Mode Behavior
 - `page.tsx` renders `<LinktreeLayout />` directly — no `DesktopLayout`, no sections

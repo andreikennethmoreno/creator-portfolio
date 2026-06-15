@@ -8,6 +8,10 @@ import KofiCard from "@/components/KofiCard"
 import LastFmCard from "@/components/section/lastfm-card"
 import VercelProjects from "@/components/vercel-projects"
 import LinktreeLayout from "@/components/linktree-layout"
+import AboutSection from "@/components/section/about-section";
+import ExperienceSection from "@/components/section/experience-section";
+import EducationSection from "@/components/section/education-section";
+import ProjectsSection from "@/components/section/projects-section";
 import { CONFIG } from "@/data/config";
 import { env } from "@/lib/env";
 import { getTopVercelProjects } from "@/lib/vercel";
@@ -17,6 +21,30 @@ export const dynamic = 'force-dynamic'
 export default async function Page() {
   if (CONFIG.mode === "linktree") {
     return <LinktreeLayout />;
+  }
+
+  if (CONFIG.mode === "dev") {
+    return (
+      <DesktopLayout>
+        <main className="min-h-dvh flex flex-col gap-14 relative contents">
+          <DesktopPanel sectionId="hero">
+            <HeroSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="about">
+            <AboutSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="experience">
+            <ExperienceSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="education">
+            <EducationSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="projects">
+            <ProjectsSection />
+          </DesktopPanel>
+        </main>
+      </DesktopLayout>
+    );
   }
 
   const vercelUnavailable = !(CONFIG.creator.sections.vercel && env.vercelToken());

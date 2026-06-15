@@ -13,6 +13,7 @@ type WMCardProps = {
   href?: string;
   hrefLabel?: string;
   rightSlot?: ReactNode;
+  hideDots?: boolean;
   children: ReactNode;
 };
 
@@ -29,7 +30,7 @@ const EDGES: { dir: EdgeDir; className: string }[] = [
   { dir: "se", className: "bottom-0 right-0 size-3 cursor-se-resize" },
 ];
 
-export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: WMCardProps) {
+export function WMCard({ title, count, href, hrefLabel, rightSlot, hideDots, children }: WMCardProps) {
   const { style } = useCardStyle();
   const isGlossy = style === "glossy";
   const { isWindow, win, onClose, onMinimize, onMaximize, onMove, onResizeRect, onFocus } = useCardWindow();
@@ -126,7 +127,7 @@ export function WMCard({ title, count, href, hrefLabel, rightSlot, children }: W
           onTitlebarMouseDown(e);
         } : undefined}
       >
-        {!isWindow && (
+        {!isWindow && !hideDots && (
           <div className="flex items-center gap-1.5">
             <span className="size-2 rounded-full bg-foreground/15" />
             <span className="size-2 rounded-full bg-foreground/15" />

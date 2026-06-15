@@ -104,6 +104,7 @@ export default function HeroSection() {
     <section id="hero" onClick={!terminalOpen ? () => setTerminalOpen(true) : undefined}>
       <WMCard
         title={terminalOpen ? (matrixMode ? "~/hello — matrix" : "~/hello — terminal") : "~/hello"}
+        hideDots
         rightSlot={terminalOpen ? (
           <button
             onClick={(e) => { e.stopPropagation(); setTerminalOpen(false); }}
