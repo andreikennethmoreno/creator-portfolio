@@ -1,10 +1,10 @@
 # Multi-Mode Architecture TL;DR
 
 ## Concept
-One root config (`CONFIG`), three modes — each renders a different layout.
+One root config (`CONFIG`), four modes — each renders a different layout.
 
 ## Mode Switch
-`CONFIG.mode` at root level: `"creator"` | `"linktree"` | `"dev"`
+`CONFIG.mode` at root level: `"creator"` | `"linktree"` | `"dev"` | `"custom"`
 
 ## What Each Mode Reads
 
@@ -12,18 +12,20 @@ One root config (`CONFIG`), three modes — each renders a different layout.
 |------|-----------------|--------|
 | **creator** | `CONFIG.creator.*` | Current portfolio (sections, dock, desktop mode, etc.) |
 | **linktree** | `CONFIG.linktree.*` | Linktree-style page (ordered links, terminal easter egg, dock) |
-| **dev** | `CONFIG.dev.*` | Dev-focused portfolio (about, experience, education, projects sections) |
+| **dev** | `CONFIG.dev.*` | Dev-focused portfolio (hero, about, experience, education, projects) |
+| **custom** | (none) | Minimal layout (hero, about, instagram) |
 
-## Dev Mode Sections (Placeholders)
+## Dev Mode Sections (All Live)
 
-4 placeholder components created in `src/components/section/`:
-- `about-section.tsx` — `$ cat about.md`
-- `experience-section.tsx` — `$ cat experience.json`
-- `education-section.tsx` — `$ cat education.md`
-- `projects-section.tsx` — `$ cat projects.json`
+| Section | Config Source | Status |
+|---------|--------------|--------|
+| hero | always rendered | ✅ |
+| about | `CONFIG.dev.aboutSegments` | ✅ config-driven bullet list |
+| experience | `CONFIG.dev.experience` | ✅ config-driven accordion |
+| education | `CONFIG.dev.education` + `certificates` | ✅ config-driven list |
+| projects | `CONFIG.dev.projects` | ✅ config-driven accordion |
 
-Each wraps `WMCard` + `BlurFade` — same pattern as all existing sections.
-Not yet wired into `page.tsx`. See `tldr/dev-sections.md` for full details.
+Each section uses `WMCard` + `BlurFade`. See `tldr/dev-sections.md` for full details.
 
 ## Shared Identity (root level)
 `CONFIG.name`, `CONFIG.initials`, `CONFIG.url`, `CONFIG.description`, `CONFIG.avatarUrl`, `CONFIG.contact.*`
@@ -31,12 +33,13 @@ Not yet wired into `page.tsx`. See `tldr/dev-sections.md` for full details.
 Every mode reads from these — change once, updates everywhere.
 
 ## Files Referencing CONFIG
-18 files import from `@/data/config`. All reference their mode's namespace explicitly (e.g., `CONFIG.creator.sections.youtube`). Root-level identity props (`CONFIG.name`, `CONFIG.contact.*`) are unchanged.
+18+ files import from `@/data/config`. All reference their mode's namespace explicitly.
 
 ## Current State
 - `CONFIG.creator` — fully populated with all existing portfolio config
 - `CONFIG.linktree` — `{ links: [social keys], showTerminal: true, showDock: true }`
-- `CONFIG.dev` — empty `{}` (placeholder components exist, not wired yet)
+- `CONFIG.dev` — fully populated (sections, links, aboutSegments, experience, education, certificates, projects)
+- `CONFIG.custom` — no dedicated namespace; reads root identity only
 
 ## Linktree Mode Behavior
 - `page.tsx` renders `<LinktreeLayout />` directly — no `DesktopLayout`, no sections

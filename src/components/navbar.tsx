@@ -29,6 +29,11 @@ import {
   Code,
   MessageCircle,
   Heart,
+  User,
+  Briefcase,
+  GraduationCap,
+  Star,
+  Download,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -98,8 +103,16 @@ export default function Navbar() {
     openWindow(app);
   };
 
+  const modeAppIds = (CONFIG.modeApps as Record<string, readonly string[]>)[CONFIG.mode] ?? CONFIG.modeApps.creator;
+  const availableApps = APPS.filter((app) => modeAppIds.includes(app.id));
+
   const APP_ICONS: Record<string, React.ElementType> = {
-    hero: Folder,
+    hero: User,
+    about: Star,
+    experience: Briefcase,
+    education: GraduationCap,
+    projects: Folder,
+    resume: Download,
     instagram: Camera,
     youtube: Play,
     reading: BookOpen,
@@ -292,7 +305,7 @@ export default function Navbar() {
                 orientation="vertical"
                 className="h-2/3 m-auto w-px bg-border"
               />
-              {APPS.map((app) => {
+              {availableApps.map((app) => {
                 const IconComp = APP_ICONS[app.id];
                 const win = windows.find((w) => w.appId === app.id);
                 const isOpen = !!win;

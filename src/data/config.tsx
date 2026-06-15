@@ -30,8 +30,16 @@ import { HomeIcon } from "lucide-react";
 
 export const CONFIG = {
   // ── Mode ────────────────────────────────────
-  // "creator" | "linktree" | "dev"
-  mode: "dev" as "creator" | "linktree" | "dev",
+  // "creator" | "linktree" | "dev" | "custom"
+  mode: "dev" as "creator" | "linktree" | "dev" | "custom",
+
+  // ── Mode Apps ───────────────────────────────
+  // Which app windows are available per mode (mirrors DesktopPanels in page.tsx)
+  modeApps: {
+    dev: ["hero", "about", "experience", "education", "projects", "resume", "youtube"],
+    custom: ["hero", "about", "instagram"],
+    creator: ["hero", "instagram", "youtube", "reading", "listening", "vercel", "support"],
+  } as const,
 
   // ── Identity ────────────────────────────────
   name: "Kenroms",
@@ -248,6 +256,14 @@ export const CONFIG = {
       experience: true,
       education: true,
       projects: true,
+      resume: true,
+    },
+    links: {
+      about: null,
+      experience: "https://www.linkedin.com/in/kennmoreno/",
+      education: "https://cvsu.edu.ph/bacoor/",
+      projects: "https://github.com/andreikennethmoreno",
+      resume: "/andrei_kenneth_moreno_resume.pdf",
     },
     aboutSegments: [
       [
@@ -285,6 +301,94 @@ export const CONFIG = {
         { t: "text", c: " adopted by 3 academic institutions reaching " },
         { t: "bold", c: "1000+ students." },
       ],
+    ] as const,
+    experience: [
+      {
+        id: "youtube",
+        visible: true,
+        openedByDefault: true,
+        company: "Self-Employed / YouTube",
+        location: "Remote",
+        role: "Technical Content Creator",
+        period: "October 2023 — Present",
+        active: true,
+        responsibilities: [
+          "Produced and published in-depth technical tutorials on web development, growing the channel to 100,000+ total views",
+          "Collaborated with Neon to showcase and beta-test Neon Auth, providing structured product feedback",
+          "Built a consistent audience of developers across skill levels with hands-on coding content",
+        ],
+        stack: ["React", "Next.js", "TypeScript", "TailwindCSS", "PostgreSQL", "Prisma"],
+      },
+      {
+        id: "iot",
+        visible: true,
+        openedByDefault: false,
+        company: "IOT Technology, Inc.",
+        location: "Philippines",
+        role: "Developer Intern",
+        period: "July 2024 — November 2024",
+        active: false,
+        responsibilities: [
+          "Designed UI/UX mockups and interactive prototypes in Figma for client-facing web applications",
+          "Built a booking management system MVP using React under accelerated timelines",
+          "Upgraded a full-stack e-commerce platform with Next.js 15, PayPal integration, ShadCN UI, and Neon PostgreSQL",
+        ],
+        stack: ["Next.js", "React", "TypeScript", "Figma", "PayPal", "ShadCN UI", "Neon"],
+      },
+      {
+        id: "mentorship",
+        visible: true,
+        openedByDefault: false,
+        company: "Independent Mentorship",
+        location: "Philippines",
+        role: "Software Development Mentee",
+        period: "April 2024 — June 2024",
+        active: false,
+        responsibilities: [
+          "Built RESTful APIs and data models using .NET and SQL Server for an enterprise ship management system",
+          "Developed frontend in Next.js for crew management dashboards handling scheduling workflows",
+          "Utilized Azure DevOps for CI/CD pipeline management and version control",
+        ],
+        stack: [".NET", "SQL Server", "Next.js", "React", "Azure DevOps", "C#"],
+      },
+    ] as const,
+    education: [
+      {
+        school: "Cavite State University",
+        degree: "Bachelor of Science in Computer Science",
+        period: "June 2021 — Present",
+        details: ["Bacoor, Philippines"],
+      },
+    ] as const,
+    certificates: [
+      {
+        title: "CS50x: Introduction to Computer Science",
+        issuer: "Harvard University via edX",
+        year: "2023",
+      },
+      {
+        title: "CS50w: Web Programming with Python and JavaScript",
+        issuer: "Harvard University via edX",
+        year: "2024",
+      },
+    ] as const,
+    projects: [
+      {
+        id: "nextgen-lms",
+        name: "NextGen LMS",
+        description:
+          "AI-Powered Learning Management System adopted across 3 academic institutions — reaching 1,000+ students. Features dual-engine AI course generation, career roadmap generator, polyglot programming sandbox, and role-based access control.",
+        stack: ["Next.js 15", "Flask", "AWS", "Docker", "Gemini", "Groq", "Drizzle ORM", "Neon"],
+        href: "https://nextgen-lms.vercel.app/",
+      },
+      {
+        id: "bug-reporting",
+        name: "Bug Reporting System",
+        description:
+          "Simple CRUD bug reporting system with filter options using Angular Material UI on the frontend, ASP.NET MVC API on the backend, and SQL Server as the database.",
+        stack: ["Angular", "TypeScript", "ASP.NET", "SQL Server", "Angular Material"],
+        href: "https://github.com/andreikennethmoreno",
+      },
     ] as const,
   },
 } as const;

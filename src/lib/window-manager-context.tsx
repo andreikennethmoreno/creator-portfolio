@@ -11,12 +11,16 @@ const MAX_MARGIN = 8;
 
 export const APPS: AppDef[] = [
   { id: "hero", title: "Hero" },
+  { id: "about", title: "About" },
+  { id: "experience", title: "Experience" },
+  { id: "education", title: "Education" },
+  { id: "projects", title: "Projects" },
+  { id: "resume", title: "Resume" },
   { id: "instagram", title: "Instagram" },
   { id: "youtube", title: "YouTube" },
   { id: "reading", title: "Reading" },
   { id: "listening", title: "Listening" },
-  { id: "vercel", title: "Projects" },
-
+  { id: "vercel", title: "Vercel" },
   { id: "support", title: "Support" },
 ];
 

@@ -12,6 +12,7 @@ import AboutSection from "@/components/section/about-section";
 import ExperienceSection from "@/components/section/experience-section";
 import EducationSection from "@/components/section/education-section";
 import ProjectsSection from "@/components/section/projects-section";
+import ResumeSection from "@/components/section/resume-section";
 import { CONFIG } from "@/data/config";
 import { env } from "@/lib/env";
 import { getTopVercelProjects } from "@/lib/vercel";
@@ -21,6 +22,26 @@ export const dynamic = 'force-dynamic'
 export default async function Page() {
   if (CONFIG.mode === "linktree") {
     return <LinktreeLayout />;
+  }
+
+  if (CONFIG.mode === "custom") {
+    return (
+      <DesktopLayout>
+        <main className="min-h-dvh flex flex-col gap-14 relative contents">
+          <DesktopPanel sectionId="hero">
+            <HeroSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="about">
+            <AboutSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="instagram">
+            <section id="instagram">
+              <InstagramCard />
+            </section>
+          </DesktopPanel>
+        </main>
+      </DesktopLayout>
+    );
   }
 
   if (CONFIG.mode === "dev") {
@@ -41,6 +62,9 @@ export default async function Page() {
           </DesktopPanel>
           <DesktopPanel sectionId="projects">
             <ProjectsSection />
+          </DesktopPanel>
+          <DesktopPanel sectionId="resume">
+            <ResumeSection />
           </DesktopPanel>
         </main>
       </DesktopLayout>
