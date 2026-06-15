@@ -34,10 +34,15 @@ import {
   GraduationCap,
   Star,
   Download,
+  Settings,
+  X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { useWindowManager, APPS } from "@/lib/window-manager-context";
+import { useWallpaper } from "@/lib/wallpaper-context";
+import { useCardStyle } from "@/lib/card-style-context";
+import { rippleTransition } from "@/lib/view-transition";
 
 export default function Navbar() {
   const { isDesktop, toggleDesktop, revealSection } = useDesktopMode();
@@ -45,6 +50,12 @@ export default function Navbar() {
   const [hoverZone, setHoverZone] = useState<
     "left" | "center" | "right" | null
   >(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const { wallpaper, setWallpaper } = useWallpaper();
+  const { style, toggle: toggleStyle } = useCardStyle();
+  const params = typeof window !== "undefined" ? new URL(window.location.href).searchParams : null;
+  const activeMode = params?.get("mode") ?? CONFIG.mode;
+  const MODES = ["dev", "creator", "custom", "linktree"] as const;
   const {
     windows,
     openWindow,
@@ -149,7 +160,7 @@ export default function Navbar() {
             : "opacity-100",
         )}
       >
-        {CONFIG.mode !== "linktree" && (
+        {activeMode !== "linktree" && (
         <Dock
           className={cn(
             "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border border-primary/15 bg-card/90 backdrop-blur-3xl shadow-[0_0_15px_5px] shadow-primary/15 transition-all duration-300",
@@ -419,6 +430,122 @@ export default function Navbar() {
                 <TooltipArrow className="fill-primary" />
               </TooltipContent>
             </Tooltip>
+          )}
+          {!isDesktop && CONFIG.creator.dock.settings && (
+            <div className="relative">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => setSettingsOpen((p) => !p)}
+                    className="size-full"
+                  >
+                    <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                      <Settings className="size-full rounded-sm overflow-hidden object-contain" />
+                    </DockIcon>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  sideOffset={8}
+                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                >
+                  <p>settings</p>
+                  <TooltipArrow className="fill-primary" />
+                </TooltipContent>
+              </Tooltip>
+
+              {settingsOpen && (
+                <div
+                  className={cn(
+                    "absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-56 rounded-xl border p-3 space-y-3 shadow-lg z-50",
+                    "bg-card/90 backdrop-blur-3xl border-primary/15",
+                  )}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[11px] tracking-wide text-foreground/50 uppercase">
+                      Settings
+                    </span>
+                    <button onClick={() => setSettingsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                      <X className="size-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider">Mode</p>
+                    <div className="flex flex-wrap gap-1">
+                      {MODES.map((m) => (
+                        <button
+                          key={m}
+                          onClick={() => {
+                            const url = new URL(window.location.href);
+                            if (m === activeMode && params?.get("mode")) url.searchParams.delete("mode");
+                            else url.searchParams.set("mode", m);
+                            window.location.href = url.toString();
+                          }}
+                          className={cn(
+                            "font-mono text-[11px] px-2 py-1 rounded-md border transition-colors cursor-pointer",
+                            activeMode === m
+                              ? "bg-primary/20 border-primary/40 text-foreground"
+                              : "bg-muted border-border text-muted-foreground hover:text-foreground",
+                          )}
+                        >
+                          {m}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider">Card Style</p>
+                    <div className="flex gap-1">
+                      {(["default", "glossy"] as const).map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => { if (style !== s) toggleStyle() }}
+                          className={cn(
+                            "font-mono text-[11px] px-2 py-1 rounded-md border transition-colors cursor-pointer",
+                            style === s
+                              ? "bg-primary/20 border-primary/40 text-foreground"
+                              : "bg-muted border-border text-muted-foreground hover:text-foreground",
+                          )}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider">Wallpaper</p>
+                    <div className="flex flex-wrap gap-1">
+                      {CONFIG.general.wallpapers.map((w) => (
+                        <button
+                          key={w.name}
+                          onClick={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const x = rect.left + rect.width / 2;
+                            const y = rect.top + rect.height / 2;
+                            rippleTransition(x, y, () => setWallpaper(w.url));
+                          }}
+                          className={cn(
+                            "size-5 rounded-full border-2 transition-all cursor-pointer shrink-0",
+                            wallpaper === w.url
+                              ? "border-primary scale-110"
+                              : "border-border/40 hover:border-foreground/30",
+                          )}
+                          style={{
+                            backgroundImage: `url(${w.url})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                          }}
+                          title={w.label}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
         </Dock>
       </div>

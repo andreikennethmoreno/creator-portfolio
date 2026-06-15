@@ -120,7 +120,7 @@ export default async function RootLayout({
                      <LayoutShell>
                        {children}
                      </LayoutShell>
-                     <Navbar />
+                      <Navbar />
                  </MusicPlayerProvider>
               </CardStyleProvider>
               </WindowManagerProvider>

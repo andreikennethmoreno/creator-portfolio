@@ -163,6 +163,7 @@ export const CONFIG = {
     navbar: [{ href: "/", icon: HomeIcon, label: "Home" }],
     dock: {
       cardStyleToggle: true,
+      settings: true,
       themeToggle: true,
       search: true,
       socials: ["YouTube", "Twitter", "GitHub", "email"],

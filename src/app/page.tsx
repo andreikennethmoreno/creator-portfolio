@@ -19,12 +19,18 @@ import { getTopVercelProjects } from "@/lib/vercel";
 
 export const dynamic = 'force-dynamic'
 
-export default async function Page() {
-  if (CONFIG.mode === "linktree") {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: Promise<{ mode?: string }>;
+}) {
+  const sp = await searchParams;
+  const mode = (sp?.mode as "dev" | "creator" | "custom" | "linktree" | undefined) ?? CONFIG.mode;
+  if (mode === "linktree") {
     return <LinktreeLayout />;
   }
 
-  if (CONFIG.mode === "custom") {
+  if (mode === "custom") {
     return (
       <DesktopLayout>
         <main className="min-h-dvh flex flex-col gap-14 relative contents">
@@ -44,7 +50,7 @@ export default async function Page() {
     );
   }
 
-  if (CONFIG.mode === "dev") {
+  if (mode === "dev") {
     return (
       <DesktopLayout>
         <main className="min-h-dvh flex flex-col gap-14 relative contents">

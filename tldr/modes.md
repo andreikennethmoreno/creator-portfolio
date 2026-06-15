@@ -35,6 +35,11 @@ Every mode reads from these — change once, updates everywhere.
 ## Files Referencing CONFIG
 18+ files import from `@/data/config`. All reference their mode's namespace explicitly.
 
+## Settings (Navbar Dock)
+- Settings gear icon in center dock (non-desktop only, toggle: `CONFIG.creator.dock.settings`)
+- Popover with mode switcher, card style toggle, wallpaper picker with view-transition ripple
+- See `tldr/floating-toolbar.md` for full details
+
 ## Current State
 - `CONFIG.creator` — fully populated with all existing portfolio config
 - `CONFIG.linktree` — `{ links: [social keys], showTerminal: true, showDock: true }`
