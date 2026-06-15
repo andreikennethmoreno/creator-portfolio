@@ -22,7 +22,7 @@ export async function GET() {
 
   try {
     const playlistRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${CONFIG.youtube.playlistId}&maxResults=50&key=${key}`,
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${CONFIG.creator.youtube.playlistId}&maxResults=50&key=${key}`,
       { next: { revalidate: 3600 } },
     );
     if (!playlistRes.ok) {

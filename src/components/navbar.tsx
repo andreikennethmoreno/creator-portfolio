@@ -231,7 +231,7 @@ export default function Navbar() {
           )}
         >
           {/* Renders Search Icon only in desktop mode */}
-          {isDesktop && CONFIG.dock.search && (
+          {isDesktop && CONFIG.creator.dock.search && (
             <Tooltip key="search-trigger">
               <TooltipTrigger asChild>
                 <button onClick={() => setSearchOpen(true)}>
@@ -252,7 +252,7 @@ export default function Navbar() {
           )}
 
           {/* Renders other navbar items (skips anything labeled "home" or with "/" href completely) */}
-          {CONFIG.navbar
+          {CONFIG.creator.navbar
             .filter(
               (item) =>
                 item.href !== "/" && item.label?.toLowerCase() !== "home",
@@ -335,13 +335,13 @@ export default function Navbar() {
               })}
             </>
           )}
-          {CONFIG.dock.socials.length > 0 && (
+          {CONFIG.creator.dock.socials.length > 0 && (
             <>
               <Separator
                 orientation="vertical"
                 className="h-2/3 m-auto w-px bg-border"
               />
-              {CONFIG.dock.socials.map((name) => {
+              {CONFIG.creator.dock.socials.map((name) => {
                 const social = CONFIG.contact.social[name as keyof typeof CONFIG.contact.social]
                 const isExternal = social.url.startsWith("http");
                 const IconComponent = social.icon;
@@ -375,7 +375,7 @@ export default function Navbar() {
               />
             </>
           )}
-          {CONFIG.dock.cardStyleToggle && (
+          {CONFIG.creator.dock.cardStyleToggle && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
@@ -392,7 +392,7 @@ export default function Navbar() {
               </TooltipContent>
             </Tooltip>
           )}
-          {CONFIG.dock.themeToggle && (
+          {CONFIG.creator.dock.themeToggle && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">

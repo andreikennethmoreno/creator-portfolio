@@ -2,15 +2,15 @@ import { CONFIG } from "@/data/config"
 import BlurFade from "@/components/magicui/blur-fade"
 import { WMCard } from "@/components/wm-card"
 
-const TIERS = CONFIG.kofi.tiers
+const TIERS = CONFIG.creator.kofi.tiers
 
 export default function KofiCard() {
-  if (!CONFIG.sections.kofi) return null;
+  if (!CONFIG.creator.sections.kofi) return null;
   return (
     <section id="kofi">
       <WMCard
         title="kofi.feed"
-        href={CONFIG.kofi.url}
+                  href={CONFIG.creator.kofi.url}
         hrefLabel="Open Ko-fi"
       >
         <BlurFade delay={0.6}>
@@ -31,7 +31,7 @@ export default function KofiCard() {
               {TIERS.map((tier) => (
                 <a
                   key={tier.label}
-                  href={CONFIG.kofi.url}
+        href={CONFIG.creator.kofi.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-between border border-border/50 px-3 py-2 rounded-lg text-sm hover:bg-muted/30 transition-colors"

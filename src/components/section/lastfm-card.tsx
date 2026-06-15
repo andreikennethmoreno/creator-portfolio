@@ -5,7 +5,7 @@ import { WMCard } from "@/components/wm-card"
 import LastFmPlayer from './lastfm-player'
 
 export default async function LastFmCard() {
-  if (!CONFIG.sections.lastfm) return null;
+  if (!CONFIG.creator.sections.lastfm) return null;
 
   if (!env.lastfmKey() || !env.lastfmUserPublic()) {
     return (

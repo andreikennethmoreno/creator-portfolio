@@ -107,7 +107,7 @@ export default function VercelProjects({
   projects: Awaited<ReturnType<typeof getTopVercelProjects>>;
   unavailable?: boolean;
 }) {
-  if (!CONFIG.sections.vercel) return null;
+  if (!CONFIG.creator.sections.vercel) return null;
 
   return (
     <section id="projects">

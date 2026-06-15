@@ -5,7 +5,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
 export default async function InstagramCard() {
-  if (!CONFIG.sections.instagram) return null;
+  if (!CONFIG.creator.sections.instagram) return null;
 
   let posts: Awaited<ReturnType<typeof getInstagramPosts>> = [];
   let unavailable = false;

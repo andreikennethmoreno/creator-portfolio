@@ -14,7 +14,7 @@ import { getTopVercelProjects } from "@/lib/vercel";
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const vercelUnavailable = !(CONFIG.sections.vercel && env.vercelToken());
+  const vercelUnavailable = !(CONFIG.creator.sections.vercel && env.vercelToken());
   const projects = vercelUnavailable ? [] : await getTopVercelProjects(4);
   return (
     <DesktopLayout>

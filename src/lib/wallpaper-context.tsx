@@ -7,7 +7,7 @@ import {
 import { extractAndApply, type Palette } from "./wallpaper-theme";
 import { CONFIG } from "@/data/config";
 
-const WALLPAPERS = CONFIG.wallpapers;
+const WALLPAPERS = CONFIG.creator.wallpapers;
 
 type WallpaperCtx = {
   wallpaper: string;

@@ -7,7 +7,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
 export default function YoutubeSection() {
-  const [videos, setVideos] = useState(CONFIG.youtube.fallbackVideos);
+  const [videos, setVideos] = useState(CONFIG.creator.youtube.fallbackVideos);
 
   useEffect(() => {
     fetch("/api/youtube-playlist")
@@ -18,14 +18,14 @@ export default function YoutubeSection() {
       .catch(() => {});
   }, []);
 
-  if (!CONFIG.sections.youtube) return null;
+  if (!CONFIG.creator.sections.youtube) return null;
 
   return (
     <section id="youtube">
       <WMCard
           title="youtube.feed"
           count={videos.length}
-          href={CONFIG.youtube.channelUrl}
+          href={CONFIG.creator.youtube.channelUrl}
           hrefLabel="Open YouTube"
         >
           <BlurFade delay={0.44}>

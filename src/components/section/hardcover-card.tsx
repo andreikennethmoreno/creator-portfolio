@@ -11,7 +11,7 @@ import {
 import { HardcoverBooksCarousel } from "@/components/section/hardcover-books-carousel"
 
 export default async function HardcoverCard() {
-  if (!CONFIG.sections.hardcover) return null;
+  if (!CONFIG.creator.sections.hardcover) return null;
 
   let currentlyReading: Awaited<ReturnType<typeof getCurrentlyReading>> = [];
   let recentlyRead: Awaited<ReturnType<typeof getRecentlyRead>> = [];

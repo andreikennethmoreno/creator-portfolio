@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { useWallpaper } from "@/lib/wallpaper-context";
 import { CONFIG } from "@/data/config";
 
-const WALLPAPERS = CONFIG.wallpapers;
+const WALLPAPERS = CONFIG.creator.wallpapers;
 import { flushSync } from "react-dom";
 
 interface SearchExplorerProps {

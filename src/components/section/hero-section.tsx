@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { CONFIG } from "@/data/config";
 import MatrixRain from "@/components/matrix-rain";
 
-const { bootLines: BOOT_LINES, prompt: PROMPT, commands: _baseCommands } = CONFIG.terminal;
+const { bootLines: BOOT_LINES, prompt: PROMPT, commands: _baseCommands } = CONFIG.creator.terminal;
 const COMMANDS: Record<string, string> = {
   ..._baseCommands,
   clear: "__CLEAR__",
