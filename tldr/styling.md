@@ -25,7 +25,9 @@
 - On small screens (< 1024px): left dock hidden, center dock has no left border (`border-l-0 lg:border-l`), magnification disabled
 
 ## Key CSS Patterns
-- Overlays: `bg-card/60 opacity-0 group-hover:opacity-100 transition-opacity`
+- Card hover overlays (UNIFORM across Instagram, YouTube, Hardcover, Vercel): `bg-card/60 opacity-0 group-hover:opacity-100 transition-opacity`
 - Cards: `rounded-xl border bg-card text-card-foreground shadow-sm`
 - Hover: `transition-colors` on dock icons
 - Dock auto-hide: `transition-all duration-300` with translate-y/opacity
+- Linktree link buttons hover: `hover:bg-card/60 transition-all` (same card overlay pattern)
+- Ko-fi tier links hover: `hover:bg-card/60 transition-colors`

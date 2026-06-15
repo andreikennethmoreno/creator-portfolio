@@ -34,7 +34,7 @@ export default function KofiCard() {
         href={CONFIG.creator.kofi.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between border border-border/50 px-3 py-2 rounded-lg text-sm hover:bg-muted/30 transition-colors"
+                  className="flex items-center justify-between border border-border/50 px-3 py-2 rounded-lg text-sm hover:bg-card/60 transition-colors"
                 >
                   <span className="font-mono text-foreground text-xs">
                     &gt; {tier.label}
@@ -46,7 +46,7 @@ export default function KofiCard() {
               ))}
               <a
                 href={`mailto:${CONFIG.contact.email}`}
-                className="text-[10px] font-mono text-muted-foreground/40 hover:text-foreground transition-colors text-center pt-1"
+                className="text-[10px] font-mono text-muted-foreground/40 hover:text-foreground/80 transition-colors text-center pt-1"
               >
                 or say hi
               </a>

@@ -9,7 +9,7 @@ type CardStyleCtx = { style: CardStyle; toggle: () => void };
 const CardStyleContext = createContext<CardStyleCtx | null>(null);
 
 export function CardStyleProvider({ children }: { children: ReactNode }) {
-  const [style, setStyle] = useState<CardStyle>(CONFIG.creator.defaultCardStyle);
+  const [style, setStyle] = useState<CardStyle>(CONFIG.general.defaultCardStyle);
   const toggle = () => setStyle(s => s === "default" ? "glossy" : "default");
   return (
     <CardStyleContext.Provider value={{ style, toggle }}>

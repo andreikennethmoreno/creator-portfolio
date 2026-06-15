@@ -10,6 +10,11 @@ Single source of truth. Edit this one file to personalize.
 CONFIG
 ├── mode                  → "creator" | "linktree" | "dev" ← master switch
 ├── name, initials, url, description, avatarUrl  ← shared identity
+├── general               ← app-wide settings
+│   ├── defaultCardStyle  → "default" | "glossy"
+│   ├── showDesktopModeNotification → bool
+│   └── showThemeToggleNotification → bool
+│
 ├── contact
 │   ├── email
 │   └── social            → { YouTube, Instagram, Twitter, GitHub, Hardcover, Ko-fi, email }
@@ -22,10 +27,7 @@ CONFIG
 │   ├── youtube           → channelUrl, playlistId, fallbackVideos
 │   ├── wallpapers        → [{ name, label, url }] — 7 wallpapers
 │   ├── terminal          → bootLines, prompt, commands
-│   ├── kofi              → url, tiers
-│   ├── defaultCardStyle  → "default" | "glossy"
-│   ├── showDesktopModeNotification → bool
-│   └── showThemeToggleNotification → bool
+│   └── kofi              → url, tiers
 │
 ├── linktree              ← linktree mode config (empty shell)
 │   ├── links             → ordered social keys

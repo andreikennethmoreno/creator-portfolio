@@ -136,7 +136,7 @@ export default function HeroSection() {
                   text={`Hi, I'm ${CONFIG.name.split(" ")[0]}`}
                 />
                 <BlurFade delay={0.08}>
-                  <p className="text-muted-foreground max-w-150 md:text-lg lg:text-xl">
+                  <p className="text-foreground/80 max-w-150 md:text-lg lg:text-xl">
                     {CONFIG.description}
                     <button
                       onClick={() => setTerminalOpen(true)}

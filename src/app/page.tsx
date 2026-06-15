@@ -7,6 +7,7 @@ import HardcoverCard from "@/components/section/hardcover-card";
 import KofiCard from "@/components/KofiCard"
 import LastFmCard from "@/components/section/lastfm-card"
 import VercelProjects from "@/components/vercel-projects"
+import LinktreeLayout from "@/components/linktree-layout"
 import { CONFIG } from "@/data/config";
 import { env } from "@/lib/env";
 import { getTopVercelProjects } from "@/lib/vercel";
@@ -14,6 +15,10 @@ import { getTopVercelProjects } from "@/lib/vercel";
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
+  if (CONFIG.mode === "linktree") {
+    return <LinktreeLayout />;
+  }
+
   const vercelUnavailable = !(CONFIG.creator.sections.vercel && env.vercelToken());
   const projects = vercelUnavailable ? [] : await getTopVercelProjects(4);
   return (

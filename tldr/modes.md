@@ -24,5 +24,16 @@ Every mode reads from these — change once, updates everywhere.
 
 ## Current State
 - `CONFIG.creator` — fully populated with all existing portfolio config
-- `CONFIG.linktree` — empty shell: `{ links: [], showTerminal: true, showDock: true }`
+- `CONFIG.linktree` — `{ links: [social keys], showTerminal: true, showDock: true }`
 - `CONFIG.dev` — empty: `{}`
+
+## Linktree Mode Behavior
+- `page.tsx` renders `<LinktreeLayout />` directly — no `DesktopLayout`, no sections
+- `layout.tsx` always renders `<Navbar />` but left dock is hidden (desktop toggle + screen switchers removed)
+- Center dock still renders (social links, card style toggle, theme toggle)
+- `LinktreeLayout` in `src/components/linktree-layout.tsx`: avatar + name + description + link cards + optional terminal easter egg + Matrix Rain mode
+- Uses `useCardStyle()` for flat/glossy link card styling
+- Description text uses `text-foreground/80` (theme-aware foreground color)
+- Link cards use uniform subtle hover: `hover:bg-muted/20` (same for flat & glossy)
+- Top padding reduced to `py-6` for better vertical balance
+- No wallpaper, no window manager, no desktop mode — relevant providers still wrap but are inactive

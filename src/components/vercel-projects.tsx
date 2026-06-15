@@ -71,7 +71,7 @@ function ProjectCard({ project }: { project: Project }) {
         )}
 
         {/* Hover overlay — project name + framework */}
-        <div className="absolute inset-0 bg-card/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2 gap-1">
+        <div className="absolute inset-0 bg-card/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2 gap-1">
           <div className="flex items-center gap-1.5">
             <img
               src={project.favicon}

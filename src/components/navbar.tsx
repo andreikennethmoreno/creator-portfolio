@@ -136,6 +136,7 @@ export default function Navbar() {
             : "opacity-100",
         )}
       >
+        {CONFIG.mode !== "linktree" && (
         <Dock
           className={cn(
             "hidden lg:flex absolute left-4 z-50 h-14 p-2 w-fit gap-2 border border-primary/15 bg-card/90 backdrop-blur-3xl shadow-[0_0_15px_5px] shadow-primary/15 transition-all duration-300",
@@ -208,6 +209,7 @@ export default function Navbar() {
             </>
           )}
         </Dock>
+        )}
         {isDesktop && (
           <div
             className={cn(
@@ -335,7 +337,7 @@ export default function Navbar() {
               })}
             </>
           )}
-          {CONFIG.creator.dock.socials.length > 0 && (
+          {!isDesktop && CONFIG.creator.dock.socials.length > 0 && (
             <>
               <Separator
                 orientation="vertical"

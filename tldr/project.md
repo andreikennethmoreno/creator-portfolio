@@ -24,7 +24,9 @@ Single file driving all changeable content:
 - `CONFIG.terminal.bootLines/prompt/commands` — hero terminal mode
 - `CONFIG.kofi.tiers` — Ko-fi support tiers
 - `CONFIG.contact.social.*.url` — HUD about-tab links (via direct property access)
-- `CONFIG.defaultCardStyle` — default card appearance ("default" | "glossy")
+- `CONFIG.general.defaultCardStyle` — default card appearance ("default" | "glossy")
+- `CONFIG.general.showDesktopModeNotification` — show desktop mode onboarding toast
+- `CONFIG.general.showThemeToggleNotification` — show wallpaper toggle onboarding toast
 
 ## Styling
 - Tailwind v4 via `@tailwindcss/postcss`, CSS custom properties in OKLCH
@@ -43,8 +45,17 @@ Single file driving all changeable content:
 ## Navbar (Dock System)
 - 3 dockers: left (desktop toggle + screen switcher), center (links + app launchers + card style + wallpaper), right (mini player)
 - Left & center use MagicUI Dock (spring physics magnification); right is plain div
+- Left dock hidden when `CONFIG.mode === "linktree"` (no desktop toggle, no screen switchers)
 - Mini player shows album art, track info, progress bar, play/pause
 - See `tldr/top-panel.md`, `tldr/music-player-context.md`, `tldr/mini-player.md`
+
+## Linktree Mode (`CONFIG.mode === "linktree"`)
+- Renders `<LinktreeLayout />` instead of the full portfolio
+- Avatar, name, description (`text-foreground/80`), link cards with uniform `hover:bg-muted/20`
+- Terminal easter egg with boot sequence, commands, Matrix Rain mode
+- Left dock removed from navbar; center dock still renders
+- Reduced top padding (`py-6`) for balanced vertical centering
+- See `tldr/modes.md` for mode architecture details
 
 ## Search Explorer
 - Spotlight-style search, 9 searchable items

@@ -34,7 +34,7 @@ function BookCover({ book }: { book: HardcoverBook }) {
         <img
           src={book.book.image.url}
           alt={book.book.title}
-          className="w-24 h-36 object-cover border rounded group-hover:border-primary transition-colors"
+          className="w-24 h-36 object-cover border rounded"
           loading="lazy"
         />
       ) : (

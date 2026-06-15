@@ -31,7 +31,7 @@ import { HomeIcon } from "lucide-react";
 export const CONFIG = {
   // ── Mode ────────────────────────────────────
   // "creator" | "linktree" | "dev"
-  mode: "creator" as "creator" | "linktree" | "dev",
+  mode: "linktree" as "creator" | "linktree" | "dev",
 
   // ── Identity ────────────────────────────────
   name: "Kenroms",
@@ -41,6 +41,13 @@ export const CONFIG = {
   description:
     "Software Engineer, Content Creator. Love building things and learning shit. Very active on YouTube and Twitter.",
   avatarUrl: "https://storage.ko-fi.com/cdn/useruploads/27d854e4-a478-41ec-acbe-f79865f858be_149867fb-a92d-4a0f-a16d-5e06c123c8c5.png",
+
+  // ── General (app-wide toggles) ──────────────
+  general: {
+    defaultCardStyle: "glossy" as "default" | "glossy",
+    showDesktopModeNotification: true,
+    showThemeToggleNotification: true,
+  },
 
   // ── Contact / Social Links ──────────────────
   // The SINGLE source for all social/profile URLs.
@@ -162,14 +169,12 @@ export const CONFIG = {
         { label: "large coffee", amount: "$10 USD", note: "you're a legend" },
       ],
     },
-    defaultCardStyle: "default" as "default" | "glossy",
-    showDesktopModeNotification: true,
-    showThemeToggleNotification: true,
   },
 
   // ── Linktree Mode ───────────────────────────
+  // Ordered list of social keys (references contact.social)
   linktree: {
-    links: [],
+    links: ["YouTube", "Instagram", "Twitter", "GitHub", "email", "Ko-fi"],
     showTerminal: true,
     showDock: true,
   },

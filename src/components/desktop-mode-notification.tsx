@@ -27,7 +27,7 @@ export function DesktopModeNotification() {
     localStorage.setItem(LS_KEY, "true")
   }
 
-  if (!CONFIG.creator.showDesktopModeNotification || isDesktop || dismissed) return null
+  if (!CONFIG.general.showDesktopModeNotification || isDesktop || dismissed) return null
 
   return (
     <div className="hidden lg:block fixed bottom-20 left-4 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">

@@ -21,7 +21,7 @@ export function ThemeToggleNotification() {
     localStorage.setItem(LS_KEY, "true");
   };
 
-  if (!CONFIG.creator.showThemeToggleNotification || dismissed) return null;
+  if (!CONFIG.general.showThemeToggleNotification || dismissed) return null;
 
   return (
     <div className="fixed bottom-20 right-4 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">
