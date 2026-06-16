@@ -5,7 +5,7 @@ Next.js 16 / React 19 / TypeScript / Tailwind v4 / shadcn/ui / Magic UI / Motion
 ## Routes
 - `/` — single-scroll landing: Hero, Instagram, YouTube, Books, Last.fm, Vercel Projects, Ko-fi
 - `/api/lastfm` — GET last scrobble
-- `/api/youtube-playlist` — GET playlist videos (uses playlistId from config)
+- `/api/youtube-playlist` — GET playlist videos (uses playlistId from config, or auto-fetches channel uploads)
 - `/api/vercel-stats` — GET Vercel deployment stats
 
 ## Key Files
@@ -18,7 +18,8 @@ Single file driving all changeable content:
 - `CONFIG.name`, `CONFIG.description`, `CONFIG.avatarUrl` — identity
 - `CONFIG.sections.*` — toggle section visibility
 - `CONFIG.contact.social.*` — all social links + icons
-- `CONFIG.youtube.playlistId` — YouTube playlist ID
+- `CONFIG.youtube.playlistId` — YouTube playlist ID (optional — leave empty to use channel uploads)
+- `CONFIG.youtube.videoType` — filter: `"long"`, `"short"`, or `"all"`
 - `CONFIG.youtube.fallbackVideos` — fallback when API key missing
 - `CONFIG.general.wallpapers` — wallpaper array (name, label, url)
 - `CONFIG.terminal.bootLines/prompt/commands` — hero terminal mode

@@ -10,13 +10,15 @@
 ## `/api/youtube-playlist` (GET)
 - **File**: `src/app/api/youtube-playlist/route.ts`
 - Returns `{ videos: [{ id, title, duration, href }] }`
+- **Dual mode**: Uses `CONFIG.creator.youtube.playlistId` if set; otherwise derives channel's uploads playlist from `channelUrl` via `channels.list` API
+- Filters by `CONFIG.creator.youtube.videoType`: `"long"` (>60s, default), `"short"` (<=60s), or `"all"`
 - Fetches playlist items + video durations from YouTube API, cached with `revalidate: 3600`
 - Environment: `YOUTUBE_API_KEY` (or `NEXT_PUBLIC_YOUTUBE_API_KEY`)
 
 ## External API Dependencies
 | Service | Purpose | Auth |
 |---------|---------|------|
-| YouTube Data API v3 | Playlist + music search | `YOUTUBE_API_KEY` |
+| YouTube Data API v3 | Playlist/channel uploads + music search | `YOUTUBE_API_KEY` |
 | Behold.so | Instagram feed proxy | `NEXT_PUBLIC_BEHOLD_FEED_ID` |
 | Hardcover GraphQL | Books data | `HARDCOVER_API_TOKEN`, `HARDCOVER_USER_ID` |
 | Last.fm API | Recent scrobble | `LASTFM_API_KEY`, `LASTFM_USERNAME` |

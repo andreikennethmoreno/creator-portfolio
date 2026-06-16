@@ -26,7 +26,7 @@ CONFIG
 │   ├── sections          → toggle { lastfm, instagram, youtube, hardcover, vercel, kofi }
 │   ├── navbar            → dock items [{ href, icon, label }]
 │   ├── dock              → { cardStyleToggle, settings, themeToggle, search, socials }
-│   ├── youtube           → channelUrl, playlistId, fallbackVideos
+│   ├── youtube           → channelUrl, playlistId (optional), videoType, fallbackVideos
 
 │   ├── terminal          → bootLines, prompt, commands
 │   └── kofi              → url, tiers

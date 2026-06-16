@@ -9,8 +9,9 @@ import { HomeIcon } from "lucide-react";
 // 1. Replace name, initials, description, avatarUrl with your own
 // 2. Set `url` to your site's canonical domain (used in SEO meta/open graph)
 // 3. Update contact.email and social URLs to your profiles
-// 4. Set youtube.playlistId to the ID of your featured YouTube playlist
+// 4. Set youtube.playlistId to the ID of a specific YouTube playlist
 //    (the part after ?list= in the URL, e.g. PLX3Oq3YxWT...)
+//    Leave empty ("") to auto-fetch the channel's uploads instead
 // 5. Replace fallbackVideos with your own video IDs/titles — these show
 //    when the YouTube API key is missing or the fetch fails
 // 6. Swap wallpapers: each entry needs a unique `name`, display `label`,
@@ -36,9 +37,25 @@ export const CONFIG = {
   // ── Mode Apps ───────────────────────────────
   // Which app windows are available per mode (mirrors DesktopPanels in page.tsx)
   modeApps: {
-    dev: ["hero", "about", "experience", "education", "projects", "resume", "youtube"],
+    dev: [
+      "hero",
+      "about",
+      "experience",
+      "education",
+      "projects",
+      "resume",
+      "youtube",
+    ],
     custom: ["hero", "about", "instagram"],
-    creator: ["hero", "instagram", "youtube", "reading", "listening", "vercel", "support"],
+    creator: [
+      "hero",
+      "instagram",
+      "youtube",
+      "reading",
+      "listening",
+      "vercel",
+      "support",
+    ],
   } as const,
 
   // ── Identity ────────────────────────────────
@@ -171,6 +188,8 @@ export const CONFIG = {
     youtube: {
       channelUrl: "https://www.youtube.com/@kenroms",
       playlistId: "PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd",
+      // "long" | "short" | "all" — filter by video duration
+      videoType: "long",
       fallbackVideos: [
         {
           id: "WrTq4lRHEy8",
@@ -318,7 +337,14 @@ export const CONFIG = {
           "Collaborated with Neon to showcase and beta-test Neon Auth, providing structured product feedback",
           "Built a consistent audience of developers across skill levels with hands-on coding content",
         ],
-        stack: ["React", "Next.js", "TypeScript", "TailwindCSS", "PostgreSQL", "Prisma"],
+        stack: [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "TailwindCSS",
+          "PostgreSQL",
+          "Prisma",
+        ],
       },
       {
         id: "iot",
@@ -334,7 +360,15 @@ export const CONFIG = {
           "Built a booking management system MVP using React under accelerated timelines",
           "Upgraded a full-stack e-commerce platform with Next.js 15, PayPal integration, ShadCN UI, and Neon PostgreSQL",
         ],
-        stack: ["Next.js", "React", "TypeScript", "Figma", "PayPal", "ShadCN UI", "Neon"],
+        stack: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Figma",
+          "PayPal",
+          "ShadCN UI",
+          "Neon",
+        ],
       },
       {
         id: "mentorship",
@@ -379,7 +413,16 @@ export const CONFIG = {
         name: "NextGen LMS",
         description:
           "AI-Powered Learning Management System adopted across 3 academic institutions — reaching 1,000+ students. Features dual-engine AI course generation, career roadmap generator, polyglot programming sandbox, and role-based access control.",
-        stack: ["Next.js 15", "Flask", "AWS", "Docker", "Gemini", "Groq", "Drizzle ORM", "Neon"],
+        stack: [
+          "Next.js 15",
+          "Flask",
+          "AWS",
+          "Docker",
+          "Gemini",
+          "Groq",
+          "Drizzle ORM",
+          "Neon",
+        ],
         href: "https://nextgen-lms.vercel.app/",
       },
       {
@@ -387,7 +430,13 @@ export const CONFIG = {
         name: "Bug Reporting System",
         description:
           "Simple CRUD bug reporting system with filter options using Angular Material UI on the frontend, ASP.NET MVC API on the backend, and SQL Server as the database.",
-        stack: ["Angular", "TypeScript", "ASP.NET", "SQL Server", "Angular Material"],
+        stack: [
+          "Angular",
+          "TypeScript",
+          "ASP.NET",
+          "SQL Server",
+          "Angular Material",
+        ],
         href: "https://github.com/andreikennethmoreno",
       },
     ] as const,

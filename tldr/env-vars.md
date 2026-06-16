@@ -52,7 +52,7 @@ When env var missing OR fetch fails:
 ## Components with try/catch + Placeholder
 
 1. `instagram-card.tsx` — server component, fetch from Behold.so
-2. `youtube-section.tsx` — client component, YT API (already has fallback with hardcoded videos, just toggle guard added)
+2. `youtube-section.tsx` — client component, YT API (fetches from configured playlist or channel uploads; has fallback with hardcoded videos)
 3. `hardcover-card.tsx` — server component, GraphQL fetch
 4. `lastfm-card.tsx` — server component, checks env vars and renders placeholder; delegates to `lastfm-player.tsx` client component for real content
 5. `vercel-projects.tsx` — client component, Vercel API

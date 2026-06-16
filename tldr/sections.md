@@ -26,7 +26,8 @@ All sections wrapped in `WMCard` with staggered `BlurFade` scroll-reveal.
 
 ## YouTube (`youtube-section.tsx`)
 - **Type**: Client component
-- **Source**: YouTube Data API v3 (playlist ID from `CONFIG.youtube.playlistId` in config.tsx)
+- **Source**: YouTube Data API v3 — uses `CONFIG.youtube.playlistId` if set, otherwise auto-derives the channel's uploads playlist from `CONFIG.youtube.channelUrl`
+- **Filter**: `CONFIG.youtube.videoType` — `"long"` (>60s, default), `"short"` (<=60s), or `"all"`
 - **Grid**: 2 columns, `aspect-video` thumbnails
 - **Hover**: `bg-card/60` overlay + `text-muted-foreground` title text
 - **Duration badge**: `bg-black/80 text-white` bottom-right

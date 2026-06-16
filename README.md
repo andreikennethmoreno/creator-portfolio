@@ -62,13 +62,15 @@ The portfolio is a single-scroll landing page (`/`). Each section is wrapped in 
 - 3-column grid of square images (`aspect-4/5`) with hover overlay showing truncated caption
 - Links out to `https://instagram.com/ken.roms`
 
-### YouTube Playlist
-- **Client component** fetching videos from a hardcoded playlist ID (`PLX3Oq3YxWT0iZHgfDNIePM-2FSqaXQUWd`)
+### YouTube Feed
+- **Client component** fetching latest videos from a playlist or the channel uploads
+- **Dual mode**: Uses a specific `playlistId` if configured, or auto-derives the channel's uploads playlist from the channel URL
+- **Video type filter**: Configurable via `videoType` — `"long"` (>60s, default), `"short"` (<=60s), or `"all"`
 - Uses YouTube Data API v3 for playlist items + video duration
 - 2-column grid of thumbnails with duration badges (formatted as `M:SS` or `H:MM:SS`)
 - Hover overlay shows truncated video title
 - 5 hardcoded fallback videos when the API key is missing or the fetch fails
-- Links out to `https://www.youtube.com/@kenroms`
+- Links out to the configured channel URL
 
 ### Hardcover Books (Reading)
 - **Async server component** fetching data from the Hardcover GraphQL API
@@ -194,7 +196,7 @@ A full desktop-like window manager that transforms the single-scroll layout into
 
 | Service | Purpose | API / Method | Caching (ISR) |
 |---|---|---|---|
-| **YouTube Data API v3** | Fetch playlist videos + search music videos for Last.fm tracks | `YOUTUBE_API_KEY` / `NEXT_PUBLIC_YOUTUBE_API_KEY` | Client-side fetch |
+| **YouTube Data API v3** | Fetch playlist/channel videos + search music videos for Last.fm tracks | `YOUTUBE_API_KEY` / `NEXT_PUBLIC_YOUTUBE_API_KEY` | Client-side fetch |
 | **Behold.so** | Instagram feed proxy (no official Instagram API needed) | `NEXT_PUBLIC_BEHOLD_FEED_ID` | `revalidate: 3600` (1 hour) |
 | **Hardcover GraphQL API** | Fetch books (reading, read, want to read) + stats | `HARDCOVER_API_TOKEN`, `HARDCOVER_USER_ID` | `revalidate: 3600` (1 hour) |
 | **Last.fm API** | Fetch most recent scrobble (now playing / recently played) | `LASTFM_API_KEY`, `LASTFM_USERNAME` | `revalidate: 60` (60 seconds) |
@@ -369,7 +371,8 @@ Edit a single file — **`src/data/config.tsx`** — to personalize:
 | `sections.*` | Toggle each section on/off (lastfm, instagram, youtube, etc.) |
 | `navbar` | Navigation dock items |
 | `contact.email`, `contact.social.*` | Social links, visibility in navbar, icons |
-| `youtube.playlistId` | Featured YouTube playlist |
+| `youtube.playlistId` | Featured YouTube playlist (optional — auto-fetches channel uploads if empty) |
+| `youtube.videoType` | Filter by duration: `"long"`, `"short"`, or `"all"` (default `"long"`) |
 | `youtube.fallbackVideos` | Videos shown when API key is missing |
 | `wallpapers` | Array of background wallpapers (name, label, url) |
 | `terminal.bootLines`, `terminal.prompt`, `terminal.commands` | Hero terminal mode content |

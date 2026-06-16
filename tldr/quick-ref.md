@@ -16,7 +16,7 @@
 ## Routing
 - `/` — landing page (mode-dependent layout)
 - `/api/lastfm` — GET recent scrobble
-- `/api/youtube-playlist` — GET playlist videos
+- `/api/youtube-playlist` — GET playlist videos (falls back to channel uploads if no playlistId)
 - `/api/vercel-stats` — GET vercel deployment stats
 - `/*` — custom 404
 
