@@ -1,5 +1,7 @@
 <div align="center">
-<img alt="Portfolio" src="https://storage.ko-fi.com/cdn/useruploads/27d854e4-a478-41ec-acbe-f79865f858be_149867fb-a92d-4a0f-a16d-5e06c123c8c5.png" width="90%">
+  <a href="https://www.youtube.com/watch?v=bmIAf1rMMu8">
+    <img src="https://img.youtube.com/vi/bmIAf1rMMu8/maxresdefault.jpg" alt="Watch the video" width="600">
+  </a>
 </div>
 
 # Kenroms Portfolio
