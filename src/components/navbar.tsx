@@ -184,10 +184,10 @@ export default function Navbar() {
             <TooltipContent
               side="top"
               sideOffset={8}
-              className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
             >
               <p>{isDesktop ? "exit desktop mode" : "desktop mode"}</p>
-              <TooltipArrow className="fill-primary" />
+              <TooltipArrow className="fill-foreground" />
             </TooltipContent>
           </Tooltip>
           {isDesktop && (
@@ -227,10 +227,10 @@ export default function Navbar() {
                   <TooltipContent
                     side="top"
                     sideOffset={8}
-                    className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                    className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
                   >
                     <p>Screen {screenIndex + 1}</p>
-                    <TooltipArrow className="fill-primary" />
+                    <TooltipArrow className="fill-foreground" />
                   </TooltipContent>
                 </Tooltip>
               ))}
@@ -273,10 +273,10 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
               >
                 <p>Search</p>
-                <TooltipArrow className="fill-primary" />
+                <TooltipArrow className="fill-foreground" />
               </TooltipContent>
             </Tooltip>
           )}
@@ -306,10 +306,10 @@ export default function Navbar() {
                   <TooltipContent
                     side="top"
                     sideOffset={8}
-                    className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                    className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
                   >
                     <p>{item.label}</p>
-                    <TooltipArrow className="fill-primary" />
+                    <TooltipArrow className="fill-foreground" />
                   </TooltipContent>
                 </Tooltip>
               );
@@ -352,13 +352,13 @@ export default function Navbar() {
                     <TooltipContent
                       side="top"
                       sideOffset={8}
-                      className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                      className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
                     >
                       <p>
                         {app.title}
                         {isMinimized ? " (minimized)" : ""}
                       </p>
-                      <TooltipArrow className="fill-primary" />
+                      <TooltipArrow className="fill-foreground" />
                     </TooltipContent>
                   </Tooltip>
                 );
@@ -387,10 +387,10 @@ export default function Navbar() {
                     <TooltipContent
                       side="top"
                       sideOffset={8}
-                      className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                      className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
                     >
                       <p>{name}</p>
-                      <TooltipArrow className="fill-primary" />
+                      <TooltipArrow className="fill-foreground" />
                     </TooltipContent>
                   </Tooltip>
                 )
@@ -417,10 +417,10 @@ export default function Navbar() {
                 <TooltipContent
                   side="top"
                   sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                  className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
                 >
                   <p>debug settings</p>
-                  <TooltipArrow className="fill-primary" />
+                  <TooltipArrow className="fill-foreground" />
                 </TooltipContent>
               </Tooltip>
 
@@ -527,10 +527,10 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
               >
                 <p>card style</p>
-                <TooltipArrow className="fill-primary" />
+                <TooltipArrow className="fill-foreground" />
               </TooltipContent>
             </Tooltip>
           )}
@@ -544,10 +544,10 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+                className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
               >
                 <p>change theme</p>
-                <TooltipArrow className="fill-primary" />
+                <TooltipArrow className="fill-foreground" />
               </TooltipContent>
             </Tooltip>
           )}

@@ -27,10 +27,10 @@ export function CardStyleToggle() {
       <TooltipContent
         side="top"
         sideOffset={8}
-        className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+        className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
       >
         <p>{isGlossy ? "glass" : "flat"}</p>
-        <TooltipArrow className="fill-primary" />
+        <TooltipArrow className="fill-foreground" />
       </TooltipContent>
     </Tooltip>
   );
