@@ -56,7 +56,8 @@ export default function Navbar() {
   const [activeMode, setActiveMode] = useState(CONFIG.mode);
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
-    setActiveMode(params.get("mode") ?? CONFIG.mode);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setActiveMode((params.get("mode") ?? CONFIG.mode) as (typeof MODES)[number])
   }, []);
   const MODES = ["dev", "creator", "custom", "linktree"] as const;
   const {
@@ -447,7 +448,7 @@ export default function Navbar() {
                           key={m}
                           onClick={() => {
                             const url = new URL(window.location.href);
-                            if (m === activeMode && params?.get("mode")) url.searchParams.delete("mode");
+                            if (m === activeMode && url.searchParams.get("mode")) url.searchParams.delete("mode");
                             else url.searchParams.set("mode", m);
                             window.location.href = url.toString();
                           }}
