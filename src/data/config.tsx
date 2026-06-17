@@ -1,5 +1,4 @@
 import { Icons } from "@/components/icons";
-import { HomeIcon } from "lucide-react";
 
 // ──────────────────────────────────────────────
 // SINGLE SOURCE OF TRUTH — Edit only this file
@@ -26,8 +25,7 @@ import { HomeIcon } from "lucide-react";
 // 13. Disable onboarding notifications by setting show*Notification to false
 //
 // Social links live under contact.social — this is the single source.
-// The navbar renders them via generic Object.entries iteration.
-// Individual card components access their specific entry directly.
+// Dock socials use dock.socials array. Individual card components access their specific entry directly.
 
 export const CONFIG = {
   // ── Mode ────────────────────────────────────
@@ -74,6 +72,12 @@ export const CONFIG = {
     showDesktopModeNotification: true,
     showThemeToggleNotification: true,
     debugSettings: true,
+    dock: {
+      cardStyleToggle: true,
+      themeToggle: true,
+      search: true,
+      socials: ["YouTube", "Twitter", "GitHub", "email"],
+    },
     wallpapers: [
       // {
       //   name: "snow",
@@ -127,43 +131,36 @@ export const CONFIG = {
         name: "YouTube",
         url: "https://www.youtube.com/@kenroms",
         icon: Icons.youtube,
-        navbar: true,
       },
       Instagram: {
         name: "Instagram",
         url: "https://www.instagram.com/ken.roms/",
         icon: Icons.instagram,
-        navbar: false,
       },
       Twitter: {
         name: "Twitter",
         url: "https://twitter.com/Kenroms",
         icon: Icons.twitter,
-        navbar: true,
       },
       GitHub: {
         name: "GitHub",
         url: "https://github.com/andreikennethmoreno",
         icon: Icons.github,
-        navbar: true,
       },
       Hardcover: {
         name: "Hardcover",
         url: "https://hardcover.app/@Kenroms",
         icon: Icons.hardcover,
-        navbar: false,
       },
       "Ko-fi": {
         name: "Ko-fi",
         url: "https://ko-fi.com/kenroms",
         icon: Icons.kofi,
-        navbar: false,
       },
       email: {
         name: "Send Email",
         url: "https://mail.google.com/mail/?view=cm&fs=1&to=kennonirom@gmail.com",
         icon: Icons.email,
-        navbar: true,
       },
     },
   },
@@ -177,13 +174,6 @@ export const CONFIG = {
       hardcover: true,
       vercel: true,
       kofi: true,
-    },
-    navbar: [{ href: "/", icon: HomeIcon, label: "Home" }],
-    dock: {
-      cardStyleToggle: true,
-      themeToggle: true,
-      search: true,
-      socials: ["YouTube", "Twitter", "GitHub", "email"],
     },
     youtube: {
       channelUrl: "https://www.youtube.com/@kenroms",
@@ -271,13 +261,6 @@ export const CONFIG = {
 
   // ── Dev Mode ────────────────────────────────
   dev: {
-    sections: {
-      about: true,
-      experience: true,
-      education: true,
-      projects: true,
-      resume: true,
-    },
     links: {
       about: null,
       experience: "https://www.linkedin.com/in/kennmoreno/",

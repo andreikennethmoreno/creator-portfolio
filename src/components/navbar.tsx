@@ -275,7 +275,7 @@ export default function Navbar() {
           )}
         >
           {/* Renders Search Icon only in desktop mode */}
-          {isDesktop && CONFIG.creator.dock.search && (
+          {isDesktop && CONFIG.general.dock.search && (
             <Tooltip key="search-trigger">
               <TooltipTrigger asChild>
                 <button onClick={() => setSearchOpen(true)}>
@@ -295,39 +295,7 @@ export default function Navbar() {
             </Tooltip>
           )}
 
-          {/* Renders other navbar items (skips anything labeled "home" or with "/" href completely) */}
-          {CONFIG.creator.navbar
-            .filter(
-              (item) =>
-                item.href !== "/" && item.label?.toLowerCase() !== "home",
-            )
-            .map((item) => {
-              const isExternal = item.href.startsWith("http");
 
-              return (
-                <Tooltip key={item.href}>
-                  <TooltipTrigger asChild>
-                    <a
-                      href={item.href}
-                      target={isExternal ? "_blank" : undefined}
-                      rel={isExternal ? "noopener noreferrer" : undefined}
-                    >
-                      <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                        <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
-                      </DockIcon>
-                    </a>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    sideOffset={8}
-                    className="rounded-xl bg-foreground text-background px-4 py-2 text-sm shadow-xl"
-                  >
-                    <p>{item.label}</p>
-                    <TooltipArrow className="fill-foreground" />
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })}
           {isDesktop && (
             <>
               <Separator
@@ -379,9 +347,9 @@ export default function Navbar() {
               })}
             </>
           )}
-          {!isDesktop && CONFIG.creator.dock.socials.length > 0 && (
+          {!isDesktop && CONFIG.general.dock.socials.length > 0 && (
             <>
-              {CONFIG.creator.dock.socials.map((name) => {
+              {CONFIG.general.dock.socials.map((name) => {
                 const social = CONFIG.contact.social[name as keyof typeof CONFIG.contact.social]
                 const isExternal = social.url.startsWith("http");
                 const IconComponent = social.icon;
@@ -531,7 +499,7 @@ export default function Navbar() {
               )}
             </div>
           )}
-          {CONFIG.creator.dock.cardStyleToggle && (
+          {CONFIG.general.dock.cardStyleToggle && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
@@ -548,7 +516,7 @@ export default function Navbar() {
               </TooltipContent>
             </Tooltip>
           )}
-          {CONFIG.creator.dock.themeToggle && (
+          {CONFIG.general.dock.themeToggle && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
