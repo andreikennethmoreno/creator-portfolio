@@ -8,6 +8,29 @@
 
 A dynamic, single-page portfolio built with **Next.js 16**, **React 19**, **TypeScript**, **Tailwind CSS v4**, **shadcn/ui** (New York style), **Magic UI** components, and **Motion** (Framer Motion API). Deployed on Vercel with ISR-based data fetching. Built for **Kenroms** — a Software Engineer and Content Creator based in the Philippines.
 
+
+## Modes
+
+<table>
+  <tr>
+    <td align="center"><b>Creator Mode</b></td>
+    <td align="center"><b>Dev Mode</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/6493598f-0f8e-4d3b-a8f2-3eb0d44219f9" /></td>
+    <td><img src="https://github.com/user-attachments/assets/5dc48670-fcf5-4084-9e02-dd76a12ddaa5" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Linktree Mode</b></td>
+    <td align="center"><b>Desktop Mode</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/e32dfa64-5314-488d-8958-728c7647e1e0" /></td>
+    <td><img src="https://github.com/user-attachments/assets/f5a0f35e-99d5-4380-bd64-a643b82774bc" /></td>
+  </tr>
+</table>
+
+
 ---
 
 ## Table of Contents
