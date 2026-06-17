@@ -42,7 +42,7 @@ export default function ProjectsSection() {
                   </a>
                   <button
                     onClick={() => setExpanded(expanded === proj.id ? "" : proj.id)}
-                    className="shrink-0 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                    className="shrink-0 text-foreground hover:text-foreground transition-colors cursor-pointer opacity-60"
                     aria-label={expanded === proj.id ? "Collapse" : "Expand"}
                   >
                     {expanded === proj.id ? (
@@ -73,14 +73,14 @@ export default function ProjectsSection() {
                           />
                         </a>
                       )}
-                      <p className="text-sm text-muted-foreground leading-relaxed">
+                      <p className="text-sm text-foreground leading-relaxed">
                         {proj.description}
                       </p>
                       <div className="flex flex-wrap gap-1.5">
                         {proj.stack.map((tech) => (
                           <span
                             key={tech}
-                            className="inline-block text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground"
+                            className="inline-block text-xs px-2 py-0.5 rounded bg-muted text-foreground"
                           >
                             {tech}
                           </span>
@@ -92,7 +92,7 @@ export default function ProjectsSection() {
               </div>
             ))}
 
-            <p className="font-mono text-sm text-foreground/50 text-center pt-2">
+            <p className="font-mono text-sm text-muted-foreground text-center pt-2">
               $ <a href="https://github.com/andreikennethmoreno" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">view all projects</a>
             </p>
           </div>

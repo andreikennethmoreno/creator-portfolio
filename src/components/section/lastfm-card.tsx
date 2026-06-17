@@ -13,7 +13,7 @@ export default async function LastFmCard() {
         <WMCard title="lastfm.feed" hrefLabel="Open Last.fm">
           <BlurFade delay={0.48}>
             <div className="h-[100px] flex items-center justify-center">
-              <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+              <p className="font-mono text-sm text-muted-foreground">— not configured —</p>
             </div>
           </BlurFade>
         </WMCard>

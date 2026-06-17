@@ -118,8 +118,22 @@ export default function Navbar() {
     openWindow(app);
   };
 
-  const modeAppIds = (CONFIG.modeApps as Record<string, readonly string[]>)[CONFIG.mode] ?? CONFIG.modeApps.creator;
-  const availableApps = APPS.filter((app) => modeAppIds.includes(app.id));
+  const SECTION_FILTER: Record<string, keyof typeof CONFIG.creator.sections | null> = {
+    instagram: "instagram",
+    youtube: "youtube",
+    reading: "hardcover",
+    listening: "lastfm",
+    vercel: "vercel",
+    support: "kofi",
+  };
+
+  const modeAppIds = (CONFIG.modeApps as Record<string, readonly string[]>)[activeMode] ?? CONFIG.modeApps.creator;
+  const availableApps = APPS.filter((app) => {
+    if (!modeAppIds.includes(app.id)) return false;
+    const section = SECTION_FILTER[app.id];
+    if (section && !CONFIG.creator.sections[section]) return false;
+    return true;
+  });
 
   const APP_ICONS: Record<string, React.ElementType> = {
     hero: User,

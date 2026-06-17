@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { CONFIG } from "@/data/config";
 import BlurFade from "@/components/magicui/blur-fade";
 import { WMCard } from "@/components/wm-card";
 
 export default function YoutubeSection() {
   const [videos, setVideos] = useState(CONFIG.creator.youtube.fallbackVideos);
+  const [unavailable, setUnavailable] = useState(false);
 
   useEffect(() => {
     fetch("/api/youtube-playlist")
       .then((res) => res.json())
       .then((data) => {
+        if (data.unavailable) { setUnavailable(true); return; }
         if (data.videos && data.videos.length > 0) setVideos(data.videos);
       })
-      .catch(() => {});
+      .catch(() => setUnavailable(true));
   }, []);
 
   if (!CONFIG.creator.sections.youtube) return null;
@@ -24,11 +25,16 @@ export default function YoutubeSection() {
     <section id="youtube">
       <WMCard
           title="youtube.feed"
-          count={videos.length}
-          href={CONFIG.creator.youtube.channelUrl}
+          count={unavailable ? undefined : videos.length}
+          href={unavailable ? undefined : CONFIG.creator.youtube.channelUrl}
           hrefLabel="Open YouTube"
         >
           <BlurFade delay={0.44}>
+            {unavailable ? (
+              <div className="h-[200px] flex items-center justify-center">
+                <p className="font-mono text-sm text-muted-foreground">— not configured —</p>
+              </div>
+            ) : (
             <div className="grid grid-cols-2 gap-4">
               {videos.map((video) => (
                 <a
@@ -57,6 +63,7 @@ export default function YoutubeSection() {
                 </a>
               ))}
             </div>
+            )}
           </BlurFade>
       </WMCard>
     </section>

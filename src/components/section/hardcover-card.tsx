@@ -47,7 +47,7 @@ export default async function HardcoverCard() {
           <BlurFade delay={0.52}>
             {unavailable ? (
               <div className="h-[200px] flex items-center justify-center">
-                <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+                <p className="font-mono text-sm text-muted-foreground">— not configured —</p>
               </div>
             ) : (
               <div className="flex flex-col gap-4">

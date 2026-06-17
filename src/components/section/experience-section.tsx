@@ -38,13 +38,13 @@ export default function ExperienceSection() {
                           <span className="text-sm font-semibold text-foreground">{exp.company}</span>
                           {exp.active && <span className="w-2 h-2 rounded-full bg-primary shrink-0" />}
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2 text-xs text-foreground">
                           <span>{exp.role}</span>
-                          <span>•</span>
+                          <span className="opacity-60">•</span>
                           <span>{exp.location}</span>
                         </div>
                       </div>
-                      <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
+                      <span className="text-xs text-foreground font-mono whitespace-nowrap shrink-0">
                         {exp.period}
                       </span>
                     </div>
@@ -53,7 +53,7 @@ export default function ExperienceSection() {
                       {exp.stack.map((tech) => (
                         <span
                           key={tech}
-                          className="inline-block text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground"
+                          className="inline-block text-xs px-2 py-0.5 rounded bg-muted text-foreground"
                         >
                           {tech}
                         </span>
@@ -63,11 +63,11 @@ export default function ExperienceSection() {
                         className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 hover:bg-muted transition-colors cursor-pointer shrink-0 ml-1"
                         aria-label={isOpen ? "Collapse" : "Expand"}
                       >
-                        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                        <span className="text-[10px] font-medium text-foreground uppercase tracking-wider">
                           {isOpen ? "Show less" : "Show more"}
                         </span>
                         <ChevronDown
-                          className="size-3 text-muted-foreground transition-transform duration-200"
+                          className="size-3 text-foreground transition-transform duration-200"
                           style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                         />
                       </button>
@@ -80,8 +80,8 @@ export default function ExperienceSection() {
                       <div className="overflow-hidden">
                         <ul className="space-y-1.5 pt-3">
                           {exp.responsibilities.map((r, idx) => (
-                            <li key={idx} className="flex gap-2 text-sm text-muted-foreground">
-                              <span className="text-foreground/50 mt-0.5 shrink-0">—</span>
+                            <li key={idx} className="flex gap-2 text-sm text-foreground">
+                              <span className="opacity-60 mt-0.5 shrink-0">—</span>
                               <span>{r}</span>
                             </li>
                           ))}

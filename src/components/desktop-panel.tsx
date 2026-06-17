@@ -34,7 +34,11 @@ export function DesktopPanel({ children, sectionId }: DesktopPanelProps) {
       }}
     >
       <div onClick={() => focusWindow(win.id)}>
-        {children}
+        {children ?? (
+          <div className="h-[200px] flex items-center justify-center">
+            <p className="font-mono text-sm text-muted-foreground">— not available —</p>
+          </div>
+        )}
       </div>
     </CardWindowContext.Provider>
   )

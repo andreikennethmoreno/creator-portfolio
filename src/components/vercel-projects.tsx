@@ -11,7 +11,7 @@ type Project = Awaited<ReturnType<typeof getTopVercelProjects>>[number];
 function FrameworkBadge({ framework }: { framework: string | null }) {
   if (!framework) return null;
   return (
-    <span className="font-mono text-[10px] text-foreground/30 border border-border/40 rounded-sm px-1 py-0.5 shrink-0">
+    <span className="font-mono text-[10px] text-muted-foreground border border-border/40 rounded-sm px-1 py-0.5 shrink-0">
       {framework}
     </span>
   );
@@ -120,7 +120,7 @@ export default function VercelProjects({
         <BlurFade delay={0.4}>
           {unavailable ? (
             <div className="h-[200px] flex items-center justify-center">
-              <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+              <p className="font-mono text-sm text-muted-foreground">— not configured —</p>
             </div>
           ) : projects.length > 0 ? (
             <div className="grid grid-cols-2 gap-4">
@@ -129,7 +129,7 @@ export default function VercelProjects({
               ))}
             </div>
           ) : (
-            <p className="font-mono text-sm text-foreground/50">
+            <p className="font-mono text-sm text-muted-foreground">
               ~ no projects found
             </p>
           )}

@@ -108,7 +108,7 @@ export default function LinktreeLayout() {
                     text={CONFIG.name}
                   />
                   <BlurFade delay={0.08}>
-                    <p className="text-sm lg:text-base text-foreground/80">
+                    <p className="text-sm lg:text-base text-foreground">
                       {CONFIG.description}
                     </p>
                   </BlurFade>
@@ -138,13 +138,13 @@ export default function LinktreeLayout() {
                     ],
                   )}
                 >
-                  <span className="flex items-center justify-center size-8 lg:size-10 shrink-0 rounded-lg bg-background border border-border text-foreground/80">
+                  <span className="flex items-center justify-center size-8 lg:size-10 shrink-0 rounded-lg bg-background border border-border text-foreground">
                     <IconComponent className="size-4 lg:size-5" />
                   </span>
-                  <span className="flex-1 text-sm lg:text-base font-medium text-foreground/80">
+                  <span className="flex-1 text-sm lg:text-base font-medium text-foreground">
                     {social.name}
                   </span>
-                  <ArrowUpRight size={14} className="shrink-0 text-foreground/30" />
+                  <ArrowUpRight size={14} className="shrink-0 text-muted-foreground" />
                 </a>
               );
             })}

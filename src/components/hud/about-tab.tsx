@@ -59,20 +59,20 @@ export default function AboutTab() {
           {STACK.map((s) => (
             <div key={s.label} className="flex justify-between gap-2">
               <span className="text-muted-foreground w-20 shrink-0">{s.label}</span>
-              <span className="text-foreground/80 truncate text-right">{s.value}</span>
+              <span className="text-foreground truncate text-right">{s.value}</span>
             </div>
           ))}
         </div>
 
         <div className="flex flex-col gap-1 mt-auto">
           <span className="text-muted-foreground">EDUCATION</span>
-          <p className="text-foreground/80 leading-tight">Cavite State University</p>
+          <p className="text-foreground leading-tight">Cavite State University</p>
           <p className="text-muted-foreground/60 text-[10px]">BS Computer Science · 2024</p>
         </div>
 
         <div className="flex flex-col gap-1">
           <span className="text-muted-foreground">CHANNEL</span>
-          <p className="text-foreground/80 leading-tight">TracePaper</p>
+          <p className="text-foreground leading-tight">TracePaper</p>
           <p className="text-muted-foreground/60 text-[10px] leading-relaxed">dev + tech content · builder doc format · linux ricing · build in public</p>
         </div>
 

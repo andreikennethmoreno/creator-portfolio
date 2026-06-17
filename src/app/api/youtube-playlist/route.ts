@@ -48,7 +48,7 @@ async function getUploadsPlaylistId(
 export async function GET() {
   const key = env.youtubeServerKey() || env.youtube();
   if (!key) {
-    return NextResponse.json({ videos: [] });
+    return NextResponse.json({ videos: [], unavailable: true });
   }
 
   try {

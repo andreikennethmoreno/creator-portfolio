@@ -30,7 +30,7 @@ export default async function InstagramCard() {
         <BlurFade delay={0.28}>
           {unavailable ? (
             <div className="h-[200px] flex items-center justify-center">
-              <p className="font-mono text-sm text-foreground/30">— not configured —</p>
+              <p className="font-mono text-sm text-muted-foreground">— not configured —</p>
             </div>
           ) : posts.length > 0 ? (
             <div className="grid grid-cols-3 gap-1">
@@ -59,7 +59,7 @@ export default async function InstagramCard() {
               ))}
             </div>
           ) : (
-            <p className="font-mono text-sm text-foreground/50">
+            <p className="font-mono text-sm text-muted-foreground">
               ~ no posts found
             </p>
           )}
