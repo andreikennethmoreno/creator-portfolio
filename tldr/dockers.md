@@ -8,7 +8,7 @@ Three dock bars rendered inside `src/components/navbar.tsx`.
 
 ## Center Docker
 - `relative mx-auto` (centered)
-- Contains: nav links (home/social), desktop apps icons, card style toggle, wallpaper toggle (hidden on desktop)
+- Contains: nav links (home/social), desktop apps icons, debug settings toggle, card style toggle, wallpaper toggle (hidden on desktop)
 - App icons appear only in desktop mode
 - ThemeToggle (wallpaper cycler) hidden when `isDesktop` — tooltip says "change theme"
 

@@ -16,6 +16,7 @@ File: `src/components/navbar.tsx` — 3 dockers rendered with MagicUI Dock compo
 - Items: nav links from CONFIG.navbar, social links from CONFIG.dock.socials (ordered as listed), app icons (desktop mode only), CardStyleToggle (if CONFIG.dock.cardStyleToggle), wallpaper cycler (if CONFIG.dock.themeToggle), search (if CONFIG.dock.search, desktop mode only)
 - **Social links driven by `CONFIG.dock.socials`** — an array of contact.social key names. Edit this array to control exactly which socials appear and their order.
 - **CardStyleToggle** and **ThemeToggle** each wrapped in CONFIG.dock.* boolean — set to false to hide from dock
+- **Settings (Debug Settings)** driven by `CONFIG.general.debugSettings` — appears first after separator, before cardStyleToggle and themeToggle
 
 ## Right Docker
 - Visible only in desktop mode (`isDesktop &&`)

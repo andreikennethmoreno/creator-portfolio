@@ -73,6 +73,7 @@ export const CONFIG = {
     defaultCardStyle: "glossy" as "default" | "glossy",
     showDesktopModeNotification: true,
     showThemeToggleNotification: true,
+    debugSettings: true,
     wallpapers: [
       // {
       //   name: "snow",
@@ -180,7 +181,6 @@ export const CONFIG = {
     navbar: [{ href: "/", icon: HomeIcon, label: "Home" }],
     dock: {
       cardStyleToggle: true,
-      settings: true,
       themeToggle: true,
       search: true,
       socials: ["YouTube", "Twitter", "GitHub", "email"],

@@ -53,8 +53,11 @@ export default function Navbar() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { wallpaper, setWallpaper } = useWallpaper();
   const { style, toggle: toggleStyle } = useCardStyle();
-  const params = typeof window !== "undefined" ? new URL(window.location.href).searchParams : null;
-  const activeMode = params?.get("mode") ?? CONFIG.mode;
+  const [activeMode, setActiveMode] = useState(CONFIG.mode);
+  useEffect(() => {
+    const params = new URL(window.location.href).searchParams;
+    setActiveMode(params.get("mode") ?? CONFIG.mode);
+  }, []);
   const MODES = ["dev", "creator", "custom", "linktree"] as const;
   const {
     windows,
@@ -397,41 +400,7 @@ export default function Navbar() {
               />
             </>
           )}
-          {CONFIG.creator.dock.cardStyleToggle && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                  <CardStyleToggle />
-                </DockIcon>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-              >
-                <p>card style</p>
-                <TooltipArrow className="fill-primary" />
-              </TooltipContent>
-            </Tooltip>
-          )}
-          {CONFIG.creator.dock.themeToggle && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
-                  <ThemeToggle className="size-full cursor-pointer" />
-                </DockIcon>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
-              >
-                <p>change theme</p>
-                <TooltipArrow className="fill-primary" />
-              </TooltipContent>
-            </Tooltip>
-          )}
-          {!isDesktop && CONFIG.creator.dock.settings && (
+          {!isDesktop && CONFIG.general.debugSettings && (
             <div className="relative">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -449,7 +418,7 @@ export default function Navbar() {
                   sideOffset={8}
                   className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
                 >
-                  <p>settings</p>
+                  <p>debug settings</p>
                   <TooltipArrow className="fill-primary" />
                 </TooltipContent>
               </Tooltip>
@@ -463,7 +432,7 @@ export default function Navbar() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-[11px] tracking-wide text-foreground/50 uppercase">
-                      Settings
+                      Debug Settings
                     </span>
                     <button onClick={() => setSettingsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
                       <X className="size-3.5" />
@@ -546,6 +515,40 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+          )}
+          {CONFIG.creator.dock.cardStyleToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <CardStyleToggle />
+                </DockIcon>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                sideOffset={8}
+                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              >
+                <p>card style</p>
+                <TooltipArrow className="fill-primary" />
+              </TooltipContent>
+            </Tooltip>
+          )}
+          {CONFIG.creator.dock.themeToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DockIcon className="rounded-xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <ThemeToggle className="size-full cursor-pointer" />
+                </DockIcon>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                sideOffset={8}
+                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-xl"
+              >
+                <p>change theme</p>
+                <TooltipArrow className="fill-primary" />
+              </TooltipContent>
+            </Tooltip>
           )}
         </Dock>
       </div>

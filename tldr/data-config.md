@@ -13,6 +13,7 @@ CONFIG
 ├── general               ← app-wide settings
 │   ├── defaultCardStyle  → "default" | "glossy"
 │   ├── floatingToolbar   → bool — bookmark-style settings tab on hero
+│   ├── debugSettings     → bool — show/hide debug settings toggle in dock
 │   ├── showDesktopModeNotification → bool
 │   ├── showThemeToggleNotification → bool
 │   └── wallpapers        → [{ name, label, url }] — 7 wallpapers
@@ -25,7 +26,7 @@ CONFIG
 ├── creator               ← portfolio mode config
 │   ├── sections          → toggle { lastfm, instagram, youtube, hardcover, vercel, kofi }
 │   ├── navbar            → dock items [{ href, icon, label }]
-│   ├── dock              → { cardStyleToggle, settings, themeToggle, search, socials }
+│   ├── dock              → { cardStyleToggle, themeToggle, search, socials }
 │   ├── youtube           → channelUrl, playlistId (optional), videoType, fallbackVideos
 
 │   ├── terminal          → bootLines, prompt, commands

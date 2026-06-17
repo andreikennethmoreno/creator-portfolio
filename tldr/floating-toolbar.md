@@ -1,11 +1,12 @@
-# Settings (Navbar Dock) TL;DR
+# Debug Settings (Navbar Dock) TL;DR
 
 **File**: `src/components/navbar.tsx` (inline popover)
 
-Settings icon in the center dock (non-desktop mode only). Toggle with `CONFIG.creator.dock.settings`.
+Debug Settings icon in the center dock (non-desktop mode only). Toggle with `CONFIG.general.debugSettings`.
 
 ## Position
 - Settings `gear` icon in the center dock, only when `!isDesktop`
+- **Order**: appears first after the social links separator, before cardStyleToggle and themeToggle
 - Click opens a popover above the dock
 - Popover positioned `absolute bottom-full mb-3 left-1/2 -translate-x-1/2`
 
@@ -23,7 +24,7 @@ Settings icon in the center dock (non-desktop mode only). Toggle with `CONFIG.cr
 
 ## Config
 ```tsx
-CONFIG.creator.dock.settings // bool — show/hide settings button
+CONFIG.general.debugSettings // bool — show/hide debug settings button
 ```
 
 ## Dependencies
