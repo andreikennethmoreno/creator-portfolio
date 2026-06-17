@@ -4,7 +4,7 @@
 ```bash
 git clone <repo> && cd creator-portfolio && pnpm install && pnpm dev
 ```
-Opens at `https://localhost:3000` — works instantly with fallback/placeholder data. Zero env vars needed.
+Opens at `http://localhost:3000` — works instantly with fallback/placeholder data. Zero env vars needed.
 
 ## Config: One File, Four Modes
 Edit `src/data/config.tsx` — the `CONFIG` object.

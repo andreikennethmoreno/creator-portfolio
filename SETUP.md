@@ -13,7 +13,7 @@ pnpm install
 pnpm dev 
 ```
 
-Open `https://localhost:3000` — the site runs immediately with placeholder data. No API keys, no config edits needed.
+Open `http://localhost:3000` — the site runs immediately with placeholder data. No API keys, no config edits needed.
 
 > **Prerequisites**: Node.js 18+, [pnpm](https://pnpm.io/installation)
 

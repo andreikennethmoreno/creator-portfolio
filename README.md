@@ -422,7 +422,7 @@ Edit a single file — **`src/data/config.tsx`** — to personalize:
 
 4. Copy `.env.example` to `.env.local` and fill in the environment variables.
 
-5. Start the local development server (with HTTPS):
+5. Start the local development server:
 
    ```bash
    pnpm dev
@@ -434,7 +434,7 @@ Edit a single file — **`src/data/config.tsx`** — to personalize:
 
 | Script | Command | Description |
 |---|---|---|
-| `dev` | `next dev --experimental-https` | Start dev server with HTTPS |
+| `dev` | `next dev` | Start development server |
 | `build` | `next build` | Production build |
 | `start` | `next start` | Start production server |
 | `lint` | `eslint` | Run ESLint |
