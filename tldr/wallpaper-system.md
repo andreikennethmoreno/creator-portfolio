@@ -30,8 +30,9 @@ Spans 4 lib files + 3 components. Dynamic background with palette extraction.
    - RGB → OKLCH conversion with linearization + D65 → LMS → OKLab → OKLCH
 3. **`applyPaletteToDOM(palette)`** sets 22 CSS vars on `<html>`:
    - `--background`, `--foreground`, `--card`, `--primary`, `--accent`, `--border`, `--muted`, `--chart-1` through `--chart-5`, `--sidebar*`, etc.
-   - Clamps OKLCH lightness per role (e.g., primary: 0.40–1 dark, 0–0.65 light)
-   - Toggles `.dark` class based on darkest cluster luminance (< 0.15)
+    - Clamps OKLCH lightness per role (e.g., primary: 0.40–1 dark, 0–0.65 light)
+    - **`--primary-foreground` is dynamic**: `oklchFgFor(primary)` — white if primary ≤ 0.7 L, black if > 0.7 L. Keeps `bg-primary text-primary-foreground` readable for buttons/tooltips/navbar.
+    - Toggles `.dark` class based on darkest cluster luminance (< 0.15)
 
 ## Alt. Method
 `use-wallpaper-theme.ts` uses `colorthief` package `getSwatchesSync()` with fallback favicon proxy. Reads swatches in priority: Vibrant → DarkVibrant → LightVibrant → Muted → DarkMuted → LightMuted.

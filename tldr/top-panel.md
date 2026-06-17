@@ -27,6 +27,11 @@ File: `src/components/top-panel.tsx` — desktop-only hover-triggered panel. Ren
 - Rolling 40-point RTT canvas line chart cycling through 5 theme colors
 - Always has data (uses navigator.connection or seeded fallback)
 
+## Active Tab Styling
+- Active tab uses `bg-foreground text-background` (filled pill — flips page fg/bg)
+- Inactive tabs: `text-muted-foreground hover:text-foreground hover:bg-muted`
+- **Why**: `bg-primary text-primary-foreground` breaks on light wallpapers (extracted primary + fg both dark). Foreground/background are always guaranteed contrast-safe.
+
 ## State
 - `openRef` (ref, not state) for mousemove handler
 - `hoverTimeout` ref for 400ms close delay

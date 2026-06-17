@@ -135,8 +135,8 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 onClick={() => setActiveTab("website")}
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
-                  activeTab === "website"
-                    ? "bg-primary text-primary-foreground"
+                    activeTab === "website"
+                    ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -148,7 +148,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "tech"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -160,7 +160,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "music"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -172,7 +172,7 @@ export function TopPanel({ panelTrigger }: { panelTrigger?: number }) {
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg transition-all",
                   activeTab === "about"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >

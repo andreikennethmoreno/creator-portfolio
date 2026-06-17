@@ -126,6 +126,12 @@ function clampOklchLightness(css: string, minL: number, maxL: number): string {
   return `oklch(${l} ${match[2]} ${match[3]})`;
 }
 
+function oklchFgFor(bg: string): string {
+  const match = bg.match(/oklch\(([\d.]+)/);
+  const l = match ? parseFloat(match[1]) : 0.5;
+  return l > 0.7 ? "oklch(0 0 0)" : "oklch(1 0 0)";
+}
+
 export function buildPalette(img: HTMLImageElement): Palette {
   const pixels = getImagePixels(img);
   const colors = kMeans(pixels, 16);
@@ -193,7 +199,7 @@ export function applyPaletteToDOM(palette: Palette) {
     "--popover":              palette.card,
     "--popover-foreground":   palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
     "--primary":              primary,
-    "--primary-foreground":   palette.isDark ? "oklch(0.98 0 0)" : "oklch(0.05 0 0)",
+    "--primary-foreground":   oklchFgFor(primary),
     "--secondary":            accent,
     "--secondary-foreground": palette.isDark ? "oklch(0.94 0 0)" : "oklch(0.12 0 0)",
     "--muted":                palette.muted,
